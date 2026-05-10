@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains passwords!)
+.env
+.env.local
+
+# Uploads (user-generated content)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Build output
+client/dist/
+client/.vite/
+.next/
+
+# IDE / OS files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
