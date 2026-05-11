@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const { sendSuccess, sendError } = require('../utils/response');
+const { sendAdminEnquiryNotification, sendCustomerAutoReply } = require('../utils/emailService');
 
 // POST /api/enquiries (public)
 const create = async (req, res) => {
@@ -16,18 +17,58 @@ const create = async (req, res) => {
       return sendError(res, 'Invalid email format', 400);
     }
 
+    // Sanitize inputs
+    const sanitize = (str) => (str || '').toString().trim();
+
+    const enquiryData = {
+      name: sanitize(name),
+      position: sanitize(position),
+      company: sanitize(company),
+      email: sanitize(email),
+      mobile: sanitize(mobile),
+      city_country: sanitize(city_country),
+      message: sanitize(message)
+    };
+
     const [result] = await db.query(
       `INSERT INTO enquiries (name, position, company, email, mobile, city_country, message, status, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, 'New', NOW(), NOW())`,
-      [name, position || '', company || '', email, mobile, city_country || '', message]
+      [enquiryData.name, enquiryData.position, enquiryData.company, enquiryData.email, enquiryData.mobile, enquiryData.city_country, enquiryData.message]
     );
 
-    return sendSuccess(res, { id: result.insertId }, 'Enquiry submitted successfully', 201);
+    // Attempt to send emails (non-blocking for the response)
+    let emailFailed = false;
+
+    try {
+      const [adminResult, customerResult] = await Promise.all([
+        sendAdminEnquiryNotification(enquiryData),
+        sendCustomerAutoReply(enquiryData)
+      ]);
+
+      if (!adminResult.success) {
+        console.error('Admin notification email failed:', adminResult.error);
+        emailFailed = true;
+      }
+      if (!customerResult.success) {
+        console.error('Customer auto-reply email failed:', customerResult.error);
+        emailFailed = true;
+      }
+    } catch (emailError) {
+      console.error('Email sending error:', emailError.message);
+      emailFailed = true;
+    }
+
+    const message2 = emailFailed
+      ? 'Enquiry saved successfully, but email notification failed.'
+      : 'Thank you for your enquiry. Our team will contact you shortly.';
+
+    return sendSuccess(res, { id: result.insertId, emailSent: !emailFailed }, message2, 201);
   } catch (error) {
     console.error('Create enquiry error:', error);
     return sendError(res, 'Server error');
   }
 };
+
 
 // GET /api/enquiries (admin)
 const getAll = async (req, res) => {

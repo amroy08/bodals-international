@@ -33,11 +33,18 @@ export function Contact() {
 
     setLoading(true);
     try {
-      await enquiryApi.submit(form);
+      const res = await enquiryApi.submit(form);
+      const data = res.data;
       setSubmitted(true);
-      toast.success("Enquiry submitted successfully!");
+      setForm({ name: "", position: "", company: "", email: "", mobile: "", city_country: "", message: "" });
+
+      if (data.data?.emailSent === false) {
+        toast.success("Your enquiry was saved, but email notification failed. Our team can still view your enquiry.", { duration: 5000 });
+      } else {
+        toast.success(data.message || "Thank you for your enquiry. Our team will contact you shortly.");
+      }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to submit enquiry");
+      toast.error(err.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -25,10 +25,23 @@ export function ContentManagement() {
     { key: "footer_text", label: "Footer Text" },
   ];
 
+  const floatingFields = [
+    { key: "whatsapp_number", label: "WhatsApp Number" },
+    { key: "whatsapp_default_message", label: "WhatsApp Default Message" },
+    { key: "contact_email", label: "Floating Contact Email" },
+    { key: "floating_contact_enabled", label: "Floating Contact Buttons", type: "toggle" },
+  ];
+
+  const textareaFields = ["about_us", "vision", "purpose", "hero_subtitle", "footer_text", "whatsapp_default_message"];
+
   const saveField = async () => {
     if (!editField) return;
     try {
-      const res = await websiteApi.updateSettings({ [editField]: editValue });
+      let value: any = editValue;
+      if (editField === "floating_contact_enabled") {
+        value = editValue === "true" || editValue === "1" ? true : false;
+      }
+      const res = await websiteApi.updateSettings({ [editField]: value });
       setSettings(res.data.data);
       setEditField(null);
       toast.success("Updated successfully");
@@ -45,6 +58,20 @@ export function ContentManagement() {
       setLogoFile(null);
       toast.success("Logo updated");
     } catch { toast.error("Upload failed"); }
+  };
+
+  const getDisplayValue = (key: string, val: any) => {
+    if (key === "floating_contact_enabled") {
+      return val === 1 || val === true ? "Enabled" : "Disabled";
+    }
+    return (val || "—").toString().substring(0, 200) + ((val || "").toString().length > 200 ? "..." : "");
+  };
+
+  const getEditInitValue = (key: string) => {
+    if (key === "floating_contact_enabled") {
+      return settings[key] === 1 || settings[key] === true ? "true" : "false";
+    }
+    return settings[key] || "";
   };
 
   if (!settings) return <div className="p-10 text-center text-[#717182]">Loading...</div>;
@@ -70,9 +97,37 @@ export function ContentManagement() {
           <div key={f.key} className="p-5 bg-white rounded-xl border border-black/5 flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="text-xs tracking-wider uppercase text-[#717182] mb-1">{f.label}</div>
-              <div className="text-[#0a1628] text-sm whitespace-pre-wrap">{(settings[f.key] || "—").toString().substring(0, 200)}{(settings[f.key] || "").length > 200 ? "..." : ""}</div>
+              <div className="text-[#0a1628] text-sm whitespace-pre-wrap">{getDisplayValue(f.key, settings[f.key])}</div>
             </div>
-            <button onClick={() => { setEditField(f.key); setEditValue(settings[f.key] || ""); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1">
+            <button onClick={() => { setEditField(f.key); setEditValue(getEditInitValue(f.key)); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1">
+              <Edit className="w-3.5 h-3.5" /> Edit
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Floating Contact Settings */}
+      <div className="mt-8 mb-2">
+        <h3 className="text-[#0a1628] text-base" style={{ fontWeight: 600 }}>Floating Contact Settings</h3>
+        <p className="text-[#717182] text-xs mt-1">Manage the floating WhatsApp and Email quick-contact buttons on the public website.</p>
+      </div>
+      <div className="grid gap-3">
+        {floatingFields.map(f => (
+          <div key={f.key} className="p-5 bg-white rounded-xl border border-black/5 flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs tracking-wider uppercase text-[#717182] mb-1">{f.label}</div>
+              <div className="text-[#0a1628] text-sm whitespace-pre-wrap">
+                {f.key === "floating_contact_enabled" ? (
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${settings[f.key] === 1 || settings[f.key] === true ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${settings[f.key] === 1 || settings[f.key] === true ? "bg-emerald-500" : "bg-red-400"}`} />
+                    {getDisplayValue(f.key, settings[f.key])}
+                  </span>
+                ) : (
+                  getDisplayValue(f.key, settings[f.key])
+                )}
+              </div>
+            </div>
+            <button onClick={() => { setEditField(f.key); setEditValue(getEditInitValue(f.key)); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1">
               <Edit className="w-3.5 h-3.5" /> Edit
             </button>
           </div>
@@ -83,8 +138,13 @@ export function ContentManagement() {
       {editField && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setEditField(null)}>
           <div className="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-            <h3 className="text-[#0a1628] mb-4" style={{ fontWeight: 600 }}>Edit {fields.find(f => f.key === editField)?.label}</h3>
-            {["about_us", "vision", "purpose", "hero_subtitle", "footer_text"].includes(editField) ? (
+            <h3 className="text-[#0a1628] mb-4" style={{ fontWeight: 600 }}>Edit {[...fields, ...floatingFields].find(f => f.key === editField)?.label}</h3>
+            {editField === "floating_contact_enabled" ? (
+              <select value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm">
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+            ) : textareaFields.includes(editField) ? (
               <textarea value={editValue} onChange={e => setEditValue(e.target.value)} rows={8} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" />
             ) : (
               <input value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" />

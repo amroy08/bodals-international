@@ -33,6 +33,10 @@ CREATE TABLE IF NOT EXISTS website_settings (
   linkedin_url VARCHAR(500) DEFAULT '',
   whatsapp_url VARCHAR(500) DEFAULT '',
   footer_text TEXT NULL,
+  whatsapp_number VARCHAR(30) DEFAULT '+91 9082377097',
+  whatsapp_default_message TEXT NULL,
+  contact_email VARCHAR(255) DEFAULT 'b.manish95@gmail.com',
+  floating_contact_enabled BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

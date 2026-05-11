@@ -12,6 +12,7 @@ import { Businesses } from "./components/businesses";
 import { Certifications } from "./components/certifications";
 import { Contact } from "./components/contact";
 import { Footer } from "./components/footer";
+import { FloatingContactButtons } from "./components/FloatingContactButtons";
 import { AdminPanel } from "./components/admin-panel";
 import { analyticsApi } from "../api/analyticsApi";
 
@@ -62,6 +63,7 @@ export default function App() {
             <Certifications />
             <Contact />
             <Footer />
+            <FloatingContactButtons />
           </div>
         )}
       </AuthProvider>

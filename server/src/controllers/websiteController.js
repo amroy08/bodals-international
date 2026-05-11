@@ -27,7 +27,8 @@ const updateSettings = async (req, res) => {
       about_us, vision, purpose,
       mobile, email, address,
       facebook_url, instagram_url, linkedin_url, whatsapp_url,
-      footer_text
+      footer_text,
+      whatsapp_number, whatsapp_default_message, contact_email, floating_contact_enabled
     } = req.body;
 
     // Build update fields dynamically
@@ -47,6 +48,10 @@ const updateSettings = async (req, res) => {
     if (linkedin_url !== undefined) fields.linkedin_url = linkedin_url;
     if (whatsapp_url !== undefined) fields.whatsapp_url = whatsapp_url;
     if (footer_text !== undefined) fields.footer_text = footer_text;
+    if (whatsapp_number !== undefined) fields.whatsapp_number = whatsapp_number;
+    if (whatsapp_default_message !== undefined) fields.whatsapp_default_message = whatsapp_default_message;
+    if (contact_email !== undefined) fields.contact_email = contact_email;
+    if (floating_contact_enabled !== undefined) fields.floating_contact_enabled = floating_contact_enabled === true || floating_contact_enabled === 'true' || floating_contact_enabled === 1 || floating_contact_enabled === '1' ? 1 : 0;
 
     // Handle logo upload
     if (req.file) {
