@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Edit, Upload } from "lucide-react";
 import { PageHeader } from "./AdminShared";
 import { websiteApi } from "../../../api/websiteApi";
+import { useWebsite } from "../../../contexts/WebsiteContext";
 import toast from "react-hot-toast";
 
 export function ContentManagement() {
+  const { refresh } = useWebsite();
   const [settings, setSettings] = useState<any>(null);
   const [editField, setEditField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -44,6 +46,7 @@ export function ContentManagement() {
       const res = await websiteApi.updateSettings({ [editField]: value });
       setSettings(res.data.data);
       setEditField(null);
+      await refresh();
       toast.success("Updated successfully");
     } catch { toast.error("Update failed"); }
   };
@@ -56,6 +59,7 @@ export function ContentManagement() {
       const res = await websiteApi.updateSettings(fd);
       setSettings(res.data.data);
       setLogoFile(null);
+      await refresh();
       toast.success("Logo updated");
     } catch { toast.error("Upload failed"); }
   };
@@ -84,7 +88,7 @@ export function ContentManagement() {
       <div className="p-5 bg-white rounded-xl border border-black/5 mb-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="text-xs tracking-wider uppercase text-[#717182]">Logo</div>
-          {settings.logo ? <img src={`/uploads/${settings.logo}`} alt="Logo" className="w-12 h-12 rounded-full object-cover border" /> : <span className="text-sm text-[#717182]">No logo uploaded</span>}
+          {settings.logo ? <img src={`/uploads/${settings.logo}`} alt="Logo" className="h-12 w-auto object-contain border rounded-lg bg-slate-50 p-1" /> : <span className="text-sm text-[#717182]">No logo uploaded</span>}
         </div>
         <div className="flex items-center gap-2">
           <input type="file" accept="image/*" onChange={e => setLogoFile(e.target.files?.[0] || null)} className="text-sm" />

@@ -22,6 +22,9 @@ const getSettings = async (req, res) => {
 // PUT /api/website/settings (admin)
 const updateSettings = async (req, res) => {
   try {
+    console.log('--- Update settings request ---');
+    console.log('File:', req.file);
+    console.log('Body:', req.body);
     const {
       company_name, motto, hero_title, hero_subtitle,
       about_us, vision, purpose,

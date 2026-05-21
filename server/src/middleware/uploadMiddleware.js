@@ -42,7 +42,8 @@ const logoStorage = multer.diskStorage({
     cb(null, path.join(__dirname, '../../uploads/logo'));
   },
   filename: (req, file, cb) => {
-    cb(null, 'logo' + path.extname(file.originalname));
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'logo-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
 
@@ -51,7 +52,8 @@ const imageFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp|gif/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
-  if (extname && mimetype) {
+  console.log('Image upload attempt:', { name: file.originalname, mimetype: file.mimetype, extnameMatch: extname, mimeMatch: mimetype });
+  if (extname || mimetype) {
     cb(null, true);
   } else {
     cb(new Error('Only image files (jpg, png, webp, gif) are allowed'), false);

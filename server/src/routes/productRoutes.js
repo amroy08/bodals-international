@@ -8,8 +8,8 @@ router.get('/', getAll);
 router.get('/:id', getById);
 
 // Admin protected
-router.post('/', authMiddleware, productUpload.single('image'), create);
-router.put('/:id', authMiddleware, productUpload.single('image'), update);
+router.post('/', authMiddleware, productUpload.array('images', 10), create);
+router.put('/:id', authMiddleware, productUpload.array('images', 10), update);
 router.delete('/:id', authMiddleware, remove);
 
 module.exports = router;

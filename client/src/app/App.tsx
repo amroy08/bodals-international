@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Toaster } from "react-hot-toast";
 import { WebsiteProvider } from "../contexts/WebsiteContext";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -52,19 +53,50 @@ export default function App() {
         {view === "admin" ? (
           <AdminPanel onExit={() => setView("site")} />
         ) : (
-          <div className="relative min-h-screen w-full bg-white" style={{ fontFamily: "Inter, sans-serif" }}>
+          <>
+            {/* Intro overlay — removed from DOM once completed */}
             {!introDone && <IntroAnimation onDone={() => setIntroDone(true)} />}
-            <Header onAdminClick={() => setView("admin")} />
-            <Hero />
-            <About />
-            <Speciality />
-            <Vision />
-            <Businesses />
-            <Certifications />
-            <Contact />
-            <Footer />
-            <FloatingContactButtons />
-          </div>
+
+            {/* Site content — always rendered beneath the overlay, zooms in when intro completes */}
+            <motion.div 
+              initial={false}
+              animate={{ 
+                scale: introDone ? 1 : 0.8,
+                filter: introDone ? "blur(0px)" : "blur(20px)",
+                opacity: introDone ? 1 : 0
+              }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="relative min-h-screen w-full bg-white" 
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              <Header onAdminClick={() => setView("admin")} introComplete={introDone} />
+              <Hero />
+              <About />
+              <Speciality />
+              <Vision />
+              <Businesses />
+              <Certifications />
+              <Contact />
+              <Footer />
+            </motion.div>
+
+            {/* Floating contact buttons — always fixed to viewport, visible when intro completes */}
+            <AnimatePresence>
+              {introDone && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ delay: 0.5 }}
+                  className="fixed bottom-0 right-0 z-50 pointer-events-none"
+                >
+                  <div className="pointer-events-auto">
+                    <FloatingContactButtons />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
         )}
       </AuthProvider>
     </WebsiteProvider>

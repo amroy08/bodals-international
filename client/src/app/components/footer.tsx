@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
+import defaultLogo from "@/assets/logo.png";
 
 export function Footer() {
   const { settings, products } = useWebsite();
@@ -11,6 +12,8 @@ export function Footer() {
   const footerText = settings?.footer_text || "Premium Indian merchant export house — connecting authentic producers with international buyers.";
   const productNames = products.length > 0 ? products.map((p: any) => p.name) : ["Seafood", "Textiles", "Fresh Agricultural", "Cereals & Grains", "Premium Indian Coffee"];
 
+  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
+
   return (
     <footer className="bg-[#08111f] text-white/70 pt-20 pb-8 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent" />
@@ -19,17 +22,17 @@ export function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
           <div>
             <div className="flex items-center gap-3 mb-5">
-              {settings?.logo ? (
-                <img src={`/uploads/${settings.logo}`} alt="Logo" className="w-12 h-12 rounded-full object-cover border-2 border-[#d4af37]/40" />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a8a] flex items-center justify-center text-[#d4af37] border-2 border-[#d4af37]/40">
-                  <span style={{ fontFamily: "Playfair Display, serif", fontWeight: 800 }}>B</span>
+              <img 
+                src={logoUrl} 
+                alt="Bodal's International Logo - Indian Merchant Exporter" 
+                className="h-12 w-auto object-contain transition-all" 
+              />
+              {settings?.logo && (
+                <div>
+                  <div className="text-white tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700 }}>BODAL'S</div>
+                  <div className="text-white/50 text-xs tracking-[0.18em] uppercase">INTERNATIONAL</div>
                 </div>
               )}
-              <div>
-                <div className="text-white tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700 }}>BODAL'S</div>
-                <div className="text-white/50 text-xs tracking-[0.18em] uppercase">INTERNATIONAL</div>
-              </div>
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>

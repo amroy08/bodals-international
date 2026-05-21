@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, X, Check } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -12,17 +13,73 @@ const DEFAULT_IMAGES: Record<string, string> = {
   "Premium Indian Coffee": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1200&q=80",
 };
 
+function ProductImageSlideshow({ product, intervalTime = 3000, className = "" }: { product: any; intervalTime?: number; className?: string }) {
+  const images = (() => {
+    if (product.images) {
+      try {
+        const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((img: string) => `/uploads/${img}`);
+        }
+      } catch (e) {}
+    }
+    if (product.image) {
+      return [`/uploads/${product.image}`];
+    }
+    return [DEFAULT_IMAGES[product.category] || "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1200&q=80"];
+  })();
+
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIdx(prev => (prev + 1) % images.length);
+    }, intervalTime);
+    return () => clearInterval(interval);
+  }, [images.length, intervalTime]);
+
+  return (
+    <div className={`relative overflow-hidden w-full h-full ${className}`}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIdx}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+          className="absolute inset-0 w-full h-full"
+        >
+          <ImageWithFallback
+            src={images[currentIdx]}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
+      
+      {images.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+          {images.map((_: any, idx: number) => (
+            <div
+              key={idx}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${
+                idx === currentIdx ? "bg-[#d4af37] w-3" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Businesses() {
   const { products } = useWebsite();
   const [open, setOpen] = useState<number | null>(null);
 
   const items = products.length > 0 ? products : [];
   const active = items.find((p: any) => p.id === open);
-
-  const getImage = (p: any) => {
-    if (p.image) return `/uploads/${p.image}`;
-    return DEFAULT_IMAGES[p.category] || "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1200&q=80";
-  };
 
   const getBadges = (p: any) => {
     if (!p.badges) return [];
@@ -47,7 +104,7 @@ export function Businesses() {
           {items.map((p: any, i: number) => (
             <motion.button key={p.id} onClick={() => setOpen(p.id)} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.08 }} whileHover={{ y: -8 }} className="group text-left rounded-2xl overflow-hidden bg-white border border-black/5 hover:border-[#d4af37]/40 hover:shadow-2xl transition-all">
               <div className="relative h-56 overflow-hidden">
-                <ImageWithFallback src={getImage(p)} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <ProductImageSlideshow product={p} className="group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/80 via-transparent to-transparent" />
                 <div className="absolute top-4 left-4 px-2.5 py-1 rounded-full bg-[#d4af37] text-[#0a1628] text-[10px] tracking-[0.15em] uppercase">Export Quality</div>
               </div>
@@ -64,38 +121,41 @@ export function Businesses() {
       </div>
 
       {/* Modal */}
-      <AnimatePresence>
-        {active && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" onClick={() => setOpen(null)}>
-            <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-4xl bg-white rounded-2xl overflow-hidden shadow-2xl my-8">
-              <button onClick={() => setOpen(null)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur text-[#0a1628] flex items-center justify-center hover:bg-white shadow-lg">
-                <X className="w-5 h-5" />
-              </button>
-              <div className="grid md:grid-cols-2">
-                <div className="relative h-64 md:h-auto">
-                  <ImageWithFallback src={getImage(active)} alt={active.name} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0a1628]/40 to-transparent" />
-                </div>
-                <div className="p-8 md:p-10">
-                  <div className="text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-3">Our Product Portfolio</div>
-                  <h3 className="text-[#0a1628] mb-4" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>{active.name}</h3>
-                  <p className="text-[#3a4252] leading-relaxed mb-6" style={{ fontFamily: "Inter" }}>{active.full_description}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {getBadges(active).map((b: string) => (
-                      <span key={b} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#d4af37]/10 text-[#0a1628] text-xs border border-[#d4af37]/30">
-                        <Check className="w-3 h-3 text-[#d4af37]" /> {b}
-                      </span>
-                    ))}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {active && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" onClick={() => setOpen(null)}>
+              <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-4xl bg-white rounded-2xl overflow-hidden shadow-2xl my-8">
+                <button onClick={() => setOpen(null)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur text-[#0a1628] flex items-center justify-center hover:bg-white shadow-lg">
+                  <X className="w-5 h-5" />
+                </button>
+                <div className="grid md:grid-cols-2">
+                  <div className="relative h-64 md:h-auto min-h-[300px]">
+                    <ProductImageSlideshow product={active} className="absolute inset-0 w-full h-full" />
+                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0a1628]/40 to-transparent pointer-events-none" />
                   </div>
-                  <button onClick={() => { setOpen(null); setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 200); }} className="w-full px-5 py-3 bg-[#0a1628] text-white rounded-full hover:bg-[#1e3a8a] transition flex items-center justify-center gap-2">
-                    Send Enquiry <ArrowRight className="w-4 h-4" />
-                  </button>
+                  <div className="p-8 md:p-10">
+                    <div className="text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-3">Our Product Portfolio</div>
+                    <h3 className="text-[#0a1628] mb-4" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>{active.name}</h3>
+                    <p className="text-[#3a4252] leading-relaxed mb-6" style={{ fontFamily: "Inter" }}>{active.full_description}</p>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {getBadges(active).map((b: string) => (
+                        <span key={b} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#d4af37]/10 text-[#0a1628] text-xs border border-[#d4af37]/30">
+                          <Check className="w-3 h-3 text-[#d4af37]" /> {b}
+                        </span>
+                      ))}
+                    </div>
+                    <button onClick={() => { setOpen(null); setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }), 200); }} className="w-full px-5 py-3 bg-[#0a1628] text-white rounded-full hover:bg-[#1e3a8a] transition flex items-center justify-center gap-2">
+                      Send Enquiry <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 }

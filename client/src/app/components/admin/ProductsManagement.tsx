@@ -12,30 +12,58 @@ export function ProductsManagement() {
   const [editItem, setEditItem] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState({ name: "", category: "", short_description: "", full_description: "", badges: "", status: "active" });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
+  const [savedImages, setSavedImages] = useState<string[]>([]);
   const [customCategory, setCustomCategory] = useState(false);
 
   const load = () => { productApi.getAll().then(r => setProducts(r.data.data || [])).catch(() => {}).finally(() => setLoading(false)); };
   useEffect(load, []);
 
-  const openAdd = () => { setEditItem(null); setForm({ name: "", category: "", short_description: "", full_description: "", badges: "", status: "active" }); setImageFile(null); setCustomCategory(false); setShowForm(true); };
+  const openAdd = () => {
+    setEditItem(null);
+    setForm({ name: "", category: "", short_description: "", full_description: "", badges: "", status: "active" });
+    setNewImageFiles([]);
+    setSavedImages([]);
+    setCustomCategory(false);
+    setShowForm(true);
+  };
+
   const openEdit = (p: any) => {
     setEditItem(p);
     const badges = p.badges ? (typeof p.badges === 'string' ? JSON.parse(p.badges) : p.badges).join(', ') : '';
     setForm({ name: p.name, category: p.category, short_description: p.short_description || "", full_description: p.full_description || "", badges, status: p.status });
-    setImageFile(null); setCustomCategory(false); setShowForm(true);
+    setNewImageFiles([]);
+    const imgs = p.images ? (typeof p.images === 'string' ? JSON.parse(p.images) : p.images) : [];
+    if (imgs.length === 0 && p.image) {
+      imgs.push(p.image);
+    }
+    setSavedImages(imgs);
+    setCustomCategory(false);
+    setShowForm(true);
   };
 
   const save = async () => {
     if (!form.name || !form.category) { toast.error("Name and category required"); return; }
     const fd = new FormData();
-    Object.entries(form).forEach(([k, v]) => { if (k === 'badges') { fd.append(k, JSON.stringify(v.split(',').map((s: string) => s.trim()).filter(Boolean))); } else { fd.append(k, v); } });
-    if (imageFile) fd.append("image", imageFile);
+    Object.entries(form).forEach(([k, v]) => {
+      if (k === 'badges') {
+        fd.append(k, JSON.stringify(v.split(',').map((s: string) => s.trim()).filter(Boolean)));
+      } else {
+        fd.append(k, v);
+      }
+    });
+    fd.append("existing_images", JSON.stringify(savedImages));
+    newImageFiles.forEach(file => {
+      fd.append("images", file);
+    });
     try {
       if (editItem) { await productApi.update(editItem.id, fd); toast.success("Product updated"); }
       else { await productApi.create(fd); toast.success("Product created"); }
       setShowForm(false); load();
-    } catch { toast.error("Save failed"); }
+    } catch (err: any) {
+      const msg = err.response?.data?.message || "Save failed";
+      toast.error(msg);
+    }
   };
 
   const doDelete = async () => {
@@ -111,9 +139,48 @@ export function ProductsManagement() {
                 <option value="active">Active</option><option value="inactive">Inactive</option>
               </select>
               <div>
-                <label className="text-sm text-[#717182]">Product Image</label>
-                <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="mt-1 text-sm" />
-                {editItem?.image && !imageFile && <img src={`/uploads/${editItem.image}`} className="mt-2 w-20 h-20 rounded-lg object-cover" />}
+                <label className="text-sm text-[#717182] block mb-1">Product Images (Can upload multiple)</label>
+                <input type="file" accept="image/*" multiple onChange={e => setNewImageFiles(Array.from(e.target.files || []))} className="mt-1 text-sm block w-full text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#d4af37]/10 file:text-[#0a1628] hover:file:bg-[#d4af37]/20" />
+                
+                {/* Pre-existing Saved Images */}
+                {savedImages.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-xs text-[#717182] mb-1.5 font-medium">Currently Saved Images:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {savedImages.map((img, idx) => (
+                        <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/10 group">
+                          <img src={`/uploads/${img}`} className="w-full h-full object-cover" />
+                          <button type="button" onClick={() => setSavedImages(savedImages.filter((_, i) => i !== idx))} className="absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                            <Trash2 className="w-4.5 h-4.5 text-red-400" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Newly Selected Images Preview */}
+                {newImageFiles.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-xs text-[#717182] mb-1.5 font-medium">New Images to Upload:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {newImageFiles.map((file, idx) => {
+                        const url = URL.createObjectURL(file);
+                        return (
+                          <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/10 group">
+                            <img src={url} className="w-full h-full object-cover" />
+                            <button type="button" onClick={() => {
+                              const updated = newImageFiles.filter((_, i) => i !== idx);
+                              setNewImageFiles(updated);
+                            }} className="absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                              <Trash2 className="w-4.5 h-4.5 text-red-400" />
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-2 justify-end mt-5">

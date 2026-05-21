@@ -64,13 +64,15 @@ const create = async (req, res) => {
       return sendError(res, 'Name and category are required', 400);
     }
 
-    const image = req.file ? 'products/' + req.file.filename : null;
+    const images = req.files ? req.files.map(f => 'products/' + f.filename) : [];
+    const mainImage = images.length > 0 ? images[0] : null;
+    const imagesJson = JSON.stringify(images);
     const badgesJson = badges ? (typeof badges === 'string' ? badges : JSON.stringify(badges)) : '[]';
 
     const [result] = await db.query(
-      `INSERT INTO products (name, category, short_description, full_description, image, badges, status, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
-      [name, category, short_description || '', full_description || '', image, badgesJson, status || 'active']
+      `INSERT INTO products (name, category, short_description, full_description, image, images, badges, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      [name, category, short_description || '', full_description || '', mainImage, imagesJson, badgesJson, status || 'active']
     );
 
     const [newProduct] = await db.query('SELECT * FROM products WHERE id = ?', [result.insertId]);
@@ -92,27 +94,54 @@ const update = async (req, res) => {
       return sendError(res, 'Product not found', 404);
     }
 
-    let image = existing[0].image;
-    if (req.file) {
-      // Delete old image
-      if (image) {
-        const oldPath = path.join(__dirname, '../../uploads', image);
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    // Determine existing images list to keep
+    let existingImages = [];
+    if (req.body.existing_images) {
+      try {
+        existingImages = typeof req.body.existing_images === 'string' ? JSON.parse(req.body.existing_images) : req.body.existing_images;
+      } catch (e) {
+        existingImages = [];
       }
-      image = 'products/' + req.file.filename;
+    } else {
+      existingImages = existing[0].images ? (typeof existing[0].images === 'string' ? JSON.parse(existing[0].images) : existing[0].images) : [];
+      if (existingImages.length === 0 && existing[0].image) {
+        existingImages = [existing[0].image];
+      }
     }
 
+    // Get new files uploaded
+    const newImages = req.files ? req.files.map(f => 'products/' + f.filename) : [];
+    const combinedImages = [...existingImages, ...newImages];
+
+    // Clean up deleted images from disk
+    const oldImages = existing[0].images ? (typeof existing[0].images === 'string' ? JSON.parse(existing[0].images) : existing[0].images) : [];
+    if (oldImages.length === 0 && existing[0].image) {
+      oldImages.push(existing[0].image);
+    }
+
+    oldImages.forEach(oldImg => {
+      if (!combinedImages.includes(oldImg)) {
+        const oldPath = path.join(__dirname, '../../uploads', oldImg);
+        if (fs.existsSync(oldPath)) {
+          try { fs.unlinkSync(oldPath); } catch (e) { console.error('Failed to unlink old image:', e); }
+        }
+      }
+    });
+
+    const mainImage = combinedImages.length > 0 ? combinedImages[0] : null;
+    const imagesJson = JSON.stringify(combinedImages);
     const badgesJson = badges ? (typeof badges === 'string' ? badges : JSON.stringify(badges)) : existing[0].badges;
 
     await db.query(
       `UPDATE products SET name = ?, category = ?, short_description = ?, full_description = ?,
-       image = ?, badges = ?, status = ?, updated_at = NOW() WHERE id = ?`,
+       image = ?, images = ?, badges = ?, status = ?, updated_at = NOW() WHERE id = ?`,
       [
         name || existing[0].name,
         category || existing[0].category,
         short_description !== undefined ? short_description : existing[0].short_description,
         full_description !== undefined ? full_description : existing[0].full_description,
-        image,
+        mainImage,
+        imagesJson,
         badgesJson,
         status || existing[0].status,
         id
@@ -137,11 +166,18 @@ const remove = async (req, res) => {
       return sendError(res, 'Product not found', 404);
     }
 
-    // Delete image file
-    if (existing[0].image) {
-      const imgPath = path.join(__dirname, '../../uploads', existing[0].image);
-      if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+    // Delete all images in the images array from disk
+    const oldImages = existing[0].images ? (typeof existing[0].images === 'string' ? JSON.parse(existing[0].images) : existing[0].images) : [];
+    if (oldImages.length === 0 && existing[0].image) {
+      oldImages.push(existing[0].image);
     }
+
+    oldImages.forEach(oldImg => {
+      const imgPath = path.join(__dirname, '../../uploads', oldImg);
+      if (fs.existsSync(imgPath)) {
+        try { fs.unlinkSync(imgPath); } catch (e) { console.error('Failed to delete image file during product removal:', e); }
+      }
+    });
 
     await db.query('DELETE FROM products WHERE id = ?', [id]);
     return sendSuccess(res, null, 'Product deleted');

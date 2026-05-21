@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Phone, Mail, Linkedin, Instagram, Facebook, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useWebsite } from "../../contexts/WebsiteContext";
+import defaultLogo from "@/assets/logo.png";
 
 const NAV = [
   { id: "home", label: "Home" },
@@ -10,7 +11,7 @@ const NAV = [
   { id: "contact", label: "Contact" },
 ];
 
-export function Header({ onAdminClick }: { onAdminClick: () => void }) {
+export function Header({ onAdminClick, introComplete = true }: { onAdminClick: () => void; introComplete?: boolean }) {
   const { settings } = useWebsite();
   const [active, setActive] = useState("home");
   const [open, setOpen] = useState(false);
@@ -41,6 +42,8 @@ export function Header({ onAdminClick }: { onAdminClick: () => void }) {
 
   const phone = settings?.mobile || '+91 9082377097';
   const email = settings?.email || 'b.manish95@gmail.com';
+
+  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -75,22 +78,24 @@ export function Header({ onAdminClick }: { onAdminClick: () => void }) {
       {/* Main nav */}
       <div className={`transition-all ${scrolled ? "bg-white/95 backdrop-blur-lg shadow-md" : "bg-white"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <button onClick={() => goTo("home")} className="flex items-center gap-3 group">
-            {settings?.logo ? (
-              <img src={`/uploads/${settings.logo}`} alt="Logo" className="w-11 h-11 rounded-full object-cover border-2 border-[#d4af37]/40" />
-            ) : (
-              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0a1628] to-[#1e3a8a] flex items-center justify-center text-[#d4af37] border-2 border-[#d4af37]/40">
-                <span style={{ fontFamily: "Playfair Display, serif", fontWeight: 800 }}>B</span>
+          <button id="header-logo-target" onClick={() => goTo("home")} className="flex items-center gap-3 group" style={{ opacity: introComplete ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+            <img 
+              src={logoUrl} 
+              alt="Bodal's International Logo - Premium Indian Merchant Export House" 
+              className="h-14 w-auto object-contain transition-all" 
+            />
+            
+            {/* Show manual text only if admin logo is NOT set (since defaultLogo already has text) */}
+            {settings?.logo && (
+              <div className="text-left leading-tight">
+                <div className="text-[#0a1628] tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: "1.05rem" }}>
+                  BODAL'S
+                </div>
+                <div className="text-[#717182] tracking-[0.18em] uppercase" style={{ fontSize: "0.6rem" }}>
+                  INTERNATIONAL
+                </div>
               </div>
             )}
-            <div className="text-left leading-tight">
-              <div className="text-[#0a1628] tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: "1.05rem" }}>
-                BODAL'S
-              </div>
-              <div className="text-[#717182] tracking-[0.18em] uppercase" style={{ fontSize: "0.6rem" }}>
-                INTERNATIONAL
-              </div>
-            </div>
           </button>
 
           <nav className="hidden md:flex items-center gap-1">
