@@ -90,23 +90,33 @@ export function Businesses() {
   return (
     <section id="businesses" className="py-24 lg:py-32 bg-[#fafaf7] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#0a1628]/5 text-[#0a1628] text-xs tracking-[0.2em] uppercase mb-4">Our Portfolio</div>
-          <h2 className="text-[#0a1628] tracking-tight mb-5" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700 }}>
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="inline-block px-3 py-1 rounded-full bg-[#0a1628]/5 text-[#0a1628] text-xs tracking-[0.2em] uppercase mb-4">Our Portfolio</motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-[#0a1628] tracking-tight mb-5" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700 }}>
             Our Businesses <span className="text-[#d4af37]">& Services</span>
-          </h2>
-          <p className="text-[#717182] leading-relaxed" style={{ fontFamily: "Inter" }}>
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-[#717182] leading-relaxed" style={{ fontFamily: "Inter" }}>
             We pride ourselves on offering a diverse and premium portfolio of Indian goods.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((p: any, i: number) => (
-            <motion.button key={p.id} onClick={() => setOpen(p.id)} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.08 }} whileHover={{ y: -8 }} className="group text-left rounded-2xl overflow-hidden bg-white border border-black/5 hover:border-[#d4af37]/40 hover:shadow-2xl transition-all">
+            <motion.button key={p.id} onClick={() => setOpen(p.id)}
+              initial={{ opacity: 0, y: 40, rotate: 1.5 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.12, type: "spring", stiffness: 120, damping: 18 }}
+              whileHover={{ y: -8 }}
+              className="group text-left rounded-2xl overflow-hidden bg-white border border-black/5 hover:border-[#d4af37]/40 hover:shadow-2xl transition-all">
               <div className="relative h-56 overflow-hidden">
                 <ProductImageSlideshow product={p} className="group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/80 via-transparent to-transparent" />
-                <div className="absolute top-4 left-4 px-2.5 py-1 rounded-full bg-[#d4af37] text-[#0a1628] text-[10px] tracking-[0.15em] uppercase">Export Quality</div>
+                <motion.div initial={{ opacity: 0, y: -15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.3 + i * 0.12 }}
+                  className="absolute top-4 left-4 px-2.5 py-1 rounded-full bg-[#d4af37] text-[#0a1628] text-[10px] tracking-[0.15em] uppercase">Export Quality</motion.div>
               </div>
               <div className="p-6">
                 <h3 className="text-[#0a1628] mb-2" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.4rem", fontWeight: 600 }}>{p.name}</h3>

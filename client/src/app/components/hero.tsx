@@ -84,58 +84,68 @@ export function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-24 lg:pt-24 lg:pb-32 z-20">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-6 bg-[#0a1628]/45 backdrop-blur-sm">
+          <div className="lg:col-span-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-6 bg-[#0a1628]/45 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 bg-[#d4af37] rounded-full animate-pulse" />
               Indian Merchant Export House
-            </div>
+            </motion.div>
 
-            <h1 className="leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2.25rem, 5.5vw, 4.5rem)", fontWeight: 700 }}>
+            <motion.h1 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.12 }}
+              className="leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2.25rem, 5.5vw, 4.5rem)", fontWeight: 700 }}>
               {heroTitle.includes("INTERNATIONAL") ? (
                 <>{heroTitle.split("INTERNATIONAL")[0]}<br /><span className="text-[#d4af37]">INTERNATIONAL</span></>
               ) : heroTitle}
-            </h1>
+            </motion.h1>
 
-            <p className="text-white/80 max-w-xl leading-relaxed mb-2 tracking-wide" style={{ fontFamily: "Inter", fontSize: "1.05rem" }}>
+            <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.24 }}
+              className="text-white/80 max-w-xl leading-relaxed mb-2 tracking-wide" style={{ fontFamily: "Inter", fontSize: "1.05rem" }}>
               {motto}
-            </p>
-            <p className="text-white/70 max-w-xl leading-relaxed mb-10" style={{ fontFamily: "Inter" }}>
+            </motion.p>
+            <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.36 }}
+              className="text-white/70 max-w-xl leading-relaxed mb-10" style={{ fontFamily: "Inter" }}>
               {heroSubtitle}
-            </p>
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.48 }}
+              className="flex flex-wrap gap-4">
               <button onClick={() => document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" })} className="group px-7 py-3.5 bg-[#d4af37] text-[#0a1628] rounded-full hover:bg-[#e6c356] transition flex items-center gap-2" style={{ fontFamily: "Inter" }}>
                 Explore Our Businesses <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
               </button>
               <button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="px-7 py-3.5 border border-white/30 rounded-full hover:bg-white/10 transition flex items-center gap-2" style={{ fontFamily: "Inter" }}>
                 <Send className="w-4 h-4" /> Send Enquiry
               </button>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
           <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-end h-full">
-            <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} className="bg-[#0a1628]/60 backdrop-blur-md text-white p-6 rounded-xl border border-white/10 shadow-2xl max-w-[200px] lg:self-end">
-              <div className="text-xs text-white/50 tracking-wide uppercase">Export Reach</div>
-              <div className="flex items-end gap-1 mt-1">
-                <span style={{ fontFamily: "Playfair Display, serif", fontSize: "2rem", fontWeight: 700, color: "#d4af37" }}>30+</span>
-                <span className="text-sm text-white/70 mb-1.5">Countries</span>
-              </div>
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.6 }}
+              className="relative">
+              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} className="bg-[#0a1628]/60 backdrop-blur-md text-white p-6 rounded-xl border border-white/10 shadow-2xl max-w-[200px] lg:self-end">
+                <div className="text-xs text-white/50 tracking-wide uppercase">Export Reach</div>
+                <div className="flex items-end gap-1 mt-1">
+                  <span style={{ fontFamily: "Playfair Display, serif", fontSize: "2rem", fontWeight: 700, color: "#d4af37" }}>30+</span>
+                  <span className="text-sm text-white/70 mb-1.5">Countries</span>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
 
         {/* Trust indicators */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-16 lg:mt-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-16 lg:mt-24">
           {TRUST.map((t, i) => (
-            <div key={i} className="group p-5 rounded-xl bg-[#0a1628]/45 border border-white/10 backdrop-blur hover:bg-white/10 hover:border-[#d4af37]/40 transition">
-              <div className="w-10 h-10 rounded-lg bg-[#d4af37]/15 text-[#d4af37] flex items-center justify-center mb-3 group-hover:scale-110 transition">
+            <motion.div key={i} initial={{ opacity: 0, y: 30, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.7 + i * 0.1, type: "spring", stiffness: 200, damping: 20 }}
+              className="group p-5 rounded-xl bg-[#0a1628]/45 border border-white/10 backdrop-blur hover:bg-white/10 hover:border-[#d4af37]/40 transition">
+              <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.9 + i * 0.1 }}
+                className="w-10 h-10 rounded-lg bg-[#d4af37]/15 text-[#d4af37] flex items-center justify-center mb-3 group-hover:scale-110 transition">
                 <t.icon className="w-5 h-5" />
-              </div>
+              </motion.div>
               <div className="text-white" style={{ fontFamily: "Inter", fontWeight: 600 }}>{t.label}</div>
               <div className="text-white/50 text-xs mt-0.5">{t.desc}</div>
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

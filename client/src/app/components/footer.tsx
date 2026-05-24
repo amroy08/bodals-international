@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 import defaultLogo from "@/assets/logo.png";
@@ -20,7 +21,13 @@ export function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
-          <div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0 }}
+          >
             <div className="flex items-center gap-3 mb-5">
               <img 
                 src={logoUrl} 
@@ -36,9 +43,14 @@ export function Footer() {
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+          >
             <div className="text-white mb-4 tracking-wide" style={{ fontFamily: "Inter", fontWeight: 600 }}>Quick Links</div>
             <ul className="space-y-2 text-sm">
               {["Home", "About Us", "Businesses", "Contact"].map((l) => (
@@ -47,18 +59,28 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="text-white mb-4 tracking-wide" style={{ fontFamily: "Inter", fontWeight: 600 }}>Products</div>
             <ul className="space-y-2 text-sm">
               {productNames.map((p: string) => (
                 <li key={p} className="hover:text-[#d4af37] transition cursor-pointer">{p}</li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+          >
             <div className="text-white mb-4 tracking-wide" style={{ fontFamily: "Inter", fontWeight: 600 }}>Contact</div>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
@@ -81,21 +103,38 @@ export function Footer() {
                 { Icon: Facebook, url: settings?.facebook_url },
                 { Icon: MessageCircle, url: settings?.whatsapp_url },
               ].map(({ Icon, url }, i) => (
-                <a key={i} href={url || "#"} target={url ? "_blank" : undefined} rel="noreferrer" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-[#d4af37] hover:text-[#0a1628] flex items-center justify-center transition">
+                <motion.a
+                  key={i}
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.6 + i * 0.1 }}
+                  whileHover={{ scale: 1.15 }}
+                  href={url || "#"}
+                  target={url ? "_blank" : undefined}
+                  rel="noreferrer"
+                  className="w-9 h-9 rounded-lg bg-white/5 hover:bg-[#d4af37] hover:text-[#0a1628] flex items-center justify-center transition"
+                >
                   <Icon className="w-4 h-4" />
-                </a>
+                </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50"
+        >
           <div>© {new Date().getFullYear()} {settings?.company_name || "BODAL'S INTERNATIONAL"} Pvt. Ltd. All rights reserved.</div>
           <div className="flex gap-5">
             <a href="#" className="hover:text-[#d4af37]">Privacy Policy</a>
             <a href="#" className="hover:text-[#d4af37]">Terms of Service</a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

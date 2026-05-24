@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Award, Globe2, Handshake } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
@@ -14,6 +14,39 @@ function getImgSrc(img: any) {
   if (!img) return FALLBACK_ABOUT[0];
   if (img.image?.startsWith('http')) return img.image;
   return `/uploads/${img.image}`;
+}
+
+function AnimatedCounter({ target, suffix = "" }: { target: string; suffix?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const [count, setCount] = useState(0);
+  const numericTarget = parseInt(target.replace(/[^0-9]/g, ''));
+  const originalSuffix = target.replace(/[0-9]/g, '') || suffix;
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1500;
+    const stepTime = 30;
+    const steps = duration / stepTime;
+    const increment = numericTarget / steps;
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= numericTarget) {
+        setCount(numericTarget);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, stepTime);
+    return () => clearInterval(timer);
+  }, [isInView, numericTarget]);
+
+  return (
+    <div ref={ref} className="text-[#0a1628]" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>
+      {isInView ? `${count}${originalSuffix}` : `0${originalSuffix}`}
+    </div>
+  );
 }
 
 export function About() {
@@ -37,15 +70,17 @@ export function About() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-[#fafaf7]/90 to-[#fafaf7]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-16">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#0a1628]/5 text-[#0a1628] text-xs tracking-[0.2em] uppercase mb-4">About Us</div>
-          <h2 className="text-[#0a1628] tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700 }}>
+        <div className="text-center mb-16">
+          <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="inline-block px-3 py-1 rounded-full bg-[#0a1628]/5 text-[#0a1628] text-xs tracking-[0.2em] uppercase mb-4">About Us</motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-[#0a1628] tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 700 }}>
             A Reliable Bridge Between<br /><span className="text-[#d4af37]">India & The World</span>
-          </h2>
-        </motion.div>
+          </motion.h2>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative">
+          <motion.div initial={{ opacity: 0, x: -40, rotate: -2 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, type: "spring", stiffness: 100, damping: 20 }} className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[520px]">
               <AnimatePresence mode="wait">
                 <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0">
@@ -61,20 +96,21 @@ export function About() {
                 </div>
               )}
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-[#0a1628] text-white p-6 rounded-xl shadow-xl max-w-[240px] hidden sm:block">
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
+              className="absolute -bottom-6 -right-6 bg-[#0a1628] text-white p-6 rounded-xl shadow-xl max-w-[240px] hidden sm:block">
               <div className="text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-2">Promise-Led</div>
               <div style={{ fontFamily: "Playfair Display, serif", fontSize: "1.1rem" }}>"Our word is our strongest contract."</div>
-            </div>
+            </motion.div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+          <div>
             <div className="space-y-5 text-[#3a4252] leading-relaxed" style={{ fontFamily: "Inter" }}>
               {paragraphs.length > 0 ? paragraphs.map((p: string, i: number) => (
-                <p key={i}>{p}</p>
+                <motion.p key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}>{p}</motion.p>
               )) : (
                 <>
-                  <p>At <span className="text-[#0a1628]" style={{ fontWeight: 600 }}>BODAL'S INTERNATIONAL</span>, we are a dynamic and forward-thinking merchant export house dedicated to bringing the finest Indian products to the global market.</p>
-                  <p>Our core values are built on traditional principles of trust, transparency, and unwavering commitment to quality.</p>
+                  <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>At <span className="text-[#0a1628]" style={{ fontWeight: 600 }}>BODAL'S INTERNATIONAL</span>, we are a dynamic and forward-thinking merchant export house dedicated to bringing the finest Indian products to the global market.</motion.p>
+                  <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.27 }}>Our core values are built on traditional principles of trust, transparency, and unwavering commitment to quality.</motion.p>
                 </>
               )}
             </div>
@@ -85,16 +121,19 @@ export function About() {
                 { icon: Globe2, label: "Global Reach", num: "30+" },
                 { icon: Handshake, label: "Partnerships", num: "200+" },
               ].map((s, i) => (
-                <div key={i}>
-                  <s.icon className="w-5 h-5 text-[#d4af37] mb-2" />
-                  <div className="text-[#0a1628]" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>{s.num}</div>
+                <motion.div key={i} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 + i * 0.15 }}>
+                  <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.5 + i * 0.15 }}>
+                    <s.icon className="w-5 h-5 text-[#d4af37] mb-2" />
+                  </motion.div>
+                  <AnimatedCounter target={s.num} />
                   <div className="text-xs text-[#717182] tracking-wide">{s.label}</div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
