@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Phone, Mail, Linkedin, Instagram, Facebook, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useWebsite } from "../../contexts/WebsiteContext";
-import defaultLogo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo_black.png";
 
 const NAV = [
   { id: "home", label: "Home" },
@@ -85,17 +85,6 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
               className="h-14 w-auto object-contain transition-all" 
             />
             
-            {/* Show manual text only if admin logo is NOT set (since defaultLogo already has text) */}
-            {settings?.logo && (
-              <div className="text-left leading-tight">
-                <div className="text-[#0a1628] tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: "1.05rem" }}>
-                  BODAL'S
-                </div>
-                <div className="text-[#717182] tracking-[0.18em] uppercase" style={{ fontSize: "0.6rem" }}>
-                  INTERNATIONAL
-                </div>
-              </div>
-            )}
           </button>
 
           <nav className="hidden md:flex items-center gap-1">

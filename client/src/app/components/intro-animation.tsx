@@ -1,81 +1,119 @@
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useWebsite } from "../../contexts/WebsiteContext";
-import defaultLogo from "@/assets/logo.png";
+import introBg from "@/assets/intro_bg.jpg";
+import logoImg from "@/assets/logo_white.png";
 
-function buildLogoUrl(logo: string | undefined | null): string | null {
-  if (!logo) return null;
-  if (logo.startsWith("http")) return logo;
-  return `/uploads/${logo}`;
-}
+const FONT_BASE: React.CSSProperties = {
+  fontFamily: "'Playfair Display', serif",
+  fontWeight: 900,
+  fontSize: "clamp(2.8rem, 10.5vw, 9rem)",
+  lineHeight: 1,
+  letterSpacing: "-0.02em",
+  whiteSpace: "nowrap" as const,
+  userSelect: "none" as const,
+};
 
 export function IntroAnimation({ onDone }: { onDone: () => void }) {
-  const { settings } = useWebsite();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const zoomRef = useRef<HTMLDivElement>(null);
   const oRef = useRef<HTMLSpanElement>(null);
-  const [origin, setOrigin] = useState("50% 50%");
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
   const progress = useMotionValue(0);
+  const [oCenter, setOCenter] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const logoUrl = buildLogoUrl(settings?.logo);
-  const logoSrc = logoUrl || defaultLogo;
-  const companyName = settings?.company_name || "BODAL'S INTERNATIONAL";
+  /* ════════════════════════════════════════════════
+   *  FULL TIMELINE (400vh scroll):
+   *
+   *  ACT 1 (0.00 → 0.55)
+   *    Slogan readable on white background
+   *    Text zooms toward O in COMMIT (scale 1 → 22)
+   *
+   *  ACT 2 (0.05 → 0.70)
+   *    Logo starts completely invisible (opacity 0)
+   *    As user scrolls on O, logo fades in (opacity 0 → 1.0)
+   *    Logo scale emerges from O portal (scale 0.08 → 1.0)
+   *
+   *  ACT 3 (0.65 → 0.78)
+   *    Text/O fades away
+   *    Full-screen background image EXPANDS to fill screen
+   *    White logo remains visible directly on top of dark background
+   *
+   *  ACT 4 (0.93 → 1.00)
+   *    Logo and background dissolve → website revealed
+   * ════════════════════════════════════════════════ */
 
-  /* ── Preload logo ── */
-  useEffect(() => {
-    const img = new Image();
-    img.src = logoSrc;
-  }, [logoSrc]);
+  // ── ACT 1 & 2: Text zoom
+  const textScale = useTransform(progress, [0, 0.80], [1, 22]);
+  const textOpacity = useTransform(progress, [0, 0.65, 0.80], [1, 1, 0]);
+  const textBlurVal = useTransform(progress, [0.65, 0.80], [0, 16]);
+  const textFilter = useTransform(textBlurVal, (b) => `blur(${b}px)`);
 
-  /* ═══════════════════════════════════════════════════════
-   *  ACT 1 — Slogan zoom  (progress 0 → 0.50)
-   * ═══════════════════════════════════════════════════════ */
-  const sloganScale = useTransform(progress, [0, 0.50], [1, 14]);
-  const sloganOpacity = useTransform(progress, [0, 0.35, 0.50], [1, 1, 0]);
-  const sloganBlur = useTransform(progress, [0, 0.50], [0, 16]);
-  const sloganFilter = useTransform(sloganBlur, (b) => `blur(${b}px)`);
-  const sloganBgOpacity = useTransform(progress, [0, 0.42, 0.50], [1, 1, 0]);
-  const hintOpacity = useTransform(progress, [0, 0.15], [1, 0]);
+  // zoom origin state stored in ref to avoid re-renders
+  const zoomOriginRef = useRef("50% 50%");
+  const [zoomOrigin, setZoomOrigin] = [
+    zoomOriginRef.current,
+    (v: string) => { zoomOriginRef.current = v; }
+  ];
 
-  /* ═══════════════════════════════════════════════════════
-   *  ACT 2 — Logo zoom  (progress 0.45 → 1.0)
-   *  Same style as the slogan — appears centered, then
-   *  zooms in with blur until it fades out.
-   * ═══════════════════════════════════════════════════════ */
-  const logoBgOpacity = useTransform(progress, [0.42, 0.50, 0.88, 1.0], [0, 1, 1, 0]);
-  const logoFadeIn = useTransform(progress, [0.45, 0.58], [0, 1]);
-  const logoScale = useTransform(progress, [0.58, 1.0], [1, 12]);
-  const logoBlur = useTransform(progress, [0.58, 1.0], [0, 14]);
-  const logoFilter = useTransform(logoBlur, (b) => `blur(${b}px)`);
-  const logoZoomOpacity = useTransform(progress, [0.58, 0.80, 1.0], [1, 1, 0]);
+  // Scroll hint
+  const hintOpacity = useTransform(progress, [0, 0.08], [1, 0]);
 
-  // Combined: fade-in * zoom-out opacity
-  const logoCombinedOpacity = useTransform(
-    [logoFadeIn, logoZoomOpacity] as any,
-    ([fadeIn, zoomOp]: number[]) => fadeIn * zoomOp
+  // ── ACT 2: Logo fades in as you scroll, starting at 0 opacity
+  const logoFadeIn = useTransform(progress, [0.05, 0.40, 0.68], [0, 0.3, 1]);
+
+  // ── ACT 2: Logo scale: starts tiny (0.08) inside the O and grows big (1.0)
+  const logoScale = useTransform(progress, [0.05, 0.75], [0.08, 1.0]);
+
+  // ── ACT 3: Full-screen background image appears
+  const fullBgOpacity = useTransform(progress, [0.65, 0.78], [0, 1]);
+
+  // ── ACT 4: Logo + background fade out together at the very end
+  const logoAndBgFadeOut = useTransform(progress, [0.93, 1.0], [1, 0]);
+
+  // Combined logo opacity: fades in during O zoom, fades out at end
+  const logoCombined = useTransform(
+    [logoFadeIn, logoAndBgFadeOut] as any,
+    ([fi, fo]: number[]) => Math.min(fi as number, fo as number)
   );
 
-  // Hint for logo stage
-  const logoHintOpacity = useTransform(progress, [0.52, 0.60, 0.68], [0, 1, 0]);
-
   // Overall overlay
-  const overlayOpacity = useTransform(progress, [0.92, 1.0], [1, 0]);
+  const overlayOpacity = useTransform(progress, [0.96, 1.0], [1, 0]);
 
-  /* ── Compute zoom origin toward "O" ── */
+  /* ── Compute zoom origin and absolute coordinates toward O ── */
   useLayoutEffect(() => {
     const compute = () => {
-      const zoom = zoomRef.current;
+      const container = textContainerRef.current;
       const o = oRef.current;
-      if (!zoom || !o) return;
-      const zb = zoom.getBoundingClientRect();
+      if (!container || !o) return;
+      const cb = container.getBoundingClientRect();
       const ob = o.getBoundingClientRect();
-      const x = ob.left - zb.left + ob.width / 2;
-      const y = ob.top - zb.top + ob.height / 2;
-      setOrigin(`${(x / zb.width) * 100}% ${(y / zb.height) * 100}%`);
+      const ox = ob.left - cb.left + ob.width / 2;
+      const oy = ob.top - cb.top + ob.height / 2;
+      setZoomOrigin(`${(ox / cb.width) * 100}% ${(oy / cb.height) * 100}%`);
+      setOCenter({ x: ox, y: oy });
+      
+      // Force update the motion value by re-reading ref
+      if (textContainerRef.current) {
+        textContainerRef.current.style.transformOrigin = zoomOriginRef.current;
+      }
     };
+    
+    // Compute immediately
     compute();
+    
+    // Recalculate after fonts load to ensure layout shifts are resolved
+    if (document.fonts) {
+      document.fonts.ready.then(compute);
+    }
+    
+    // Safeguard delay computation
+    const t = setTimeout(compute, 200);
+
     window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("resize", compute);
+      clearTimeout(t);
+    };
   }, []);
 
   /* ── Scroll handler ── */
@@ -100,130 +138,136 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
 
   return (
     <div ref={sectionRef} style={{ position: "relative", zIndex: 100 }} className="w-full">
-      <div style={{ height: "350vh" }} />
+      {/* 400vh scroll space — gives time for all acts */}
+      <div style={{ height: "400vh" }} />
 
-      <motion.div style={{ opacity: overlayOpacity }} className="fixed inset-0 z-[100] overflow-hidden pointer-events-none">
+      <motion.div style={{ opacity: overlayOpacity }} className="fixed inset-0 z-[100] overflow-hidden">
 
-        {/* ── ACT 1: Slogan ── */}
-        <motion.div style={{ opacity: sloganBgOpacity }} className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#0d1b35] to-[#0a1628]" />
+        {/* ── LAYER 0: Full-screen background video (handshake video)
+              Plays continuously from progress 0, filling the entire screen ── */}
+        <div className="absolute inset-0 z-[1]">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/intro_bg.mp4" type="video/mp4" />
+          </video>
+          {/* Elegant dark overlay so the white text and logo pop beautifully */}
+          <div className="absolute inset-0 bg-[#0a1628]/65" />
+        </div>
+
+        {/* ── LAYER 1 (ACT 3): Full-screen gold world map image
+              Appears at progress 0.65, filling the entire screen on top of the video ── */}
+        <motion.div
+          style={{ opacity: fullBgOpacity }}
+          initial={{ opacity: 0 }}
+          className="absolute inset-0 z-[5]"
+        >
           <div
-            className="absolute inset-0 opacity-[0.07]"
+            className="absolute inset-0"
             style={{
-              backgroundImage: "linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)",
-              backgroundSize: "80px 80px",
+              backgroundImage: `url(${introBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           />
+          {/* Elegant dark overlay so the white logo pops beautifully against the gold map */}
+          <div className="absolute inset-0 bg-[#0a1628]/75" />
         </motion.div>
 
+        {/* ── LAYER 2 (ACT 1 & 2): Slogan text — zooms toward O ── */}
         <motion.div
-          ref={zoomRef}
-          style={{
-            scale: sloganScale,
-            opacity: sloganOpacity,
-            filter: sloganFilter,
-            transformOrigin: origin,
-          }}
-          className="absolute inset-0 z-10 flex items-center justify-center text-center px-6"
+          style={{ opacity: textOpacity, filter: textFilter }}
+          className="absolute inset-0 z-[10]"
         >
-          <div>
-            <div className="mb-8">
-              <span
-                className="inline-block px-4 py-1.5 rounded-full border border-[#d4af37]/40 text-[#d4af37] tracking-[0.3em] uppercase text-xs"
-                style={{ fontFamily: "Inter" }}
-              >
-                BODAL'S INTERNATIONAL
-              </span>
-            </div>
+          <motion.div
+            ref={textContainerRef}
+            style={{ scale: textScale, transformOrigin: zoomOriginRef.current }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.10em" }}>
 
-            <div
-              role="heading"
-              aria-level={1}
-              className="text-white leading-[1.1] tracking-tight"
-              style={{ fontFamily: "Playfair Display, serif", fontSize: "clamp(2.5rem, 9vw, 8rem)", fontWeight: 700 }}
-            >
-              <div>WE CARE,</div>
-              <div>
-                WE C<span ref={oRef} className="text-[#d4af37]">O</span>MMIT,
+              {/* LINE 1: WE CARE, */}
+              <div style={{
+                ...FONT_BASE,
+                color: "white",
+              }}>
+                WE CARE,
               </div>
-              <div>WE CONNECT</div>
-            </div>
 
-            <div
-              className="mt-10 flex items-center justify-center gap-3 text-white/50 tracking-[0.2em] uppercase text-xs"
-              style={{ fontFamily: "Inter" }}
-            >
-              <span className="h-px w-12 bg-[#d4af37]/60" />
-              <span>Premium Indian Exports · Global Trade</span>
-              <span className="h-px w-12 bg-[#d4af37]/60" />
+              {/* LINE 2: WE COMMIT, */}
+              <div style={{
+                ...FONT_BASE,
+                color: "white",
+              }}>
+                WE C<span ref={oRef}>O</span>MMIT,
+              </div>
+
+              {/* LINE 3: WE CONNECT */}
+              <div style={{
+                ...FONT_BASE,
+                color: "white",
+              }}>
+                WE CONNECT
+              </div>
+
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
+        {/* Scroll hint */}
         <motion.div
           style={{ opacity: hintOpacity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 flex flex-col items-center gap-2 text-xs tracking-[0.3em] uppercase z-20"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 pointer-events-none"
         >
-          <span style={{ fontFamily: "Inter" }}>Scroll to enter</span>
+          <span className="text-gray-400 text-xs tracking-[0.35em] uppercase" style={{ fontFamily: "Inter, sans-serif" }}>
+            Scroll to enter
+          </span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent"
+            className="w-px h-8 bg-gradient-to-b from-gray-400 to-transparent"
           />
         </motion.div>
 
-        {/* ── ACT 2: Logo zoom (same style as slogan) ── */}
-        <motion.div style={{ opacity: logoBgOpacity }} className="absolute inset-0 z-20 bg-[#0a1628]">
-          {/* Ambient glow */}
-          <motion.div
-            style={{ opacity: logoFadeIn }}
-            className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12)_0%,transparent_70%)]"
-          />
-
+        {/* ── LAYER 3 (ACT 2 & 3): Transparent Logo
+              Emerges directly centered on the O portal and scales up from it ── */}
+        {oCenter.x > 0 && (
           <motion.div
             style={{
+              position: "absolute",
+              left: oCenter.x,
+              top: oCenter.y,
+              x: "-50%",
+              y: "-50%",
               scale: logoScale,
-              opacity: logoCombinedOpacity,
-              filter: logoFilter,
-              transformOrigin: "center center",
+              opacity: logoCombined,
+              zIndex: 30,
             }}
-            className="absolute inset-0 flex items-center justify-center p-6"
+            className="pointer-events-none"
           >
-            <div className="flex flex-col items-center gap-5">
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
               <img
-                src={logoSrc}
-                alt={companyName}
-                className="max-w-[min(70vw,320px)] max-h-[min(50vh,320px)] object-contain drop-shadow-2xl"
+                src={logoImg}
+                alt="Bodal's International"
+                style={{
+                  width: "min(75vw, 550px)",
+                  height: "auto",
+                  maxHeight: "min(42vh, 260px)",
+                  objectFit: "contain",
+                }}
                 draggable={false}
               />
-              <div className="text-center">
-                <div
-                  className="text-white tracking-[0.15em]"
-                  style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: "clamp(1.1rem, 2.8vw, 2rem)" }}
-                >
-                  {companyName}
-                </div>
-                <div
-                  className="mx-auto mt-3 h-px bg-gradient-to-r from-transparent via-[#d4af37]/50 to-transparent"
-                  style={{ width: "clamp(80px, 20vw, 200px)" }}
-                />
-              </div>
             </div>
           </motion.div>
-
-          {/* Scroll hint */}
-          <motion.div
-            style={{ opacity: logoHintOpacity }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 flex flex-col items-center gap-2 text-xs tracking-[0.3em] uppercase"
-          >
-            <span style={{ fontFamily: "Inter" }}>Scroll to reveal homepage</span>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent"
-            />
-          </motion.div>
-        </motion.div>
+        )}
 
       </motion.div>
     </div>

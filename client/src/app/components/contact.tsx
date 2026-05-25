@@ -4,9 +4,11 @@ import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, Send
 import { useWebsite } from "../../contexts/WebsiteContext";
 import { enquiryApi } from "../../api/enquiryApi";
 import toast from "react-hot-toast";
+import defaultLogo from "@/assets/logo_white.png";
 
 export function Contact() {
   const { settings } = useWebsite();
+  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -195,12 +197,27 @@ export function Contact() {
                 ))}
               </div>
 
+              {/* Logo added below the address and above Follow Us */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.45 }}
+                className="mt-8 pt-8 border-t border-white/10"
+              >
+                <img 
+                  src={logoUrl} 
+                  alt="Bodal's International Logo" 
+                  className="h-14 w-auto object-contain opacity-90 hover:opacity-100 transition" 
+                />
+              </motion.div>
+
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="mt-8 pt-8 border-t border-white/10"
+                className="mt-6"
               >
                 <div className="text-xs text-white/50 tracking-[0.2em] uppercase mb-3">Follow Us</div>
                 <div className="flex gap-2">

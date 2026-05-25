@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
-import defaultLogo from "@/assets/logo.png";
+import defaultLogo from "@/assets/logo_white.png";
 
 export function Footer() {
   const { settings, products } = useWebsite();
@@ -34,12 +34,6 @@ export function Footer() {
                 alt="Bodal's International Logo - Indian Merchant Exporter" 
                 className="h-12 w-auto object-contain transition-all" 
               />
-              {settings?.logo && (
-                <div>
-                  <div className="text-white tracking-tight" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700 }}>BODAL'S</div>
-                  <div className="text-white/50 text-xs tracking-[0.18em] uppercase">INTERNATIONAL</div>
-                </div>
-              )}
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, X, Check } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useWebsite } from "../../contexts/WebsiteContext";
+import introBg from "@/assets/intro_bg.jpg";
 
 const DEFAULT_IMAGES: Record<string, string> = {
   "Seafood": "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=1200&q=80",
@@ -88,8 +89,19 @@ export function Businesses() {
   };
 
   return (
-    <section id="businesses" className="py-24 lg:py-32 bg-[#fafaf7] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section 
+      id="businesses" 
+      className="py-24 lg:py-32 relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${introBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Soft white-beige overlay to turn the map into an elegant watermark and keep the product focus */}
+      <div className="absolute inset-0 bg-[#fafaf7]/72 backdrop-blur-[1px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
             className="inline-block px-3 py-1 rounded-full bg-[#0a1628]/5 text-[#0a1628] text-xs tracking-[0.2em] uppercase mb-4">Our Portfolio</motion.div>
