@@ -13,14 +13,35 @@ const pool = mysql.createPool({
   keepAliveInitialDelay: 0
 });
 
+const fs = require('fs');
+const path = require('path');
+
 // Test connection on startup
 pool.getConnection()
   .then(conn => {
     console.log('✅ MySQL connected successfully');
     conn.release();
+    try {
+      const errorLogPath = path.join(__dirname, '../../../dist/error.txt');
+      if (fs.existsSync(errorLogPath)) fs.unlinkSync(errorLogPath);
+    } catch (e) {}
   })
   .catch(err => {
     console.error('❌ MySQL connection failed:', err.message);
+    try {
+      const errorLogPath = path.join(__dirname, '../../../dist/error.txt');
+      fs.writeFileSync(
+        errorLogPath,
+        `MySQL Connection Error on Hostinger:\n` +
+        `Host: ${process.env.DB_HOST}\n` +
+        `User: ${process.env.DB_USER}\n` +
+        `DB: ${process.env.DB_NAME}\n` +
+        `Message: ${err.message}\n` +
+        `Stack: ${err.stack}\n`
+      );
+    } catch (e) {
+      console.error('Failed to write error.txt:', e.message);
+    }
   });
 
 module.exports = pool;
