@@ -6,8 +6,8 @@ node_modules/
 .env.local
 
 # Uploads (user-generated content)
-server/uploads/*
-!server/uploads/.gitkeep
+client/server/uploads/*
+!client/server/uploads/.gitkeep
 
 # Build output
 client/dist/

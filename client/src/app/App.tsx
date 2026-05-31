@@ -34,8 +34,23 @@ function getBrowser() {
 }
 
 export default function App() {
-  const [view, setView] = useState<"site" | "admin">("site");
+  const [view, setView] = useState<"site" | "admin">(() => {
+    return window.location.pathname.startsWith("/admin") ? "admin" : "site";
+  });
   const [introDone, setIntroDone] = useState(false);
+
+  // Sync browser URL with the active view
+  useEffect(() => {
+    if (view === "admin") {
+      if (window.location.pathname !== "/admin") {
+        window.history.pushState({}, "", "/admin");
+      }
+    } else {
+      if (window.location.pathname !== "/") {
+        window.history.pushState({}, "", "/");
+      }
+    }
+  }, [view]);
 
   // Track visitor on mount
   useEffect(() => {
