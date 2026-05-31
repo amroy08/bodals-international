@@ -36,8 +36,10 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
   }, []);
 
   const goTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
   };
 
   const phone = settings?.mobile || '+91 9082377097';

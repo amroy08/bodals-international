@@ -120,6 +120,14 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section[id] {
+    scroll-margin-top: 4.5rem; /* clearing sticky header spacing */
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
