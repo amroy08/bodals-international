@@ -44,6 +44,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Serve static frontend files in production
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Fallback to React's index.html for non-API/non-upload routes (for React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -60,3 +68,4 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
