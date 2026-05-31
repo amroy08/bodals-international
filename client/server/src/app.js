@@ -45,11 +45,11 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve static frontend files in production
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 // Fallback to React's index.html for non-API/non-upload routes (for React Router)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../dist/index.html'));
 });
 
 // Global error handler
