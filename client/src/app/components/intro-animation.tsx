@@ -6,7 +6,7 @@ import logoImg from "@/assets/logo_white.png";
 const FONT_BASE: React.CSSProperties = {
   fontFamily: "'Playfair Display', serif",
   fontWeight: 900,
-  fontSize: "clamp(2.8rem, 10.5vw, 9rem)",
+  fontSize: "clamp(2.2rem, 9vw, 9rem)",
   lineHeight: 1,
   letterSpacing: "-0.02em",
   whiteSpace: "nowrap" as const,
@@ -138,8 +138,8 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
 
   return (
     <div ref={sectionRef} style={{ position: "relative", zIndex: 100 }} className="w-full">
-      {/* 400vh scroll space — gives time for all acts */}
-      <div style={{ height: "400vh" }} />
+      {/* Scroll space — shorter on mobile for faster intro */}
+      <div className="h-[300vh] sm:h-[400vh]" />
 
       <motion.div style={{ opacity: overlayOpacity }} className="fixed inset-0 z-[100] overflow-hidden">
 

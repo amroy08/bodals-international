@@ -91,7 +91,8 @@ export function Businesses() {
   return (
     <section 
       id="businesses" 
-      className="py-24 lg:py-32 relative overflow-hidden"
+      className="py-16 sm:py-24 lg:py-32 relative overflow-hidden"
+      aria-label="Our export businesses and product portfolio"
       style={{
         backgroundImage: `url(${introBg})`,
         backgroundSize: "cover",
@@ -147,7 +148,7 @@ export function Businesses() {
         <AnimatePresence>
           {active && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" onClick={() => setOpen(null)}>
-              <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-4xl bg-white rounded-2xl overflow-hidden shadow-2xl my-8">
+              <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="relative w-full max-w-4xl bg-white rounded-2xl overflow-hidden shadow-2xl my-4 sm:my-8 max-h-[90vh] overflow-y-auto">
                 <button onClick={() => setOpen(null)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur text-[#0a1628] flex items-center justify-center hover:bg-white shadow-lg">
                   <X className="w-5 h-5" />
                 </button>
@@ -156,7 +157,7 @@ export function Businesses() {
                     <ProductImageSlideshow product={active} className="absolute inset-0 w-full h-full" />
                     <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0a1628]/40 to-transparent pointer-events-none" />
                   </div>
-                  <div className="p-8 md:p-10">
+                  <div className="p-6 sm:p-8 md:p-10">
                     <div className="text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-3">Our Product Portfolio</div>
                     <h3 className="text-[#0a1628] mb-4" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>{active.name}</h3>
                     <p className="text-[#3a4252] leading-relaxed mb-6" style={{ fontFamily: "Inter" }}>{active.full_description}</p>

@@ -5,18 +5,41 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS
+// CORS — allow both local dev and production
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:5173',
+  'https://bodalsint.com',
+  'https://www.bodalsint.com',
+];
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all for now since it's a public API
+    }
+  },
   credentials: true
 }));
+
+// Security & SEO headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files statically
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Serve uploaded files statically with long cache
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
+  maxAge: '7d',
+  etag: true,
+}));
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -44,8 +67,21 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Serve static frontend files in production
-app.use(express.static(path.join(__dirname, '../../dist')));
+// Serve static frontend files in production with cache headers
+app.use(express.static(path.join(__dirname, '../../dist'), {
+  maxAge: '1d',
+  etag: true,
+  setHeaders: (res, filePath) => {
+    // Cache JS/CSS for longer since they have content hashes
+    if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=2592000, immutable'); // 30 days
+    }
+    // Cache images for 7 days
+    if (/\.(png|jpg|jpeg|gif|webp|svg|ico)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=604800'); // 7 days
+    }
+  },
+}));
 
 // Fallback to React's index.html for non-API/non-upload routes (for React Router)
 app.get('*', (req, res) => {

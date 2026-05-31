@@ -16,11 +16,11 @@ export function Footer() {
   const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
 
   return (
-    <footer className="bg-[#08111f] text-white/70 pt-20 pb-8 relative overflow-hidden">
+    <footer className="bg-[#08111f] text-white/70 pt-14 sm:pt-20 pb-6 sm:pb-8 relative overflow-hidden" role="contentinfo" aria-label="Footer">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-14">
           
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -39,11 +39,8 @@ export function Footer() {
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+          <nav
+            aria-label="Quick links"
           >
             <div className="text-white mb-4 tracking-wide" style={{ fontFamily: "Inter", fontWeight: 600 }}>Quick Links</div>
             <ul className="space-y-2 text-sm">
@@ -53,7 +50,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </nav>
 
           <motion.div
             initial={{ opacity: 0, y: 25 }}

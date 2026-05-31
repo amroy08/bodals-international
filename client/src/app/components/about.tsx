@@ -65,7 +65,7 @@ export function About() {
   const paragraphs = aboutText.split('\n').filter((p: string) => p.trim());
 
   return (
-    <section id="about" className="relative py-24 lg:py-32 overflow-hidden bg-[#fafaf7]">
+    <section id="about" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-[#fafaf7]" aria-label="About BODAL'S INTERNATIONAL">
       <ImageWithFallback src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06]" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-[#fafaf7]/90 to-[#fafaf7]" />
 
@@ -81,10 +81,10 @@ export function About() {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div initial={{ opacity: 0, x: -40, rotate: -2 }} whileInView={{ opacity: 1, x: 0, rotate: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, type: "spring", stiffness: 100, damping: 20 }} className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[520px]">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[520px]">
               <AnimatePresence mode="wait">
                 <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0">
-                  <ImageWithFallback src={getImgSrc(images[idx])} alt="About Bodal's" className="w-full h-full object-cover" />
+                  <ImageWithFallback src={getImgSrc(images[idx])} alt={`About BODAL'S INTERNATIONAL — Indian export house operations, photo ${idx + 1}`} className="w-full h-full object-cover" />
                 </motion.div>
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-tr from-[#0a1628]/60 via-transparent to-transparent" />
@@ -97,7 +97,7 @@ export function About() {
               )}
             </div>
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.5 }}
-              className="absolute -bottom-6 -right-6 bg-[#0a1628] text-white p-6 rounded-xl shadow-xl max-w-[240px] hidden sm:block">
+              className="absolute -bottom-6 -right-6 bg-[#0a1628] text-white p-4 sm:p-6 rounded-xl shadow-xl max-w-[200px] sm:max-w-[240px] hidden sm:block">
               <div className="text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-2">Promise-Led</div>
               <div style={{ fontFamily: "Playfair Display, serif", fontSize: "1.1rem" }}>"Our word is our strongest contract."</div>
             </motion.div>
@@ -115,7 +115,7 @@ export function About() {
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mt-10 pt-10 border-t border-black/10">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-8 sm:mt-10 pt-8 sm:pt-10 border-t border-black/10">
               {[
                 { icon: Award, label: "Quality First", num: "100%" },
                 { icon: Globe2, label: "Global Reach", num: "30+" },

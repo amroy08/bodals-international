@@ -21,7 +21,7 @@ export function Speciality() {
       ];
 
   return (
-    <section className="py-24 lg:py-32 bg-white relative overflow-hidden">
+    <section className="py-16 sm:py-24 lg:py-32 bg-white relative overflow-hidden" aria-label="What makes BODAL'S INTERNATIONAL different">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-3xl opacity-30"
         style={{ background: "radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%)" }} />
 

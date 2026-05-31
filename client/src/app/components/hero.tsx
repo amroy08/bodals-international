@@ -45,12 +45,12 @@ export function Hero() {
   const heroSubtitle = settings?.hero_subtitle || "Your trusted gateway to premium Indian seafood, textiles, fresh produce, cereals, and coffee — delivered to discerning buyers across the globe.";
 
   return (
-    <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20">
+    <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODAL'S INTERNATIONAL Premium Indian Exports">
       {/* Background Slideshow */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.div key={currentIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1 }} className="absolute inset-0">
-            <ImageWithFallback src={getImageSrc(images[currentIdx])} alt="Export background" className="w-full h-full object-cover" />
+            <ImageWithFallback src={getImageSrc(images[currentIdx])} alt={`BODAL'S INTERNATIONAL — Premium Indian export goods and logistics, slide ${currentIdx + 1}`} className="w-full h-full object-cover" />
           </motion.div>
         </AnimatePresence>
         
@@ -82,7 +82,7 @@ export function Hero() {
       <motion.div className="absolute top-20 -left-20 w-[500px] h-[500px] rounded-full blur-3xl z-10" style={{ background: "radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)" }} animate={{ y: [0, 30, 0] }} transition={{ duration: 9, repeat: Infinity }} />
       <motion.div className="absolute bottom-0 -right-20 w-[600px] h-[600px] rounded-full blur-3xl z-10" style={{ background: "radial-gradient(circle, rgba(34,197,94,0.05) 0%, transparent 70%)" }} animate={{ y: [0, -30, 0] }} transition={{ duration: 11, repeat: Infinity }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-24 lg:pt-24 lg:pb-32 z-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-24 lg:pb-32 z-20">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-8">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -108,17 +108,17 @@ export function Hero() {
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.48 }}
-              className="flex flex-wrap gap-4">
-              <button onClick={() => document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" })} className="group px-7 py-3.5 bg-[#d4af37] text-[#0a1628] rounded-full hover:bg-[#e6c356] transition flex items-center gap-2" style={{ fontFamily: "Inter" }}>
+              className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+              <button onClick={() => document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" })} className="group px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4af37] text-[#0a1628] rounded-full hover:bg-[#e6c356] transition flex items-center justify-center gap-2 text-sm sm:text-base" style={{ fontFamily: "Inter" }}>
                 Explore Our Businesses <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
               </button>
-              <button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="px-7 py-3.5 border border-white/30 rounded-full hover:bg-white/10 transition flex items-center gap-2" style={{ fontFamily: "Inter" }}>
+              <button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="px-6 sm:px-7 py-3 sm:py-3.5 border border-white/30 rounded-full hover:bg-white/10 transition flex items-center justify-center gap-2 text-sm sm:text-base" style={{ fontFamily: "Inter" }}>
                 <Send className="w-4 h-4" /> Send Enquiry
               </button>
             </motion.div>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-end h-full">
+          <div className="hidden lg:flex lg:col-span-4 flex-col items-start lg:items-end justify-end h-full">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.6 }}
               className="relative">
               <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} className="bg-[#0a1628]/60 backdrop-blur-md text-white p-6 rounded-xl border border-white/10 shadow-2xl max-w-[200px] lg:self-end">
@@ -133,7 +133,7 @@ export function Hero() {
         </div>
 
         {/* Trust indicators */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-16 lg:mt-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mt-12 sm:mt-16 lg:mt-24">
           {TRUST.map((t, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 30, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.7 + i * 0.1, type: "spring", stiffness: 200, damping: 20 }}
               className="group p-5 rounded-xl bg-[#0a1628]/45 border border-white/10 backdrop-blur hover:bg-white/10 hover:border-[#d4af37]/40 transition">

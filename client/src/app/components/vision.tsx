@@ -19,7 +19,7 @@ export function Vision() {
       ];
 
   return (
-    <section className="py-24 lg:py-32 bg-gradient-to-b from-[#0a1628] to-[#0d1b35] text-white relative overflow-hidden">
+    <section className="py-16 sm:py-24 lg:py-32 bg-gradient-to-b from-[#0a1628] to-[#0d1b35] text-white relative overflow-hidden" aria-label="Our vision, purpose and core values">
       <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">

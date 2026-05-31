@@ -46,29 +46,29 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
   const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="sticky top-0 z-50 w-full" role="banner">
       {/* Top bar */}
-      <div className="bg-[#0a1628] text-white/80 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-5">
-            <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-[#d4af37] transition">
-              <Phone className="w-3.5 h-3.5" /> {phone}
+      <div className="bg-[#0a1628] text-white/80 text-[10px] sm:text-xs">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-5 min-w-0">
+            <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-1 sm:gap-1.5 hover:text-[#d4af37] transition whitespace-nowrap" aria-label={`Call us at ${phone}`}>
+              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0" /> <span className="truncate">{phone}</span>
             </a>
-            <a href={`mailto:${email}`} className="flex items-center gap-1.5 hover:text-[#d4af37] transition">
-              <Mail className="w-3.5 h-3.5" /> {email}
+            <a href={`mailto:${email}`} className="hidden sm:flex items-center gap-1.5 hover:text-[#d4af37] transition" aria-label={`Email us at ${email}`}>
+              <Mail className="w-3.5 h-3.5 flex-shrink-0" /> <span className="truncate">{email}</span>
             </a>
           </div>
-          <div className="flex items-center gap-3">
-            {settings?.linkedin_url && <a href={settings.linkedin_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition"><Linkedin className="w-3.5 h-3.5" /></a>}
-            {settings?.instagram_url && <a href={settings.instagram_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition"><Instagram className="w-3.5 h-3.5" /></a>}
-            {settings?.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition"><Facebook className="w-3.5 h-3.5" /></a>}
-            {settings?.whatsapp_url && <a href={settings.whatsapp_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition"><MessageCircle className="w-3.5 h-3.5" /></a>}
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            {settings?.linkedin_url && <a href={settings.linkedin_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="LinkedIn"><Linkedin className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.instagram_url && <a href={settings.instagram_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Instagram"><Instagram className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Facebook"><Facebook className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.whatsapp_url && <a href={settings.whatsapp_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="WhatsApp"><MessageCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
             {!settings?.linkedin_url && !settings?.instagram_url && !settings?.facebook_url && !settings?.whatsapp_url && (
               [Linkedin, Instagram, Facebook, MessageCircle].map((Icon, i) => (
-                <a key={i} href="#" className="hover:text-[#d4af37] transition"><Icon className="w-3.5 h-3.5" /></a>
+                <a key={i} href="#" className="hover:text-[#d4af37] transition"><Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>
               ))
             )}
-            <button onClick={onAdminClick} className="ml-2 px-2 py-0.5 rounded border border-white/20 hover:border-[#d4af37] hover:text-[#d4af37] transition">
+            <button onClick={onAdminClick} className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 rounded border border-white/20 hover:border-[#d4af37] hover:text-[#d4af37] transition text-[10px] sm:text-xs">
               Admin
             </button>
           </div>
@@ -76,13 +76,13 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
       </div>
 
       {/* Main nav */}
-      <div className={`transition-all ${scrolled ? "bg-white/95 backdrop-blur-lg shadow-md" : "bg-white"}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <nav className={`transition-all ${scrolled ? "bg-white/95 backdrop-blur-lg shadow-md" : "bg-white"}`} role="navigation" aria-label="Main navigation">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <button id="header-logo-target" onClick={() => goTo("home")} className="flex items-center gap-3 group" style={{ opacity: introComplete ? 1 : 0, transition: 'opacity 0.3s ease' }}>
             <img 
               src={logoUrl} 
               alt="Bodal's International Logo - Premium Indian Merchant Export House" 
-              className="h-14 w-auto object-contain transition-all" 
+              className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-all" 
             />
             
           </button>
@@ -144,7 +144,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </nav>
     </header>
   );
 }

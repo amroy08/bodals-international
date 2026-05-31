@@ -102,9 +102,9 @@ export function Contact() {
   const address = settings?.address || "Mumbai, Maharashtra, India";
 
   return (
-    <section id="contact" className="py-24 lg:py-32 bg-gradient-to-b from-[#fafaf7] to-white relative overflow-hidden">
+    <section id="contact" className="py-16 sm:py-24 lg:py-32 bg-gradient-to-b from-[#fafaf7] to-white relative overflow-hidden" aria-label="Contact us and send enquiry">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-16 max-w-2xl mx-auto">
+        <div className="text-center mb-10 sm:mb-16 max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -143,7 +143,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
-            className="lg:col-span-2 p-8 rounded-2xl bg-gradient-to-br from-[#0a1628] to-[#1e3a8a] text-white relative overflow-hidden"
+            className="lg:col-span-2 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#0a1628] to-[#1e3a8a] text-white relative overflow-hidden"
           >
             <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[#d4af37]/10 blur-3xl" />
             <div className="relative">
@@ -253,7 +253,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
-            className="lg:col-span-3 p-8 rounded-2xl bg-white border border-black/5 shadow-lg"
+            className="lg:col-span-3 p-5 sm:p-8 rounded-2xl bg-white border border-black/5 shadow-lg"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
