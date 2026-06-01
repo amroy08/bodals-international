@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, dir),
   filename: (req, file, cb) => cb(null, 'section-' + Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname))
 });
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+const upload = multer({ storage, limits: { fileSize: 20 * 1024 * 1024 } });
 
 router.get('/section/:section', getBySection); // Public
 router.get('/', authMiddleware, getAll);

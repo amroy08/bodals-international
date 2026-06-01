@@ -75,19 +75,19 @@ const documentFilter = (req, file, cb) => {
 const productUpload = multer({
   storage: productStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 });
 
 const certificationUpload = multer({
   storage: certificationStorage,
   fileFilter: documentFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 });
 
 const logoUpload = multer({
   storage: logoStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 2 * 1024 * 1024 } // 2MB
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
 });
 
 module.exports = { productUpload, certificationUpload, logoUpload };
