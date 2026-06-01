@@ -53,6 +53,7 @@ function ProductImageSlideshow({ product, intervalTime = 3000, className = "" }:
         >
           <ImageWithFallback
             src={images[currentIdx]}
+            fallbackSrc={DEFAULT_IMAGES[product.category] || "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1200&q=80"}
             alt={product.name}
             className="w-full h-full object-cover"
           />

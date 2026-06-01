@@ -50,7 +50,12 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.div key={currentIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1 }} className="absolute inset-0">
-            <ImageWithFallback src={getImageSrc(images[currentIdx])} alt={`BODAL'S INTERNATIONAL — Premium Indian export goods and logistics, slide ${currentIdx + 1}`} className="w-full h-full object-cover" />
+            <ImageWithFallback 
+              src={getImageSrc(images[currentIdx])} 
+              fallbackSrc={FALLBACK_IMAGES[currentIdx % FALLBACK_IMAGES.length]}
+              alt={`BODAL'S INTERNATIONAL — Premium Indian export goods and logistics, slide ${currentIdx + 1}`} 
+              className="w-full h-full object-cover" 
+            />
           </motion.div>
         </AnimatePresence>
         

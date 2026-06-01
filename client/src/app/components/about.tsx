@@ -84,7 +84,12 @@ export function About() {
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[520px]">
               <AnimatePresence mode="wait">
                 <motion.div key={idx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }} className="absolute inset-0">
-                  <ImageWithFallback src={getImgSrc(images[idx])} alt={`About BODAL'S INTERNATIONAL — Indian export house operations, photo ${idx + 1}`} className="w-full h-full object-cover" />
+                  <ImageWithFallback 
+                    src={getImgSrc(images[idx])} 
+                    fallbackSrc={FALLBACK_ABOUT[idx % FALLBACK_ABOUT.length]}
+                    alt={`About BODAL'S INTERNATIONAL — Indian export house operations, photo ${idx + 1}`} 
+                    className="w-full h-full object-cover" 
+                  />
                 </motion.div>
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-tr from-[#0a1628]/60 via-transparent to-transparent" />
