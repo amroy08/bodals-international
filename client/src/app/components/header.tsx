@@ -70,9 +70,6 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
                 <a key={i} href="#" className="hover:text-[#d4af37] transition"><Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>
               ))
             )}
-            <button onClick={onAdminClick} className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 rounded border border-white/20 hover:border-[#d4af37] hover:text-[#d4af37] transition text-[10px] sm:text-xs">
-              Admin
-            </button>
           </div>
         </div>
       </div>
