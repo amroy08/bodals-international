@@ -171,7 +171,9 @@ async function sendCustomerAutoReply(enquiry) {
           </tr>
           <tr>
             <td style="padding:6px 0;color:#717182;font-size:13px;">✉️ Email:</td>
-            <td style="padding:6px 0;color:#0a1628;font-size:13px;">b.manish95@gmail.com</td>
+            <td style="padding:6px 0;color:#0a1628;font-size:13px;">
+              <a href="mailto:manishbodal@bodalsint.com" style="color:#1e3a8a;text-decoration:none;">manishbodal@bodalsint.com</a> / <a href="mailto:akashbodal@bodalsint.com" style="color:#1e3a8a;text-decoration:none;">akashbodal@bodalsint.com</a>
+            </td>
           </tr>
           <tr>
             <td style="padding:6px 0;color:#717182;font-size:13px;">💬 WhatsApp:</td>

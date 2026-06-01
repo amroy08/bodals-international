@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS website_settings (
   vision TEXT NULL,
   purpose TEXT NULL,
   mobile VARCHAR(20) DEFAULT '+91 9082377097',
-  email VARCHAR(100) DEFAULT 'b.manish95@gmail.com',
+  email VARCHAR(100) DEFAULT 'manishbodal@bodalsint.com',
   address VARCHAR(500) DEFAULT 'Mumbai, Maharashtra, India',
   facebook_url VARCHAR(500) DEFAULT '',
   instagram_url VARCHAR(500) DEFAULT '',
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS website_settings (
   footer_text TEXT NULL,
   whatsapp_number VARCHAR(30) DEFAULT '+91 9082377097',
   whatsapp_default_message TEXT NULL,
-  contact_email VARCHAR(255) DEFAULT 'b.manish95@gmail.com',
+  contact_email VARCHAR(255) DEFAULT 'manishbodal@bodalsint.com',
   floating_contact_enabled BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

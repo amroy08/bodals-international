@@ -49,7 +49,7 @@ async function seed() {
         `To be the world's most trusted gateway for Indian excellence, where the values of Care, Commitment, and Connection redefine the standards of global trade. We envision a future where every partner—from the coastal fishers of the Konkan to our international clientele—thrives through a transparent, efficient, and sustainable supply chain.`,
         `Our purpose is to bridge the distance between India's rich resources and the global demand for quality through a promise-led business model. We exist to simplify international trade, providing a seamless and reliable path for premium Indian Shrimps, Textiles, and Agricultural products to reach every corner of the world. At Bodal's, we don't just move goods; we build the infrastructure of global trust.`,
         '+91 9082377097',
-        'b.manish95@gmail.com',
+        'manishbodal@bodalsint.com',
         'Mumbai, Maharashtra, India',
         "Premium Indian merchant export house — connecting authentic producers with international buyers."
       ]);

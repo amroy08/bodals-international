@@ -16,7 +16,7 @@ export function FloatingContactButtons() {
   // Resolve contact details with fallbacks
   const whatsappNumber = (settings.whatsapp_number || settings.mobile || "+91 9082377097").replace(/[\s\-()]/g, "").replace("+", "");
   const whatsappMessage = settings.whatsapp_default_message || "Hello BODAL\u2019S INTERNATIONAL, I would like to enquire about your export products.";
-  const contactEmail = settings.contact_email || settings.email || "b.manish95@gmail.com";
+  const contactEmail = settings.contact_email || settings.email || "manishbodal@bodalsint.com";
 
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
   const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent("Export Product Enquiry - BODAL\u2019S INTERNATIONAL")}&body=${encodeURIComponent("Hello BODAL\u2019S INTERNATIONAL,\n\nI would like to enquire about your export products.\n\nName:\nCompany:\nCountry:\nRequirement:")}`;

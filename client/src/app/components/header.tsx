@@ -43,7 +43,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
   };
 
   const phone = settings?.mobile || '+91 9082377097';
-  const email = settings?.email || 'b.manish95@gmail.com';
+  const email = settings?.email || 'manishbodal@bodalsint.com';
 
   const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
 

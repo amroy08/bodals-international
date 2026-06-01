@@ -7,7 +7,7 @@ export function Footer() {
   const { settings, products } = useWebsite();
 
   const phone = settings?.mobile || "+91 9082377097";
-  const email = settings?.email || "b.manish95@gmail.com";
+  const email = settings?.email || "manishbodal@bodalsint.com";
   const address = settings?.address || "Mumbai, Maharashtra, India";
   const motto = settings?.motto || "We Care · We Commit · We Connect";
   const footerText = settings?.footer_text || "Premium Indian merchant export house — connecting authentic producers with international buyers.";
