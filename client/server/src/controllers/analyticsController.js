@@ -47,11 +47,49 @@ const getDashboard = async (req, res) => {
     const [enquiryStatus] = await db.query('SELECT status, COUNT(*) as count FROM enquiries GROUP BY status');
     const [totalProducts] = await db.query('SELECT COUNT(*) as total FROM products WHERE status = "active"');
     const [totalCerts] = await db.query('SELECT COUNT(*) as total FROM certifications WHERE status = "active"');
+    
+    // Existing 7 days (for main dashboard)
     const [weeklyVisitors] = await db.query(
       `SELECT DATE(created_at) as date, COUNT(*) as visits FROM visitors WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) GROUP BY DATE(created_at) ORDER BY date ASC`
     );
+    
+    // New 14 days (for detailed analytics trend)
+    const [trendVisitors] = await db.query(
+      `SELECT DATE(created_at) as date, COUNT(*) as visits FROM visitors WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY) GROUP BY DATE(created_at) ORDER BY date ASC`
+    );
+
+    // New Popular Pages (top 8)
+    const [popularPages] = await db.query(
+      `SELECT page, COUNT(*) as visits FROM visitors GROUP BY page ORDER BY visits DESC LIMIT 8`
+    );
+
+    // New Browser Breakdown (entire database)
+    const [browsers] = await db.query(
+      `SELECT browser, COUNT(*) as count FROM visitors GROUP BY browser ORDER BY count DESC`
+    );
+
+    // New Device Breakdown (entire database)
+    const [devices] = await db.query(
+      `SELECT device, COUNT(*) as count FROM visitors GROUP BY device ORDER BY count DESC`
+    );
+
     const [recentEnquiries] = await db.query('SELECT * FROM enquiries ORDER BY created_at DESC LIMIT 5');
-    return sendSuccess(res, { totalVisitors: totalVisitors[0].total, uniqueVisitors: uniqueVisitors[0].total, countriesReached: countries[0].total, totalEnquiries: totalEnquiries[0].total, enquiryStatus, totalProducts: totalProducts[0].total, totalCertifications: totalCerts[0].total, weeklyVisitors, recentEnquiries });
+    
+    return sendSuccess(res, { 
+      totalVisitors: totalVisitors[0].total, 
+      uniqueVisitors: uniqueVisitors[0].total, 
+      countriesReached: countries[0].total, 
+      totalEnquiries: totalEnquiries[0].total, 
+      enquiryStatus, 
+      totalProducts: totalProducts[0].total, 
+      totalCertifications: totalCerts[0].total, 
+      weeklyVisitors, 
+      trendVisitors,
+      popularPages,
+      browsers,
+      devices,
+      recentEnquiries 
+    });
   } catch (error) {
     console.error('Dashboard error:', error);
     return sendError(res, 'Server error');
