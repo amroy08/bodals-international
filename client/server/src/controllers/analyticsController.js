@@ -4,13 +4,36 @@ const { sendSuccess, sendError } = require('../utils/response');
 const trackVisit = async (req, res) => {
   try {
     const { page, device, browser } = req.body;
-    const ip_address = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip || '0.0.0.0';
+    let ip_address = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip || '0.0.0.0';
+    ip_address = ip_address.split(',')[0].trim();
+
+    // Default values
+    let country = 'Unknown';
+    let city = 'Unknown';
+
+    // If it's a real public IP (not localhost or internal), let's do a fast geo-lookup
+    if (ip_address && ip_address !== '127.0.0.1' && ip_address !== '::1' && ip_address !== '0.0.0.0' && !ip_address.startsWith('::ffff:')) {
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${ip_address}`);
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          if (geoData && geoData.status === 'success') {
+            country = geoData.country || 'Unknown';
+            city = geoData.city || 'Unknown';
+          }
+        }
+      } catch (geoError) {
+        console.error('Geo lookup failed:', geoError);
+      }
+    }
+
     await db.query(
       `INSERT INTO visitors (ip_address, country, city, page, device, browser, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
-      [ip_address.split(',')[0].trim(), req.body.country || 'Unknown', req.body.city || 'Unknown', page || '/', device || 'Unknown', browser || 'Unknown']
+      [ip_address, country, city, page || '/', device || 'Unknown', browser || 'Unknown']
     );
     return sendSuccess(res, null, 'Visit tracked');
   } catch (error) {
+    console.error('Track visit error:', error);
     return sendSuccess(res, null, 'Visit tracked');
   }
 };
