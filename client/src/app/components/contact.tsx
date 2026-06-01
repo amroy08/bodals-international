@@ -209,6 +209,7 @@ export function Contact() {
                   src={logoUrl} 
                   alt="Bodal's International Logo" 
                   className="h-14 w-auto object-contain opacity-90 hover:opacity-100 transition" 
+                  onError={(e) => { e.currentTarget.src = defaultLogo; }}
                 />
               </motion.div>
 

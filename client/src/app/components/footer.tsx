@@ -33,6 +33,7 @@ export function Footer() {
                 src={logoUrl} 
                 alt="Bodal's International Logo - Indian Merchant Exporter" 
                 className="h-12 w-auto object-contain transition-all" 
+                onError={(e) => { e.currentTarget.src = defaultLogo; }}
               />
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>

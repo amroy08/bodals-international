@@ -82,6 +82,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
               src={logoUrl} 
               alt="Bodal's International Logo - Premium Indian Merchant Export House" 
               className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-all" 
+              onError={(e) => { e.currentTarget.src = defaultLogo; }}
             />
             
           </button>
