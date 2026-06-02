@@ -8,7 +8,7 @@ import defaultLogo from "@/assets/logo_white.png";
 
 export function Contact() {
   const { settings } = useWebsite();
-  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
+  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({

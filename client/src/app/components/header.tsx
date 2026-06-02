@@ -45,7 +45,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
   const phone = settings?.mobile || '+91 9082377097';
   const email = settings?.email || 'manishbodal@bodalsint.com';
 
-  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
+  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
 
   return (
     <header className="sticky top-0 z-50 w-full" role="banner">

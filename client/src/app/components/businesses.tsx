@@ -20,12 +20,12 @@ function ProductImageSlideshow({ product, intervalTime = 3000, className = "" }:
       try {
         const parsed = typeof product.images === 'string' ? JSON.parse(product.images) : product.images;
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((img: string) => `/uploads/${img}`);
+          return parsed.map((img: string) => `/api/uploads/${img}`);
         }
       } catch (e) {}
     }
     if (product.image) {
-      return [`/uploads/${product.image}`];
+      return [`/api/uploads/${product.image}`];
     }
     return [DEFAULT_IMAGES[product.category] || "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1200&q=80"];
   })();

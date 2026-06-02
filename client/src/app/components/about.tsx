@@ -13,7 +13,7 @@ const FALLBACK_ABOUT = [
 function getImgSrc(img: any) {
   if (!img) return FALLBACK_ABOUT[0];
   if (img.image?.startsWith('http')) return img.image;
-  return `/uploads/${img.image}`;
+  return `/api/uploads/${img.image}`;
 }
 
 function AnimatedCounter({ target, suffix = "" }: { target: string; suffix?: string }) {

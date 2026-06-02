@@ -36,7 +36,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files statically with long cache
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
+app.use('/api/uploads', express.static(path.join(__dirname, '../uploads'), {
   maxAge: '7d',
   etag: true,
 }));

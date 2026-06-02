@@ -93,7 +93,7 @@ export function ProductsManagement() {
           <tbody>{filtered.map(p => (
             <tr key={p.id} className="border-t border-black/5">
               <td className="px-5 py-3.5"><div className="flex items-center gap-3">
-                {p.image ? <img src={`/uploads/${p.image}`} className="w-10 h-10 rounded-lg object-cover" /> : <div className="w-10 h-10 rounded-lg bg-[#0a1628]/5 flex items-center justify-center"><Package className="w-4 h-4 text-[#0a1628]" /></div>}
+                {p.image ? <img src={`/api/uploads/${p.image}`} className="w-10 h-10 rounded-lg object-cover" /> : <div className="w-10 h-10 rounded-lg bg-[#0a1628]/5 flex items-center justify-center"><Package className="w-4 h-4 text-[#0a1628]" /></div>}
                 <span className="text-[#0a1628]">{p.name}</span>
               </div></td>
               <td className="px-5 py-3.5 text-[#717182]">{p.category}</td>
@@ -149,7 +149,7 @@ export function ProductsManagement() {
                     <div className="flex flex-wrap gap-2">
                       {savedImages.map((img, idx) => (
                         <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/10 group">
-                          <img src={`/uploads/${img}`} className="w-full h-full object-cover" />
+                          <img src={`/api/uploads/${img}`} className="w-full h-full object-cover" />
                           <button type="button" onClick={() => setSavedImages(savedImages.filter((_, i) => i !== idx))} className="absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
                             <Trash2 className="w-4.5 h-4.5 text-red-400" />
                           </button>

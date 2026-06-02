@@ -9,7 +9,7 @@ export function Certifications() {
 
   const handleView = (cert: any) => {
     if (cert.document) {
-      window.open(`/uploads/${cert.document}`, '_blank');
+      window.open(`/api/uploads/${cert.document}`, '_blank');
     }
   };
 

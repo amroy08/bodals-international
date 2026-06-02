@@ -13,7 +13,7 @@ export function Footer() {
   const footerText = settings?.footer_text || "Premium Indian merchant export house — connecting authentic producers with international buyers.";
   const productNames = products.length > 0 ? products.map((p: any) => p.name) : ["Seafood", "Textiles", "Fresh Agricultural", "Cereals & Grains", "Premium Indian Coffee"];
 
-  const logoUrl = settings?.logo ? `/uploads/${settings.logo}` : defaultLogo;
+  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
 
   return (
     <footer className="bg-[#08111f] text-white/70 pt-14 sm:pt-20 pb-6 sm:pb-8 relative overflow-hidden" role="contentinfo" aria-label="Footer">

@@ -23,7 +23,7 @@ const FALLBACK_IMAGES = [
 function getImageSrc(img: any) {
   if (!img) return FALLBACK_IMAGES[0];
   if (img.image?.startsWith('http') || img.image?.startsWith('/')) return img.image;
-  return `/uploads/${img.image}`;
+  return `/api/uploads/${img.image}`;
 }
 
 export function Hero() {

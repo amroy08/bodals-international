@@ -59,7 +59,7 @@ export function ImageManagement() {
 
   const getPreview = (img: any) => {
     if (img.image?.startsWith('http')) return img.image;
-    return `/uploads/${img.image}`;
+    return `/api/uploads/${img.image}`;
   };
 
   return (
@@ -121,7 +121,7 @@ export function ImageManagement() {
                 <div>
                   <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="text-sm" />
                   {imageFile && <img src={URL.createObjectURL(imageFile)} className="mt-2 h-32 rounded-lg object-cover" />}
-                  {editItem && !imageFile && !editItem.image?.startsWith('http') && <img src={`/uploads/${editItem.image}`} className="mt-2 h-32 rounded-lg object-cover" />}
+                  {editItem && !imageFile && !editItem.image?.startsWith('http') && <img src={`/api/uploads/${editItem.image}`} className="mt-2 h-32 rounded-lg object-cover" />}
                 </div>
               ) : (
                 <div>

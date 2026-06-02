@@ -52,8 +52,8 @@ export function CertificationsManagement() {
             <div className="text-[#0a1628] mb-1" style={{ fontFamily: "Playfair Display, serif", fontWeight: 700, fontSize: "1.25rem" }}>{c.name}</div>
             <div className="text-xs text-[#717182] mb-4">{c.full_name || c.description || ""}</div>
             <div className="flex gap-1.5">
-              {c.document && <ActionBtn icon={Eye} onClick={() => window.open(`/uploads/${c.document}`, '_blank')} />}
-              {c.document && <ActionBtn icon={Download} onClick={() => { const a = document.createElement('a'); a.href = `/uploads/${c.document}`; a.download = c.name; a.click(); }} />}
+              {c.document && <ActionBtn icon={Eye} onClick={() => window.open(`/api/uploads/${c.document}`, '_blank')} />}
+              {c.document && <ActionBtn icon={Download} onClick={() => { const a = document.createElement('a'); a.href = `/api/uploads/${c.document}`; a.download = c.name; a.click(); }} />}
               <ActionBtn icon={Edit} onClick={() => openEdit(c)} />
               <ActionBtn icon={Trash2} danger onClick={() => setDeleteId(c.id)} />
             </div>
