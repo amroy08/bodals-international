@@ -4,7 +4,7 @@ import { useWebsite } from "../../contexts/WebsiteContext";
 import defaultLogo from "@/assets/logo_white.png";
 
 export function Footer() {
-  const { settings, products } = useWebsite();
+  const { settings, products, setActiveProductId } = useWebsite();
 
   const phone = settings?.mobile || "+91 9082377097";
   const email = settings?.email || "manishbodal@bodalsint.com";
@@ -14,6 +14,14 @@ export function Footer() {
   const productNames = products.length > 0 ? products.map((p: any) => p.name) : ["Seafood", "Textiles", "Fresh Agricultural", "Cereals & Grains", "Premium Indian Coffee"];
 
   const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
+
+  const handleProductClick = (name: string) => {
+    const prod = products.find((p: any) => p.name === name);
+    if (prod) {
+      setActiveProductId(prod.id);
+    }
+    document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <footer className="bg-[#08111f] text-white/70 pt-14 sm:pt-20 pb-6 sm:pb-8 relative overflow-hidden" role="contentinfo" aria-label="Footer">
@@ -62,7 +70,9 @@ export function Footer() {
             <div className="text-white mb-4 tracking-wide" style={{ fontFamily: "Inter", fontWeight: 600 }}>Products</div>
             <ul className="space-y-2 text-sm">
               {productNames.map((p: string) => (
-                <li key={p} className="hover:text-[#d4af37] transition cursor-pointer">{p}</li>
+                <li key={p}>
+                  <button onClick={() => handleProductClick(p)} className="hover:text-[#d4af37] transition text-left cursor-pointer">{p}</button>
+                </li>
               ))}
             </ul>
           </motion.div>

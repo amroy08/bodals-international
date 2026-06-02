@@ -15,13 +15,18 @@ interface WebsiteData {
   heroImages: any[];
   aboutImages: any[];
   loading: boolean;
+  activeProductId: number | null;
+  setActiveProductId: (id: number | null) => void;
   refresh: () => Promise<void>;
 }
 
 const WebsiteContext = createContext<WebsiteData>({
   settings: null, products: [], certifications: [], specialities: [], coreValues: [],
   heroImages: [], aboutImages: [],
-  loading: true, refresh: async () => {},
+  loading: true,
+  activeProductId: null,
+  setActiveProductId: () => {},
+  refresh: async () => {},
 });
 
 export function WebsiteProvider({ children }: { children: ReactNode }) {
@@ -33,6 +38,7 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
   const [heroImages, setHeroImages] = useState<any[]>([]);
   const [aboutImages, setAboutImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeProductId, setActiveProductId] = useState<number | null>(null);
 
   const fetchAll = async () => {
     try {
@@ -62,7 +68,11 @@ export function WebsiteProvider({ children }: { children: ReactNode }) {
   useEffect(() => { fetchAll(); }, []);
 
   return (
-    <WebsiteContext.Provider value={{ settings, products, certifications, specialities, coreValues, heroImages, aboutImages, loading, refresh: fetchAll }}>
+    <WebsiteContext.Provider value={{
+      settings, products, certifications, specialities, coreValues, heroImages, aboutImages, loading,
+      activeProductId, setActiveProductId,
+      refresh: fetchAll
+    }}>
       {children}
     </WebsiteContext.Provider>
   );

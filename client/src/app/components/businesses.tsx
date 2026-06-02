@@ -77,8 +77,9 @@ function ProductImageSlideshow({ product, intervalTime = 3000, className = "" }:
 }
 
 export function Businesses() {
-  const { products } = useWebsite();
-  const [open, setOpen] = useState<number | null>(null);
+  const { products, activeProductId, setActiveProductId } = useWebsite();
+  const open = activeProductId;
+  const setOpen = setActiveProductId;
 
   const items = products.length > 0 ? products : [];
   const active = items.find((p: any) => p.id === open);
