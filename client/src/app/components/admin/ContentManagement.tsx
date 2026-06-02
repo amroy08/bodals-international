@@ -11,6 +11,8 @@ export function ContentManagement() {
   const [editField, setEditField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [savingField, setSavingField] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
 
   useEffect(() => {
     websiteApi.getSettings().then(r => setSettings(r.data.data)).catch(() => {});
@@ -38,6 +40,7 @@ export function ContentManagement() {
 
   const saveField = async () => {
     if (!editField) return;
+    setSavingField(true);
     try {
       let value: any = editValue;
       if (editField === "floating_contact_enabled") {
@@ -49,12 +52,14 @@ export function ContentManagement() {
       await refresh();
       toast.success("Updated successfully");
     } catch { toast.error("Update failed"); }
+    finally { setSavingField(false); }
   };
 
   const uploadLogo = async () => {
     if (!logoFile) return;
     const fd = new FormData();
     fd.append("logo", logoFile);
+    setUploadingLogo(true);
     try {
       const res = await websiteApi.updateSettings(fd);
       setSettings(res.data.data);
@@ -62,6 +67,7 @@ export function ContentManagement() {
       await refresh();
       toast.success("Logo updated");
     } catch { toast.error("Upload failed"); }
+    finally { setUploadingLogo(false); }
   };
 
   const getDisplayValue = (key: string, val: any) => {
@@ -91,8 +97,13 @@ export function ContentManagement() {
           {settings.logo ? <img src={`/api/uploads/${settings.logo}`} alt="Logo" className="h-12 w-auto object-contain border rounded-lg bg-slate-50 p-1" /> : <span className="text-sm text-[#717182]">No logo uploaded</span>}
         </div>
         <div className="flex items-center gap-2">
-          <input type="file" accept="image/*" onChange={e => setLogoFile(e.target.files?.[0] || null)} className="text-sm" />
-          {logoFile && <button onClick={uploadLogo} className="px-3 py-1.5 bg-[#d4af37] text-[#0a1628] rounded-lg text-sm flex items-center gap-1"><Upload className="w-3.5 h-3.5" /> Upload</button>}
+          <input type="file" accept="image/*" onChange={e => setLogoFile(e.target.files?.[0] || null)} className="text-sm" disabled={uploadingLogo} />
+          {logoFile && (
+            <button onClick={uploadLogo} disabled={uploadingLogo} className={`px-3 py-1.5 bg-[#d4af37] text-[#0a1628] rounded-lg text-sm flex items-center gap-1 ${uploadingLogo ? "opacity-75 cursor-not-allowed" : ""}`}>
+              <Upload className="w-3.5 h-3.5" />
+              {uploadingLogo ? "Uploading..." : "Upload"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -140,22 +151,24 @@ export function ContentManagement() {
 
       {/* Edit Modal */}
       {editField && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setEditField(null)}>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !savingField && setEditField(null)}>
           <div className="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
             <h3 className="text-[#0a1628] mb-4" style={{ fontWeight: 600 }}>Edit {[...fields, ...floatingFields].find(f => f.key === editField)?.label}</h3>
             {editField === "floating_contact_enabled" ? (
-              <select value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm">
+              <select value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField}>
                 <option value="true">Enabled</option>
                 <option value="false">Disabled</option>
               </select>
             ) : textareaFields.includes(editField) ? (
-              <textarea value={editValue} onChange={e => setEditValue(e.target.value)} rows={8} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" />
+              <textarea value={editValue} onChange={e => setEditValue(e.target.value)} rows={8} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField} />
             ) : (
-              <input value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" />
+              <input value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField} />
             )}
             <div className="flex gap-2 justify-end mt-4">
-              <button onClick={() => setEditField(null)} className="px-4 py-2 rounded-lg border border-black/10 text-sm">Cancel</button>
-              <button onClick={saveField} className="px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm">Save</button>
+              <button onClick={() => !savingField && setEditField(null)} className={`px-4 py-2 rounded-lg border border-black/10 text-sm ${savingField ? "opacity-50 cursor-not-allowed" : ""}`} disabled={savingField}>Cancel</button>
+              <button onClick={saveField} className={`px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm flex items-center gap-1.5 ${savingField ? "opacity-75 cursor-not-allowed" : ""}`} disabled={savingField}>
+                {savingField ? "Saving..." : "Save"}
+              </button>
             </div>
           </div>
         </div>

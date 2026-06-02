@@ -11,6 +11,7 @@ export function CertificationsManagement() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState({ name: "", full_name: "", description: "", status: "active" });
   const [docFile, setDocFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const load = () => { certificationApi.getAll().then(r => setCerts(r.data.data || [])).catch(() => {}); };
   useEffect(load, []);
@@ -23,11 +24,13 @@ export function CertificationsManagement() {
     const fd = new FormData();
     Object.entries(form).forEach(([k, v]) => fd.append(k, v));
     if (docFile) fd.append("document", docFile);
+    setSaving(true);
     try {
       if (editItem) { await certificationApi.update(editItem.id, fd); toast.success("Updated"); }
       else { await certificationApi.create(fd); toast.success("Created"); }
       setShowForm(false); load();
     } catch { toast.error("Save failed"); }
+    finally { setSaving(false); }
   };
 
   const doDelete = async () => {
@@ -63,21 +66,29 @@ export function CertificationsManagement() {
       </div>
 
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !saving && setShowForm(false)}>
           <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex justify-between mb-4"><h3 style={{ fontWeight: 600 }}>{editItem ? "Edit" : "Add"} Certification</h3><button onClick={() => setShowForm(false)}><X className="w-5 h-5" /></button></div>
+            <div className="flex justify-between mb-4">
+              <h3 style={{ fontWeight: 600 }}>{editItem ? "Edit" : "Add"} Certification</h3>
+              <button onClick={() => !saving && setShowForm(false)} disabled={saving} className={saving ? "opacity-50 cursor-not-allowed" : ""}><X className="w-5 h-5" /></button>
+            </div>
             <div className="space-y-3">
-              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Short Name (e.g. IEC) *" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <input value={form.full_name} onChange={e => setForm({...form, full_name: e.target.value})} placeholder="Full Name" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Description" rows={3} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm">
+              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Short Name (e.g. IEC) *" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <input value={form.full_name} onChange={e => setForm({...form, full_name: e.target.value})} placeholder="Full Name" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Description" rows={3} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving}>
                 <option value="active">Active</option><option value="inactive">Inactive</option>
               </select>
-              <div><label className="text-sm text-[#717182]">Document (PDF/Image)</label><input type="file" accept=".pdf,.jpg,.png,.webp" onChange={e => setDocFile(e.target.files?.[0] || null)} className="mt-1 text-sm" /></div>
+              <div>
+                <label className="text-sm text-[#717182]">Document (PDF/Image)</label>
+                <input type="file" accept=".pdf,.jpg,.png,.webp" onChange={e => setDocFile(e.target.files?.[0] || null)} className="mt-1 text-sm block w-full" disabled={saving} />
+              </div>
             </div>
             <div className="flex gap-2 justify-end mt-4">
-              <button onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border text-sm">Cancel</button>
-              <button onClick={save} className="px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm">Save</button>
+              <button onClick={() => !saving && setShowForm(false)} className={`px-4 py-2 rounded-lg border text-sm ${saving ? "opacity-50 cursor-not-allowed" : ""}`} disabled={saving}>Cancel</button>
+              <button onClick={save} className={`px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm flex items-center gap-1.5 ${saving ? "opacity-75 cursor-not-allowed" : ""}`} disabled={saving}>
+                {saving ? "Saving..." : "Save"}
+              </button>
             </div>
           </div>
         </div>

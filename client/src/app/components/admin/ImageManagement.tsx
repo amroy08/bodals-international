@@ -15,6 +15,7 @@ export function ImageManagement() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [uploadMode, setUploadMode] = useState<"file" | "url">("file");
+  const [saving, setSaving] = useState(false);
 
   const load = () => {
     sectionImageApi.getAll().then(r => setImages(r.data.data || [])).catch(() => {});
@@ -44,11 +45,13 @@ export function ImageManagement() {
     } else if (!editItem) {
       toast.error("Please provide an image"); return;
     }
+    setSaving(true);
     try {
       if (editItem) { await sectionImageApi.update(editItem.id, fd); toast.success("Updated"); }
       else { await sectionImageApi.create(fd); toast.success("Image added"); }
       setShowForm(false); load();
     } catch { toast.error("Save failed"); }
+    finally { setSaving(false); }
   };
 
   const doDelete = async () => {
@@ -106,35 +109,37 @@ export function ImageManagement() {
 
       {/* Add/Edit Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !saving && setShowForm(false)}>
           <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between mb-4">
               <h3 style={{ fontWeight: 600 }}>{editItem ? "Edit" : "Add"} Image — {section}</h3>
-              <button onClick={() => setShowForm(false)}><X className="w-5 h-5" /></button>
+              <button onClick={() => !saving && setShowForm(false)} disabled={saving} className={saving ? "opacity-50 cursor-not-allowed" : ""}><X className="w-5 h-5" /></button>
             </div>
             <div className="space-y-3">
               <div className="flex gap-2">
-                <button onClick={() => setUploadMode("file")} className={`flex-1 py-2 rounded-lg text-sm ${uploadMode === "file" ? "bg-[#0a1628] text-white" : "bg-[#fafaf7] border"}`}>Upload File</button>
-                <button onClick={() => setUploadMode("url")} className={`flex-1 py-2 rounded-lg text-sm ${uploadMode === "url" ? "bg-[#0a1628] text-white" : "bg-[#fafaf7] border"}`}>Image URL</button>
+                <button onClick={() => !saving && setUploadMode("file")} disabled={saving} className={`flex-1 py-2 rounded-lg text-sm ${uploadMode === "file" ? "bg-[#0a1628] text-white" : "bg-[#fafaf7] border"} ${saving ? "opacity-50" : ""}`}>Upload File</button>
+                <button onClick={() => !saving && setUploadMode("url")} disabled={saving} className={`flex-1 py-2 rounded-lg text-sm ${uploadMode === "url" ? "bg-[#0a1628] text-white" : "bg-[#fafaf7] border"} ${saving ? "opacity-50" : ""}`}>Image URL</button>
               </div>
               {uploadMode === "file" ? (
                 <div>
-                  <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="text-sm" />
+                  <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="text-sm" disabled={saving} />
                   {imageFile && <img src={URL.createObjectURL(imageFile)} className="mt-2 h-32 rounded-lg object-cover" />}
                   {editItem && !imageFile && !editItem.image?.startsWith('http') && <img src={`/api/uploads/${editItem.image}`} className="mt-2 h-32 rounded-lg object-cover" />}
                 </div>
               ) : (
                 <div>
-                  <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://images.unsplash.com/..." className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
+                  <input value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://images.unsplash.com/..." className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
                   {imageUrl && <img src={imageUrl} className="mt-2 h-32 rounded-lg object-cover" onError={e => (e.currentTarget.style.display = 'none')} />}
                 </div>
               )}
-              <input value={caption} onChange={e => setCaption(e.target.value)} placeholder="Caption (optional)" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <input type="number" value={sortOrder} onChange={e => setSortOrder(Number(e.target.value))} placeholder="Sort Order" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
+              <input value={caption} onChange={e => setCaption(e.target.value)} placeholder="Caption (optional)" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <input type="number" value={sortOrder} onChange={e => setSortOrder(Number(e.target.value))} placeholder="Sort Order" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
             </div>
             <div className="flex gap-2 justify-end mt-4">
-              <button onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border text-sm">Cancel</button>
-              <button onClick={save} className="px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm">Save</button>
+              <button onClick={() => !saving && setShowForm(false)} className={`px-4 py-2 rounded-lg border text-sm ${saving ? "opacity-50 cursor-not-allowed" : ""}`} disabled={saving}>Cancel</button>
+              <button onClick={save} className={`px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm flex items-center gap-1.5 ${saving ? "opacity-75 cursor-not-allowed" : ""}`} disabled={saving}>
+                {saving ? "Saving..." : "Save"}
+              </button>
             </div>
           </div>
         </div>

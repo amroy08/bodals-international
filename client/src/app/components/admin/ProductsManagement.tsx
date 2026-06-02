@@ -15,6 +15,7 @@ export function ProductsManagement() {
   const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
   const [savedImages, setSavedImages] = useState<string[]>([]);
   const [customCategory, setCustomCategory] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const load = () => { productApi.getAll().then(r => setProducts(r.data.data || [])).catch(() => {}).finally(() => setLoading(false)); };
   useEffect(load, []);
@@ -56,6 +57,7 @@ export function ProductsManagement() {
     newImageFiles.forEach(file => {
       fd.append("images", file);
     });
+    setSaving(true);
     try {
       if (editItem) { await productApi.update(editItem.id, fd); toast.success("Product updated"); }
       else { await productApi.create(fd); toast.success("Product created"); }
@@ -63,7 +65,7 @@ export function ProductsManagement() {
     } catch (err: any) {
       const msg = err.response?.data?.message || "Save failed";
       toast.error(msg);
-    }
+    } finally { setSaving(false); }
   };
 
   const doDelete = async () => {
@@ -110,37 +112,37 @@ export function ProductsManagement() {
 
       {/* Add/Edit Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setShowForm(false)}>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => !saving && setShowForm(false)}>
           <div className="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl my-8" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-[#0a1628]" style={{ fontWeight: 600 }}>{editItem ? "Edit" : "Add"} Product</h3>
-              <button onClick={() => setShowForm(false)}><X className="w-5 h-5" /></button>
+              <button onClick={() => !saving && setShowForm(false)} disabled={saving} className={saving ? "opacity-50 cursor-not-allowed" : ""}><X className="w-5 h-5" /></button>
             </div>
             <div className="space-y-3">
-              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Product Name *" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
+              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Product Name *" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
               <div>
                 {customCategory ? (
                   <div className="flex gap-2">
-                    <input value={form.category} onChange={e => setForm({...form, category: e.target.value})} placeholder="Enter new category name *" className="flex-1 px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" autoFocus />
-                    <button type="button" onClick={() => { setCustomCategory(false); setForm({...form, category: ""}); }} className="px-3 py-2 rounded-lg border border-black/10 text-xs text-[#717182] hover:bg-[#fafaf7]">Back</button>
+                    <input value={form.category} onChange={e => setForm({...form, category: e.target.value})} placeholder="Enter new category name *" className="flex-1 px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" autoFocus disabled={saving} />
+                    <button type="button" onClick={() => { setCustomCategory(false); setForm({...form, category: ""}); }} className="px-3 py-2 rounded-lg border border-black/10 text-xs text-[#717182] hover:bg-[#fafaf7]" disabled={saving}>Back</button>
                   </div>
                 ) : (
-                  <select value={form.category} onChange={e => { if (e.target.value === "__new__") { setCustomCategory(true); setForm({...form, category: ""}); } else { setForm({...form, category: e.target.value}); }}} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm">
+                  <select value={form.category} onChange={e => { if (e.target.value === "__new__") { setCustomCategory(true); setForm({...form, category: ""}); } else { setForm({...form, category: e.target.value}); }}} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving}>
                     <option value="">Select Category *</option>
                     {[...new Set(products.map((p: any) => p.category))].map(c => <option key={c} value={c}>{c}</option>)}
                     <option value="__new__">＋ Add New Category...</option>
                   </select>
                 )}
               </div>
-              <input value={form.short_description} onChange={e => setForm({...form, short_description: e.target.value})} placeholder="Short Description" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <textarea value={form.full_description} onChange={e => setForm({...form, full_description: e.target.value})} placeholder="Full Description" rows={4} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <input value={form.badges} onChange={e => setForm({...form, badges: e.target.value})} placeholder="Badges (comma-separated)" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" />
-              <select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm">
+              <input value={form.short_description} onChange={e => setForm({...form, short_description: e.target.value})} placeholder="Short Description" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <textarea value={form.full_description} onChange={e => setForm({...form, full_description: e.target.value})} placeholder="Full Description" rows={4} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <input value={form.badges} onChange={e => setForm({...form, badges: e.target.value})} placeholder="Badges (comma-separated)" className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving} />
+              <select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full px-4 py-2.5 rounded-lg bg-[#fafaf7] border border-black/10 text-sm" disabled={saving}>
                 <option value="active">Active</option><option value="inactive">Inactive</option>
               </select>
               <div>
                 <label className="text-sm text-[#717182] block mb-1">Product Images (Can upload multiple)</label>
-                <input type="file" accept="image/*" multiple onChange={e => setNewImageFiles(Array.from(e.target.files || []))} className="mt-1 text-sm block w-full text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#d4af37]/10 file:text-[#0a1628] hover:file:bg-[#d4af37]/20" />
+                <input type="file" accept="image/*" multiple onChange={e => setNewImageFiles(Array.from(e.target.files || []))} className="mt-1 text-sm block w-full text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#d4af37]/10 file:text-[#0a1628] hover:file:bg-[#d4af37]/20" disabled={saving} />
                 
                 {/* Pre-existing Saved Images */}
                 {savedImages.length > 0 && (
@@ -150,7 +152,7 @@ export function ProductsManagement() {
                       {savedImages.map((img, idx) => (
                         <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/10 group">
                           <img src={`/api/uploads/${img}`} className="w-full h-full object-cover" />
-                          <button type="button" onClick={() => setSavedImages(savedImages.filter((_, i) => i !== idx))} className="absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                          <button type="button" onClick={() => !saving && setSavedImages(savedImages.filter((_, i) => i !== idx))} disabled={saving} className={`absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white ${saving ? "cursor-not-allowed" : ""}`}>
                             <Trash2 className="w-4.5 h-4.5 text-red-400" />
                           </button>
                         </div>
@@ -170,9 +172,10 @@ export function ProductsManagement() {
                           <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-black/10 group">
                             <img src={url} className="w-full h-full object-cover" />
                             <button type="button" onClick={() => {
+                              if (saving) return;
                               const updated = newImageFiles.filter((_, i) => i !== idx);
                               setNewImageFiles(updated);
-                            }} className="absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                            }} disabled={saving} className={`absolute inset-0 bg-black/55 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white ${saving ? "cursor-not-allowed" : ""}`}>
                               <Trash2 className="w-4.5 h-4.5 text-red-400" />
                             </button>
                           </div>
@@ -184,8 +187,10 @@ export function ProductsManagement() {
               </div>
             </div>
             <div className="flex gap-2 justify-end mt-5">
-              <button onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg border border-black/10 text-sm">Cancel</button>
-              <button onClick={save} className="px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm">Save</button>
+              <button onClick={() => !saving && setShowForm(false)} className={`px-4 py-2 rounded-lg border border-black/10 text-sm ${saving ? "opacity-50 cursor-not-allowed" : ""}`} disabled={saving}>Cancel</button>
+              <button onClick={save} className={`px-4 py-2 rounded-lg bg-[#0a1628] text-white text-sm flex items-center gap-1.5 ${saving ? "opacity-75 cursor-not-allowed" : ""}`} disabled={saving}>
+                {saving ? "Saving..." : "Save"}
+              </button>
             </div>
           </div>
         </div>
