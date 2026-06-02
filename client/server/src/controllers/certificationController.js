@@ -2,6 +2,7 @@ const db = require('../config/db');
 const { sendSuccess, sendError } = require('../utils/response');
 const fs = require('fs');
 const path = require('path');
+const { uploadsDir } = require('../utils/pathHelper');
 
 // GET /api/certifications (public)
 const getAll = async (req, res) => {
@@ -77,7 +78,7 @@ const update = async (req, res) => {
     let document = existing[0].document;
     if (req.file) {
       if (document) {
-        const oldPath = path.join(__dirname, '../../uploads', document);
+        const oldPath = path.join(uploadsDir, document);
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
       document = 'certifications/' + req.file.filename;
@@ -115,7 +116,7 @@ const remove = async (req, res) => {
     }
 
     if (existing[0].document) {
-      const docPath = path.join(__dirname, '../../uploads', existing[0].document);
+      const docPath = path.join(uploadsDir, existing[0].document);
       if (fs.existsSync(docPath)) fs.unlinkSync(docPath);
     }
 

@@ -2,6 +2,7 @@ const db = require('../config/db');
 const { sendSuccess, sendError } = require('../utils/response');
 const fs = require('fs');
 const path = require('path');
+const { uploadsDir } = require('../utils/pathHelper');
 
 const getBySection = async (req, res) => {
   try {
@@ -57,8 +58,8 @@ const update = async (req, res) => {
     if (existing.length === 0) return sendError(res, 'Image not found', 404);
     let image = existing[0].image;
     if (req.file) {
-      if (image && !image.startsWith('http') && fs.existsSync(path.join(__dirname, '../../uploads', image))) {
-        fs.unlinkSync(path.join(__dirname, '../../uploads', image));
+      if (image && !image.startsWith('http') && fs.existsSync(path.join(uploadsDir, image))) {
+        fs.unlinkSync(path.join(uploadsDir, image));
       }
       image = 'section-images/' + req.file.filename;
     } else if (req.body.image_url) {
@@ -81,7 +82,7 @@ const remove = async (req, res) => {
     const [existing] = await db.query('SELECT * FROM section_images WHERE id = ?', [id]);
     if (existing.length === 0) return sendError(res, 'Image not found', 404);
     if (existing[0].image && !existing[0].image.startsWith('http')) {
-      const imgPath = path.join(__dirname, '../../uploads', existing[0].image);
+      const imgPath = path.join(uploadsDir, existing[0].image);
       if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
     }
     await db.query('DELETE FROM section_images WHERE id = ?', [id]);

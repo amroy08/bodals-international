@@ -2,6 +2,7 @@ const db = require('../config/db');
 const { sendSuccess, sendError } = require('../utils/response');
 const fs = require('fs');
 const path = require('path');
+const { uploadsDir } = require('../utils/pathHelper');
 
 // GET /api/website/settings (public)
 const getSettings = async (req, res) => {
@@ -61,7 +62,7 @@ const updateSettings = async (req, res) => {
       // Delete old logo if exists
       const [existing] = await db.query('SELECT logo FROM website_settings LIMIT 1');
       if (existing.length > 0 && existing[0].logo) {
-        const oldPath = path.join(__dirname, '../../uploads', existing[0].logo);
+        const oldPath = path.join(uploadsDir, existing[0].logo);
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
       fields.logo = 'logo/' + req.file.filename;

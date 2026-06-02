@@ -2,6 +2,7 @@ const db = require('../config/db');
 const { sendSuccess, sendError } = require('../utils/response');
 const fs = require('fs');
 const path = require('path');
+const { uploadsDir } = require('../utils/pathHelper');
 
 // GET /api/products (public)
 const getAll = async (req, res) => {
@@ -121,7 +122,7 @@ const update = async (req, res) => {
 
     oldImages.forEach(oldImg => {
       if (!combinedImages.includes(oldImg)) {
-        const oldPath = path.join(__dirname, '../../uploads', oldImg);
+        const oldPath = path.join(uploadsDir, oldImg);
         if (fs.existsSync(oldPath)) {
           try { fs.unlinkSync(oldPath); } catch (e) { console.error('Failed to unlink old image:', e); }
         }
@@ -173,7 +174,7 @@ const remove = async (req, res) => {
     }
 
     oldImages.forEach(oldImg => {
-      const imgPath = path.join(__dirname, '../../uploads', oldImg);
+      const imgPath = path.join(uploadsDir, oldImg);
       if (fs.existsSync(imgPath)) {
         try { fs.unlinkSync(imgPath); } catch (e) { console.error('Failed to delete image file during product removal:', e); }
       }

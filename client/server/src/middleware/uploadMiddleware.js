@@ -1,23 +1,11 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-
-// Ensure upload directories exist
-const dirs = [
-  path.join(__dirname, '../../uploads/products'),
-  path.join(__dirname, '../../uploads/certifications'),
-  path.join(__dirname, '../../uploads/logo'),
-];
-dirs.forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+const { getUploadPath } = require('../utils/pathHelper');
 
 // Storage for product images
 const productStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../uploads/products'));
+    cb(null, getUploadPath('products'));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -28,7 +16,7 @@ const productStorage = multer.diskStorage({
 // Storage for certification documents
 const certificationStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../uploads/certifications'));
+    cb(null, getUploadPath('certifications'));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -39,7 +27,7 @@ const certificationStorage = multer.diskStorage({
 // Storage for logo
 const logoStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../uploads/logo'));
+    cb(null, getUploadPath('logo'));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
