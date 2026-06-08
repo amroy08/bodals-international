@@ -44,7 +44,7 @@ export function Footer() {
               <img 
                 src={logoUrl} 
                 alt="Bodal's International Logo - Indian Merchant Exporter" 
-                className="h-12 w-auto object-contain transition-all" 
+                className="h-20 sm:h-24 w-auto object-contain transition-all" 
                 onError={(e) => { e.currentTarget.src = defaultLogo; }}
               />
             </div>
