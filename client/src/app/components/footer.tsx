@@ -42,6 +42,7 @@ export function Footer() {
                 src="/favicon.png" 
                 alt="Bodal's International Icon" 
                 className="h-14 w-14 object-contain" 
+                style={{ filter: "brightness(0) invert(1)" }}
               />
               <div className="text-white text-sm tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
                 BODAL'S INTERNATIONAL
