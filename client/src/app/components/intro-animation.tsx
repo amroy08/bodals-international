@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform } from "motion/react";
+import { motion, MotionValue, useTransform } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import introBg from "@/assets/intro_bg.jpg";
 import logoImg from "@/assets/logo_white.png";
@@ -13,12 +13,11 @@ const FONT_BASE: React.CSSProperties = {
   userSelect: "none" as const,
 };
 
-export function IntroAnimation({ onDone }: { onDone: () => void }) {
+export function IntroAnimation({ progress, onDone }: { progress: MotionValue<number>; onDone: () => void }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const oRef = useRef<HTMLSpanElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
-  const progress = useMotionValue(0);
   const [oCenter, setOCenter] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   /* ════════════════════════════════════════════════
@@ -85,8 +84,17 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
       const container = textContainerRef.current;
       const o = oRef.current;
       if (!container || !o) return;
+
+      // Temporarily remove transform to measure unscaled layout
+      const prevTransform = container.style.transform;
+      container.style.transform = "none";
+
       const cb = container.getBoundingClientRect();
       const ob = o.getBoundingClientRect();
+
+      // Restore transform
+      container.style.transform = prevTransform;
+
       const ox = ob.left - cb.left + ob.width / 2;
       const oy = ob.top - cb.top + ob.height / 2;
       setZoomOrigin(`${(ox / cb.width) * 100}% ${(oy / cb.height) * 100}%`);
@@ -127,8 +135,19 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
       progress.set(p);
       if (p >= 0.99) {
         fired = true;
+
+        // Disable smooth scroll temporarily to avoid smooth scrolling/lag to 0
+        const htmlStyle = document.documentElement.style;
+        const prevScrollBehavior = htmlStyle.scrollBehavior;
+        htmlStyle.scrollBehavior = "auto";
         window.scrollTo(0, 0);
+
         onDone();
+
+        // Restore scroll behavior in next tick
+        setTimeout(() => {
+          htmlStyle.scrollBehavior = prevScrollBehavior;
+        }, 50);
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "motion/react";
 import { Toaster } from "react-hot-toast";
 import { WebsiteProvider } from "../contexts/WebsiteContext";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -38,6 +38,13 @@ export default function App() {
     return window.location.pathname.startsWith("/admin") ? "admin" : "site";
   });
   const [introDone, setIntroDone] = useState(false);
+  const progress = useMotionValue(0);
+
+  // Derive site styles directly from scroll progress
+  const siteOpacity = useTransform(progress, [0.85, 0.96], [0, 1]);
+  const siteScale = useTransform(progress, [0.85, 0.96], [0.9, 1]);
+  const siteBlur = useTransform(progress, [0.85, 0.96], [20, 0]);
+  const siteFilter = useTransform(siteBlur, (b) => `blur(${b}px)`);
 
   // Sync browser URL with the active view
   useEffect(() => {
@@ -70,19 +77,24 @@ export default function App() {
         ) : (
           <>
             {/* Intro overlay — removed from DOM once completed */}
-            {!introDone && <IntroAnimation onDone={() => setIntroDone(true)} />}
+            {!introDone && <IntroAnimation progress={progress} onDone={() => setIntroDone(true)} />}
 
             {/* Site content — always rendered beneath the overlay, zooms in when intro completes */}
             <motion.div 
-              initial={false}
-              animate={{ 
-                scale: introDone ? 1 : 0.8,
-                filter: introDone ? "blur(0px)" : "blur(20px)",
-                opacity: introDone ? 1 : 0
+              style={{
+                opacity: introDone ? 1 : siteOpacity,
+                scale: introDone ? 1 : siteScale,
+                filter: introDone ? "none" : siteFilter,
+                position: introDone ? "relative" : "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: introDone ? "auto" : "100%",
+                overflow: introDone ? "visible" : "hidden",
+                pointerEvents: introDone ? "auto" : "none",
+                fontFamily: "Inter, sans-serif"
               }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative min-h-screen w-full bg-white" 
-              style={{ fontFamily: "Inter, sans-serif" }}
+              className="bg-white" 
             >
               <Header onAdminClick={() => setView("admin")} introComplete={introDone} />
               <Hero />
