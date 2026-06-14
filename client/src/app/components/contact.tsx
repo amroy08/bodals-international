@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, Send
 import { useWebsite } from "../../contexts/WebsiteContext";
 import { enquiryApi } from "../../api/enquiryApi";
 import toast from "react-hot-toast";
-import defaultLogo from "@/assets/logo_white.png";
+import defaultLogo from "@/assets/logo_black.png";
 
 export function Contact() {
   const { settings } = useWebsite();
