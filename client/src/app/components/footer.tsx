@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, X } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
-import defaultLogo from "@/assets/logo_white.png";
 
 export function Footer() {
   const { settings, products, setActiveProductId } = useWebsite();
@@ -16,8 +15,6 @@ export function Footer() {
   const motto = settings?.motto || "We Care · We Commit · We Connect";
   const footerText = settings?.footer_text || "Premium Indian merchant export house — connecting authentic producers with international buyers.";
   const productNames = products.length > 0 ? products.map((p: any) => p.name) : ["Seafood", "Textiles", "Fresh Agricultural", "Cereals & Grains", "Premium Indian Coffee"];
-
-  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
 
   const handleProductClick = (name: string) => {
     const prod = products.find((p: any) => p.name === name);
@@ -40,13 +37,15 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0 }}
           >
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex flex-col items-start gap-4 mb-5">
               <img 
-                src={logoUrl} 
-                alt="Bodal's International Logo - Indian Merchant Exporter" 
-                className="h-20 sm:h-24 w-auto object-contain transition-all" 
-                onError={(e) => { e.currentTarget.src = defaultLogo; }}
+                src="/favicon.png" 
+                alt="Bodal's International Icon" 
+                className="h-14 w-14 object-contain" 
               />
+              <div className="text-white text-sm tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
+                BODAL'S INTERNATIONAL
+              </div>
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>
