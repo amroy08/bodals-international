@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, Send, CheckCircle2 } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 import { enquiryApi } from "../../api/enquiryApi";
+import { formatSocialUrl } from "../../utils/url";
 import toast from "react-hot-toast";
 import defaultLogo from "@/assets/logo_black.png";
 
@@ -235,7 +236,7 @@ export function Contact() {
                       viewport={{ once: true }}
                       transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.6 + i * 0.1 }}
                       whileHover={{ scale: 1.15, backgroundColor: "#d4af37", color: "#0a1628" }}
-                      href={url || "#"}
+                      href={formatSocialUrl(url) || "#"}
                       target={url ? "_blank" : undefined}
                       rel="noreferrer"
                       className="w-10 h-10 rounded-lg bg-white/5 text-white flex items-center justify-center transition"

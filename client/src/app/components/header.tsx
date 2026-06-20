@@ -3,6 +3,7 @@ import { Phone, Mail, Linkedin, Instagram, Facebook, MessageCircle, Menu, X } fr
 import { motion, AnimatePresence } from "motion/react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 import defaultLogo from "@/assets/logo_black.png";
+import { formatSocialUrl } from "../../utils/url";
 
 const NAV = [
   { id: "home", label: "Home" },
@@ -61,10 +62,10 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
             </a>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {settings?.linkedin_url && <a href={settings.linkedin_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="LinkedIn"><Linkedin className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
-            {settings?.instagram_url && <a href={settings.instagram_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Instagram"><Instagram className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
-            {settings?.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Facebook"><Facebook className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
-            {settings?.whatsapp_url && <a href={settings.whatsapp_url} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="WhatsApp"><MessageCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.linkedin_url && <a href={formatSocialUrl(settings.linkedin_url)} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="LinkedIn"><Linkedin className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.instagram_url && <a href={formatSocialUrl(settings.instagram_url)} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Instagram"><Instagram className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.facebook_url && <a href={formatSocialUrl(settings.facebook_url)} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="Facebook"><Facebook className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
+            {settings?.whatsapp_url && <a href={formatSocialUrl(settings.whatsapp_url)} target="_blank" rel="noreferrer" className="hover:text-[#d4af37] transition" aria-label="WhatsApp"><MessageCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>}
             {!settings?.linkedin_url && !settings?.instagram_url && !settings?.facebook_url && !settings?.whatsapp_url && (
               [Linkedin, Instagram, Facebook, MessageCircle].map((Icon, i) => (
                 <a key={i} href="#" className="hover:text-[#d4af37] transition"><Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></a>

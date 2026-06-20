@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, X } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
+import { formatSocialUrl } from "../../utils/url";
 
 export function Footer() {
   const { settings, products, setActiveProductId } = useWebsite();
@@ -116,7 +117,7 @@ export function Footer() {
                   viewport={{ once: true }}
                   transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.6 + i * 0.1 }}
                   whileHover={{ scale: 1.15 }}
-                  href={url || "#"}
+                  href={formatSocialUrl(url) || "#"}
                   target={url ? "_blank" : undefined}
                   rel="noreferrer"
                   className="w-9 h-9 rounded-lg bg-white/5 hover:bg-[#d4af37] hover:text-[#0a1628] flex items-center justify-center transition"
