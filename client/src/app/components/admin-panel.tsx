@@ -36,7 +36,7 @@ export function AdminPanel({ onExit }: { onExit: () => void }) {
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-[#d4af37] text-[#0a1628] flex items-center justify-center" style={{ fontFamily: "Playfair Display, serif", fontWeight: 800 }}>B</div>
-            <div><div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700 }}>BODAL'S</div><div className="text-xs text-white/50 tracking-wider">ADMIN PANEL</div></div>
+            <div><div style={{ fontFamily: "Playfair Display, serif", fontWeight: 700 }}>BODALS</div><div className="text-xs text-white/50 tracking-wider">ADMIN PANEL</div></div>
           </div>
         </div>
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -86,7 +86,7 @@ function AdminLogin({ onLogin, onExit }: { onLogin: (email: string, password: st
         <div className="text-center mb-8">
           <div className="inline-flex w-16 h-16 rounded-2xl bg-[#d4af37] text-[#0a1628] items-center justify-center mb-4"><Lock className="w-7 h-7" /></div>
           <h1 className="text-white mb-2" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>Admin Login</h1>
-          <p className="text-white/60 text-sm">BODAL'S INTERNATIONAL — Control Panel</p>
+          <p className="text-white/60 text-sm">BODALS INTERNATIONAL — Control Panel</p>
         </div>
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-2xl space-y-4">
           {error && <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">{error}</div>}

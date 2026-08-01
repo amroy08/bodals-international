@@ -40,12 +40,12 @@ export function Hero() {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  const heroTitle = settings?.hero_title || "BODAL'S INTERNATIONAL";
+  const heroTitle = settings?.hero_title || "BODALS INTERNATIONAL";
   const motto = settings?.motto || "We Care, We Commit, We Connect.";
   const heroSubtitle = settings?.hero_subtitle || "Your trusted gateway to premium Indian seafood, textiles, fresh produce, cereals, and coffee — delivered to discerning buyers across the globe.";
 
   return (
-    <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODAL'S INTERNATIONAL Premium Indian Exports">
+    <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODALS INTERNATIONAL Premium Indian Exports">
       {/* Background Slideshow */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
@@ -53,7 +53,7 @@ export function Hero() {
             <ImageWithFallback 
               src={getImageSrc(images[currentIdx])} 
               fallbackSrc={FALLBACK_IMAGES[currentIdx % FALLBACK_IMAGES.length]}
-              alt={`BODAL'S INTERNATIONAL — Premium Indian export goods and logistics, slide ${currentIdx + 1}`} 
+              alt={`BODALS INTERNATIONAL — Premium Indian export goods and logistics, slide ${currentIdx + 1}`} 
               className="w-full h-full object-cover" 
             />
           </motion.div>

@@ -1,4 +1,4 @@
-# BODAL'S INTERNATIONAL — Full-Stack Website
+# BODALS INTERNATIONAL — Full-Stack Website
 
 Premium Indian merchant export company website with admin panel.
 

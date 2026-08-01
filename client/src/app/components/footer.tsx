@@ -41,12 +41,12 @@ export function Footer() {
             <div className="flex flex-col items-start gap-4 mb-5">
               <img 
                 src="/favicon.png" 
-                alt="Bodal's International Icon" 
+                alt="Bodals International Icon" 
                 className="h-14 w-14 object-contain" 
                 style={{ filter: "brightness(0) invert(1)" }}
               />
               <div className="text-white text-sm tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
-                BODAL'S INTERNATIONAL
+                BODALS INTERNATIONAL
               </div>
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
@@ -136,7 +136,7 @@ export function Footer() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50"
         >
-          <div>© {new Date().getFullYear()} {settings?.company_name || "BODAL'S INTERNATIONAL"} Pvt. Ltd. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} {settings?.company_name || "BODALS INTERNATIONAL"} Pvt. Ltd. All rights reserved.</div>
           <div className="flex gap-5">
             <button onClick={() => setShowPrivacy(true)} className="hover:text-[#d4af37] transition cursor-pointer">Privacy Policy</button>
             <button onClick={() => setShowTerms(true)} className="hover:text-[#d4af37] transition cursor-pointer">Terms of Service</button>
@@ -156,7 +156,7 @@ export function Footer() {
                 <div className="space-y-6 text-[#3a4252] text-sm leading-relaxed max-h-[60vh] overflow-y-auto pr-2" style={{ fontFamily: "Inter" }}>
                   <section>
                     <h4 className="text-[#0a1628] font-semibold mb-2 text-base">1. Introduction</h4>
-                    <p>Welcome to <strong>BODAL'S INTERNATIONAL</strong> ("we", "us", "our"). We are committed to protecting your personal data and your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website <a href="https://bodalsint.com" className="text-[#d4af37] font-medium underline">bodalsint.com</a> and use our B2B trade services.</p>
+                    <p>Welcome to <strong>BODALS INTERNATIONAL</strong> ("we", "us", "our"). We are committed to protecting your personal data and your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website <a href="https://bodalsint.com" className="text-[#d4af37] font-medium underline">bodalsint.com</a> and use our B2B trade services.</p>
                   </section>
                   <section>
                     <h4 className="text-[#0a1628] font-semibold mb-2 text-base">2. Information We Collect</h4>
@@ -219,11 +219,11 @@ export function Footer() {
                   </section>
                   <section>
                     <h4 className="text-[#0a1628] font-semibold mb-2 text-base">4. Limitation of Liability</h4>
-                    <p>Bodal's International Pvt. Ltd. is a registered merchant export house. We work with verified producers and logistics lines. We shall not be held liable for shipment delays arising from third-party shipping lines, port congestion, customs clearance delays, customs inspections, or Force Majeure events (natural disasters, strikes, wars, disruptions).</p>
+                    <p>Bodals International Pvt. Ltd. is a registered merchant export house. We work with verified producers and logistics lines. We shall not be held liable for shipment delays arising from third-party shipping lines, port congestion, customs clearance delays, customs inspections, or Force Majeure events (natural disasters, strikes, wars, disruptions).</p>
                   </section>
                   <section>
                     <h4 className="text-[#0a1628] font-semibold mb-2 text-base">5. Intellectual Property</h4>
-                    <p>All content on this website, including but not limited to the Bodal's International logo, custom text layouts, product images, graphics, and source code, is the property of Bodal's International and is protected by copyright and intellectual property laws of India. Any unauthorized reproduction is strictly prohibited.</p>
+                    <p>All content on this website, including but not limited to the Bodals International logo, custom text layouts, product images, graphics, and source code, is the property of Bodals International and is protected by copyright and intellectual property laws of India. Any unauthorized reproduction is strictly prohibited.</p>
                   </section>
                   <section>
                     <h4 className="text-[#0a1628] font-semibold mb-2 text-base">6. Governing Law & Dispute Resolution</h4>

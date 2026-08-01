@@ -65,7 +65,7 @@ export function About() {
   const paragraphs = aboutText.split('\n').filter((p: string) => p.trim());
 
   return (
-    <section id="about" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-[#fafaf7]" aria-label="About BODAL'S INTERNATIONAL">
+    <section id="about" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-[#fafaf7]" aria-label="About BODALS INTERNATIONAL">
       <ImageWithFallback src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=1600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06]" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-[#fafaf7]/90 to-[#fafaf7]" />
 
@@ -87,7 +87,7 @@ export function About() {
                   <ImageWithFallback 
                     src={getImgSrc(images[idx])} 
                     fallbackSrc={FALLBACK_ABOUT[idx % FALLBACK_ABOUT.length]}
-                    alt={`About BODAL'S INTERNATIONAL — Indian export house operations, photo ${idx + 1}`} 
+                    alt={`About BODALS INTERNATIONAL — Indian export house operations, photo ${idx + 1}`} 
                     className="w-full h-full object-cover" 
                   />
                 </motion.div>
@@ -114,7 +114,7 @@ export function About() {
                 <motion.p key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}>{p}</motion.p>
               )) : (
                 <>
-                  <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>At <span className="text-[#0a1628]" style={{ fontWeight: 600 }}>BODAL'S INTERNATIONAL</span>, we are a dynamic and forward-thinking merchant export house dedicated to bringing the finest Indian products to the global market.</motion.p>
+                  <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>At <span className="text-[#0a1628]" style={{ fontWeight: 600 }}>BODALS INTERNATIONAL</span>, we are a dynamic and forward-thinking merchant export house dedicated to bringing the finest Indian products to the global market.</motion.p>
                   <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.27 }}>Our core values are built on traditional principles of trust, transparency, and unwavering commitment to quality.</motion.p>
                 </>
               )}

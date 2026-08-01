@@ -1,7 +1,7 @@
 {
   "name": "bodals-international-backend",
   "version": "1.0.0",
-  "description": "Backend API for BODAL'S INTERNATIONAL export website",
+  "description": "Backend API for BODALS INTERNATIONAL export website",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",

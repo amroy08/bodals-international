@@ -275,7 +275,7 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
             }}>
               <img
                 src={logoImg}
-                alt="Bodal's International"
+                alt="Bodals International"
                 style={{
                   width: "min(75vw, 550px)",
                   height: "auto",

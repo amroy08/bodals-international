@@ -1,4 +1,4 @@
--- BODAL'S INTERNATIONAL Database Schema
+-- BODALS INTERNATIONAL Database Schema
 -- Run this in MySQL Workbench after creating the database
 
 CREATE DATABASE IF NOT EXISTS bodals_international;
@@ -17,10 +17,10 @@ CREATE TABLE IF NOT EXISTS admins (
 -- Website Settings (single row)
 CREATE TABLE IF NOT EXISTS website_settings (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  company_name VARCHAR(255) DEFAULT 'BODAL''S INTERNATIONAL',
+  company_name VARCHAR(255) DEFAULT 'BODALS INTERNATIONAL',
   logo VARCHAR(500) DEFAULT NULL,
   motto VARCHAR(500) DEFAULT 'WE CARE, WE COMMIT, WE CONNECT',
-  hero_title VARCHAR(500) DEFAULT 'BODAL''S INTERNATIONAL',
+  hero_title VARCHAR(500) DEFAULT 'BODALS INTERNATIONAL',
   hero_subtitle TEXT NULL,
   about_us TEXT NULL,
   vision TEXT NULL,

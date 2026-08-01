@@ -208,7 +208,7 @@ export function Contact() {
               >
                 <img 
                   src={logoUrl} 
-                  alt="Bodal's International Logo" 
+                  alt="Bodals International Logo" 
                   className="h-20 sm:h-24 w-auto object-contain opacity-90 hover:opacity-100 transition" 
                   onError={(e) => { e.currentTarget.src = defaultLogo; }}
                 />

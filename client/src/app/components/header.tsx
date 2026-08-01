@@ -81,7 +81,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
           <button id="header-logo-target" onClick={() => goTo("home")} className="flex items-center gap-3 group" style={{ opacity: introComplete ? 1 : 0, transition: 'opacity 0.3s ease' }}>
             <img 
               src={logoUrl} 
-              alt="Bodal's International Logo - Premium Indian Merchant Export House" 
+              alt="Bodals International Logo - Premium Indian Merchant Export House" 
               className="h-12 sm:h-16 md:h-20 w-auto object-contain transition-all" 
               onError={(e) => { e.currentTarget.src = defaultLogo; }}
             />

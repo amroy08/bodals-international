@@ -71,7 +71,7 @@ async function sendAdminEnquiryNotification(enquiry) {
     <!-- Header -->
     <tr>
       <td style="background:linear-gradient(135deg,#0a1628,#1e3a8a);padding:30px 40px;text-align:center;">
-        <h1 style="margin:0;color:#d4af37;font-size:22px;letter-spacing:2px;">BODAL'S INTERNATIONAL</h1>
+        <h1 style="margin:0;color:#d4af37;font-size:22px;letter-spacing:2px;">BODALS INTERNATIONAL</h1>
         <p style="margin:8px 0 0;color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:3px;">WE CARE, WE COMMIT, WE CONNECT</p>
       </td>
     </tr>
@@ -116,7 +116,7 @@ async function sendAdminEnquiryNotification(enquiry) {
     <!-- Footer -->
     <tr>
       <td style="background:#0a1628;padding:20px 40px;text-align:center;">
-        <p style="margin:0;color:#d4af37;font-size:12px;letter-spacing:1px;">BODAL'S INTERNATIONAL</p>
+        <p style="margin:0;color:#d4af37;font-size:12px;letter-spacing:1px;">BODALS INTERNATIONAL</p>
         <p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:11px;">This is an automated notification from your website.</p>
       </td>
     </tr>
@@ -126,7 +126,7 @@ async function sendAdminEnquiryNotification(enquiry) {
 
   return sendEmail({
     to: adminEmail,
-    subject: "New Enquiry Received - BODAL'S INTERNATIONAL",
+    subject: "New Enquiry Received - BODALS INTERNATIONAL",
     html
   });
 }
@@ -146,7 +146,7 @@ async function sendCustomerAutoReply(enquiry) {
     <!-- Header -->
     <tr>
       <td style="background:linear-gradient(135deg,#0a1628,#1e3a8a);padding:30px 40px;text-align:center;">
-        <h1 style="margin:0;color:#d4af37;font-size:22px;letter-spacing:2px;">BODAL'S INTERNATIONAL</h1>
+        <h1 style="margin:0;color:#d4af37;font-size:22px;letter-spacing:2px;">BODALS INTERNATIONAL</h1>
         <p style="margin:8px 0 0;color:rgba(255,255,255,0.7);font-size:12px;letter-spacing:3px;">WE CARE, WE COMMIT, WE CONNECT</p>
       </td>
     </tr>
@@ -182,7 +182,7 @@ async function sendCustomerAutoReply(enquiry) {
         </table>
         <p style="margin:0;color:#333;font-size:14px;line-height:1.7;">
           Warm regards,<br/>
-          <strong style="color:#0a1628;">BODAL'S INTERNATIONAL</strong><br/>
+          <strong style="color:#0a1628;">BODALS INTERNATIONAL</strong><br/>
           <span style="color:#d4af37;font-size:12px;letter-spacing:1px;">WE CARE, WE COMMIT, WE CONNECT</span>
         </p>
       </td>
@@ -190,7 +190,7 @@ async function sendCustomerAutoReply(enquiry) {
     <!-- Footer -->
     <tr>
       <td style="background:#0a1628;padding:20px 40px;text-align:center;">
-        <p style="margin:0;color:#d4af37;font-size:12px;letter-spacing:1px;">BODAL'S INTERNATIONAL</p>
+        <p style="margin:0;color:#d4af37;font-size:12px;letter-spacing:1px;">BODALS INTERNATIONAL</p>
         <p style="margin:4px 0 0;color:rgba(255,255,255,0.5);font-size:11px;">This is an automated confirmation. Please do not reply to this email.</p>
       </td>
     </tr>
@@ -200,7 +200,7 @@ async function sendCustomerAutoReply(enquiry) {
 
   return sendEmail({
     to: enquiry.email,
-    subject: "Thank you for contacting BODAL'S INTERNATIONAL",
+    subject: "Thank you for contacting BODALS INTERNATIONAL",
     html
   });
 }
