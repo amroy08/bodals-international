@@ -1,0 +1,14 @@
+# Robots.txt for BODALS INTERNATIONAL
+# https://bodalsint.com
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Allow Google to crawl all public assets
+User-agent: Googlebot
+Allow: /
+
+# Sitemap
+Sitemap: https://bodalsint.com/sitemap.xml

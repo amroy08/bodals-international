@@ -10,7 +10,6 @@ client/server/uploads/*
 !client/server/uploads/.gitkeep
 
 # Build output
-client/dist/
 client/.vite/
 .next/
 
