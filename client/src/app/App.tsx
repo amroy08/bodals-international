@@ -10,6 +10,7 @@ import { About } from "./components/about";
 import { Speciality } from "./components/speciality";
 import { Vision } from "./components/vision";
 import { Businesses } from "./components/businesses";
+import { Brochure } from "./components/brochure";
 import { Certifications } from "./components/certifications";
 import { Contact } from "./components/contact";
 import { Footer } from "./components/footer";
@@ -102,6 +103,7 @@ export default function App() {
               <Speciality />
               <Vision />
               <Businesses />
+              <Brochure />
               <Certifications />
               <Contact />
               <Footer />
