@@ -11,6 +11,10 @@ router.put('/settings', authMiddleware, logoUpload.single('logo'), updateSetting
 
 router.get('/debug-path', (req, res) => {
   const isHostinger = __dirname.includes('u110119377') || process.env.NODE_ENV === 'production';
+  const logoDir = path.join(uploadsDir, 'logo');
+  const productsDir = path.join(uploadsDir, 'products');
+  const sectionDir = path.join(uploadsDir, 'section-images');
+  
   res.json({
     __dirname,
     uploadsDir,
@@ -18,10 +22,10 @@ router.get('/debug-path', (req, res) => {
     isHostinger,
     env: process.env.NODE_ENV,
     exists: fs.existsSync(uploadsDir),
-    subdirs: {
-      logo: fs.existsSync(path.join(uploadsDir, 'logo')),
-      products: fs.existsSync(path.join(uploadsDir, 'products')),
-      sectionImages: fs.existsSync(path.join(uploadsDir, 'section-images')),
+    files: {
+      logo: fs.existsSync(logoDir) ? fs.readdirSync(logoDir) : [],
+      products: fs.existsSync(productsDir) ? fs.readdirSync(productsDir) : [],
+      sectionImages: fs.existsSync(sectionDir) ? fs.readdirSync(sectionDir) : [],
     }
   });
 });
