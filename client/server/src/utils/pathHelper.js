@@ -6,7 +6,7 @@ const isHostinger = __dirname.includes('u110119377') || process.env.NODE_ENV ===
 // In production, store uploads outside the git folder 'nodejs' so they are never wiped
 // Home folder is /home/u110119377, we store it in /home/u110119377/persistent-uploads
 const uploadsDir = isHostinger
-  ? path.resolve(__dirname, '../../../../../../persistent-uploads')
+  ? path.resolve(__dirname, '../../../../../../../../../persistent-uploads')
   : path.resolve(__dirname, '../../uploads');
 
 // Ensure directories exist
