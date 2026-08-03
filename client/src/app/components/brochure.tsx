@@ -9,7 +9,7 @@ export function Brochure() {
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
 
   const totalPages = 11;
-  const pageImage = (page: number) => `/brochure/page-${page}.png`;
+  const pageImage = (page: number) => `/brochure/page-${page}.jpg`;
   const pdfUrl = "/brochure/brochure.pdf";
 
   const handleNext = () => {
