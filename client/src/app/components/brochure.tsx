@@ -99,6 +99,7 @@ export function Brochure() {
 
   return (
     <section 
+      id="brochure"
       className="py-16 sm:py-24 lg:py-32 bg-[#fafaf7] relative overflow-hidden border-t border-b border-[#0a1628]/5"
       aria-label="Company Corporate Brochure"
     >

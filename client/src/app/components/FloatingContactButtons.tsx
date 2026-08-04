@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageCircle, Mail, X } from "lucide-react";
+import { MessageCircle, Mail, FileText } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 
 export function FloatingContactButtons() {
@@ -22,6 +22,16 @@ export function FloatingContactButtons() {
   const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent("Export Product Enquiry - BODALS INTERNATIONAL")}&body=${encodeURIComponent("Hello BODALS INTERNATIONAL,\n\nI would like to enquire about your export products.\n\nName:\nCompany:\nCountry:\nRequirement:")}`;
 
   const buttons = [
+    {
+      id: "brochure",
+      href: "#brochure",
+      icon: FileText,
+      label: "View Company Brochure",
+      tooltip: "Company Brochure",
+      bg: "#d4af37",
+      hoverBg: "#bca032",
+      external: false,
+    },
     {
       id: "whatsapp",
       href: whatsappUrl,
@@ -114,6 +124,12 @@ export function FloatingContactButtons() {
           {/* Button */}
           <motion.a
             href={btn.href}
+            onClick={(e) => {
+              if (btn.id === "brochure") {
+                e.preventDefault();
+                document.getElementById("brochure")?.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
             target={btn.external ? "_blank" : undefined}
             rel={btn.external ? "noopener noreferrer" : undefined}
             aria-label={btn.label}
