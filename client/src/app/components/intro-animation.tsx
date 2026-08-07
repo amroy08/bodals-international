@@ -158,7 +158,7 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
   return (
     <div ref={sectionRef} style={{ position: "relative", zIndex: 100 }} className="w-full">
       {/* Scroll space — shorter on mobile for faster intro */}
-      <div className="h-[300vh] sm:h-[400vh]" />
+      <div className="h-[200vh] sm:h-[280vh]" />
 
       <motion.div style={{ opacity: overlayOpacity }} className="fixed inset-0 z-[100] overflow-hidden">
 
