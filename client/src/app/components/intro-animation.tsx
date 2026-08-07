@@ -1,7 +1,7 @@
 import { motion, MotionValue, useTransform } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import introBg from "@/assets/intro_bg.jpg";
-import logoImg from "@/assets/logo_white.png";
+import logoImg from "@/assets/logo_gold.png";
 
 const FONT_BASE: React.CSSProperties = {
   fontFamily: "'Playfair Display', serif",
