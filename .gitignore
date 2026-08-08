@@ -23,3 +23,7 @@ client/.vite/
 # Logs
 *.log
 npm-debug.log*
+
+# Large raw brochure sources
+*Bodals Broucher final.pdf
+*Bodals broucher zip file/

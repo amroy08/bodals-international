@@ -42,7 +42,7 @@ export function Hero() {
 
   const heroTitle = settings?.hero_title || "BODALS INTERNATIONAL";
   const motto = settings?.motto || "We Care, We Commit, We Connect.";
-  const heroSubtitle = settings?.hero_subtitle || "Your trusted gateway to premium Indian seafood, textiles, fresh produce, cereals, and coffee — delivered to discerning buyers across the globe.";
+  const heroSubtitle = settings?.hero_subtitle || "Your trusted Indian Exporter connecting global buyers with premium seafood (Shrimp Exporter), Textiles Exporter, Agricultural Products Exporter (Onion Exporter, Indian Fruits Exporter, Rice Exporter, Indian Pulses Exporter, Spices), and Indian Coffee Exporter.";
 
   return (
     <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODALS INTERNATIONAL Premium Indian Exports">
