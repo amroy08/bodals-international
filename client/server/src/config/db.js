@@ -16,10 +16,36 @@ const pool = mysql.createPool({
 const fs = require('fs');
 const path = require('path');
 
+// Helper to safely ensure new columns exist in website_settings
+async function ensureWebsiteSettingsColumns(conn) {
+  const newCols = [
+    { name: 'show_certificates', def: 'BOOLEAN DEFAULT FALSE' },
+    { name: 'stat_quality', def: "VARCHAR(50) DEFAULT '100%'" },
+    { name: 'stat_reach', def: "VARCHAR(50) DEFAULT '5'" },
+    { name: 'stat_partnerships', def: "VARCHAR(50) DEFAULT '10'" },
+    { name: 'stat_shipments', def: "VARCHAR(50) DEFAULT '0'" },
+  ];
+  for (const col of newCols) {
+    try {
+      const [exists] = await conn.query(
+        `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'website_settings' AND COLUMN_NAME = ?`,
+        [col.name]
+      );
+      if (exists.length === 0) {
+        await conn.query(`ALTER TABLE website_settings ADD COLUMN ${col.name} ${col.def}`);
+        console.log(`✅ Added column ${col.name} to website_settings`);
+      }
+    } catch (e) {
+      console.warn(`Column check/add for ${col.name}:`, e.message);
+    }
+  }
+}
+
 // Test connection on startup
 pool.getConnection()
-  .then(conn => {
+  .then(async conn => {
     console.log('✅ MySQL connected successfully');
+    await ensureWebsiteSettingsColumns(conn);
     conn.release();
     try {
       const errorLogPath = path.join(__dirname, '../../../dist/error.txt');

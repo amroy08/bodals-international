@@ -26,7 +26,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#08111f] text-white/70 pt-14 sm:pt-20 pb-6 sm:pb-8 relative overflow-hidden" role="contentinfo" aria-label="Footer">
+    <footer className="bg-[#30030c] text-white/70 pt-14 sm:pt-20 pb-6 sm:pb-8 relative overflow-hidden" role="contentinfo" aria-label="Footer">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -43,7 +43,6 @@ export function Footer() {
                 src="/favicon.png" 
                 alt="Bodals International Icon" 
                 className="h-14 w-14 object-contain" 
-                style={{ filter: "brightness(0) invert(1)" }}
               />
               <div className="text-white text-sm tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
                 BODALS INTERNATIONAL

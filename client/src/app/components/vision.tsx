@@ -19,7 +19,7 @@ export function Vision() {
       ];
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32 bg-gradient-to-b from-[#0a1628] to-[#0d1b35] text-white relative overflow-hidden" aria-label="Our vision, purpose and core values">
+    <section className="py-16 sm:py-24 lg:py-32 bg-gradient-to-b from-[#420614] via-[#63091E] to-[#36040f] text-white relative overflow-hidden" aria-label="Our vision, purpose and core values">
       <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "linear-gradient(to right, #d4af37 1px, transparent 1px), linear-gradient(to bottom, #d4af37 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
@@ -80,7 +80,7 @@ export function Vision() {
               <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#d4af37]/10 blur-2xl group-hover:bg-[#d4af37]/20 transition" />
               <div className="relative">
                 <motion.div initial={{ scale: 0, rotate: -20 }} whileInView={{ scale: 1, rotate: 0 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.35 + i * 0.15 }}
-                  className="w-14 h-14 rounded-xl bg-[#d4af37] text-[#0a1628] flex items-center justify-center mb-5">
+                  className="w-14 h-14 rounded-xl bg-[#d4af37] text-[#63091E] flex items-center justify-center mb-5">
                   <v.icon className="w-7 h-7" />
                 </motion.div>
                 <h3 className="text-white mb-1" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.75rem", fontWeight: 700 }}>{v.title}</h3>

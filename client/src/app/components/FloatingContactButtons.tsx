@@ -48,8 +48,8 @@ export function FloatingContactButtons() {
       icon: Mail,
       label: "Send us an email",
       tooltip: "Send Email",
-      bg: "#0a1628",
-      hoverBg: "#1e3a8a",
+      bg: "#63091E",
+      hoverBg: "#800d28",
       external: false,
     },
   ];

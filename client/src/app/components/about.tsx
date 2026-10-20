@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Award, Globe2, Handshake } from "lucide-react";
+import { Award, Globe2, Handshake, Package } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 
 const FALLBACK_ABOUT = [
@@ -120,11 +120,12 @@ export function About() {
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-8 sm:mt-10 pt-8 sm:pt-10 border-t border-black/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 sm:mt-10 pt-8 sm:pt-10 border-t border-black/10">
               {[
-                { icon: Award, label: "Quality First", num: "100%" },
-                { icon: Globe2, label: "Global Reach", num: "30+" },
-                { icon: Handshake, label: "Partnerships", num: "200+" },
+                { icon: Award, label: "Quality First", num: settings?.stat_quality || "100%" },
+                { icon: Globe2, label: "Global Reach", num: settings?.stat_reach || "5" },
+                { icon: Handshake, label: "Partnerships", num: settings?.stat_partnerships || "10" },
+                { icon: Package, label: "Shipments", num: settings?.stat_shipments || "0" },
               ].map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 + i * 0.15 }}>
                   <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.5 + i * 0.15 }}>

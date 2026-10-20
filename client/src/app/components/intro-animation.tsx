@@ -175,7 +175,7 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
             <source src="/intro_bg.mp4" type="video/mp4" />
           </video>
           {/* Elegant dark overlay so the white text and logo pop beautifully */}
-          <div className="absolute inset-0 bg-[#0a1628]/65" />
+          <div className="absolute inset-0 bg-[#420614]/75" />
         </div>
 
         {/* ── LAYER 1 (ACT 3): Full-screen gold world map image
@@ -194,7 +194,7 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
             }}
           />
           {/* Elegant dark overlay so the white logo pops beautifully against the gold map */}
-          <div className="absolute inset-0 bg-[#0a1628]/75" />
+          <div className="absolute inset-0 bg-[#420614]/80" />
         </motion.div>
 
         {/* ── LAYER 2 (ACT 1 & 2): Slogan text — zooms toward O ── */}

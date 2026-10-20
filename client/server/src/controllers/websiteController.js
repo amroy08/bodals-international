@@ -32,7 +32,8 @@ const updateSettings = async (req, res) => {
       mobile, email, address,
       facebook_url, instagram_url, linkedin_url, whatsapp_url,
       footer_text,
-      whatsapp_number, whatsapp_default_message, contact_email, floating_contact_enabled
+      whatsapp_number, whatsapp_default_message, contact_email, floating_contact_enabled,
+      show_certificates, stat_quality, stat_reach, stat_partnerships, stat_shipments
     } = req.body;
 
     // Build update fields dynamically
@@ -56,6 +57,11 @@ const updateSettings = async (req, res) => {
     if (whatsapp_default_message !== undefined) fields.whatsapp_default_message = whatsapp_default_message;
     if (contact_email !== undefined) fields.contact_email = contact_email;
     if (floating_contact_enabled !== undefined) fields.floating_contact_enabled = floating_contact_enabled === true || floating_contact_enabled === 'true' || floating_contact_enabled === 1 || floating_contact_enabled === '1' ? 1 : 0;
+    if (show_certificates !== undefined) fields.show_certificates = show_certificates === true || show_certificates === 'true' || show_certificates === 1 || show_certificates === '1' ? 1 : 0;
+    if (stat_quality !== undefined) fields.stat_quality = stat_quality;
+    if (stat_reach !== undefined) fields.stat_reach = stat_reach;
+    if (stat_partnerships !== undefined) fields.stat_partnerships = stat_partnerships;
+    if (stat_shipments !== undefined) fields.stat_shipments = stat_shipments;
 
     // Handle logo upload
     if (req.file) {

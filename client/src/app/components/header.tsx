@@ -51,7 +51,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
   return (
     <header className="sticky top-0 z-50 w-full" role="banner">
       {/* Top bar */}
-      <div className="bg-[#0a1628] text-white/80 text-[10px] sm:text-xs">
+      <div className="bg-[#63091E] text-white/90 text-[10px] sm:text-xs shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-3 sm:gap-5 min-w-0">
             <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex items-center gap-1 sm:gap-1.5 hover:text-[#d4af37] transition whitespace-nowrap" aria-label={`Call us at ${phone}`}>
@@ -94,7 +94,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
                 key={n.id}
                 onClick={() => goTo(n.id)}
                 className={`relative px-4 py-2 text-sm transition ${
-                  active === n.id ? "text-[#0a1628]" : "text-[#717182] hover:text-[#0a1628]"
+                  active === n.id ? "text-[#63091E] font-semibold" : "text-[#717182] hover:text-[#63091E]"
                 }`}
                 style={{ fontFamily: "Inter" }}
               >
@@ -109,14 +109,14 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
             ))}
             <button
               onClick={() => goTo("contact")}
-              className="ml-3 px-5 py-2.5 bg-[#0a1628] text-white text-sm rounded-full hover:bg-[#1e3a8a] transition flex items-center gap-2"
+              className="ml-3 px-5 py-2.5 bg-[#63091E] text-white text-sm rounded-full hover:bg-[#800d28] transition flex items-center gap-2 shadow-sm"
               style={{ fontFamily: "Inter" }}
             >
               Send Enquiry
             </button>
           </nav>
 
-          <button className="md:hidden text-[#0a1628]" onClick={() => setOpen((o) => !o)}>
+          <button className="md:hidden text-[#63091E]" onClick={() => setOpen((o) => !o)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
@@ -135,7 +135,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
                     key={n.id}
                     onClick={() => goTo(n.id)}
                     className={`text-left px-3 py-2 rounded ${
-                      active === n.id ? "bg-[#0a1628] text-white" : "text-[#0a1628]"
+                      active === n.id ? "bg-[#63091E] text-white" : "text-[#63091E]"
                     }`}
                   >
                     {n.label}

@@ -36,6 +36,17 @@ export function ContentManagement() {
     { key: "floating_contact_enabled", label: "Floating Contact Buttons", type: "toggle" },
   ];
 
+  const statFields = [
+    { key: "stat_quality", label: "Quality First Stat (e.g. 100%)" },
+    { key: "stat_reach", label: "Global Reach Stat (e.g. 5 or 5+)" },
+    { key: "stat_partnerships", label: "Partnerships Stat (e.g. 10 or 10+)" },
+    { key: "stat_shipments", label: "Shipments Stat (e.g. 0)" },
+  ];
+
+  const certificateFields = [
+    { key: "show_certificates", label: "View Certificate Buttons on Website", type: "toggle" },
+  ];
+
   const textareaFields = ["about_us", "vision", "purpose", "hero_subtitle", "footer_text", "whatsapp_default_message"];
 
   const saveField = async () => {
@@ -43,7 +54,7 @@ export function ContentManagement() {
     setSavingField(true);
     try {
       let value: any = editValue;
-      if (editField === "floating_contact_enabled") {
+      if (editField === "floating_contact_enabled" || editField === "show_certificates") {
         value = editValue === "true" || editValue === "1" ? true : false;
       }
       const res = await websiteApi.updateSettings({ [editField]: value });
@@ -71,14 +82,14 @@ export function ContentManagement() {
   };
 
   const getDisplayValue = (key: string, val: any) => {
-    if (key === "floating_contact_enabled") {
+    if (key === "floating_contact_enabled" || key === "show_certificates") {
       return val === 1 || val === true ? "Enabled" : "Disabled";
     }
     return (val || "—").toString().substring(0, 200) + ((val || "").toString().length > 200 ? "..." : "");
   };
 
   const getEditInitValue = (key: string) => {
-    if (key === "floating_contact_enabled") {
+    if (key === "floating_contact_enabled" || key === "show_certificates") {
       return settings[key] === 1 || settings[key] === true ? "true" : "false";
     }
     return settings[key] || "";
@@ -121,6 +132,51 @@ export function ContentManagement() {
         ))}
       </div>
 
+      {/* Statistics Settings (WhatsApp update) */}
+      <div className="mt-8 mb-2">
+        <h3 className="text-[#0a1628] text-base" style={{ fontWeight: 600 }}>Website Statistics & Numbers</h3>
+        <p className="text-[#717182] text-xs mt-1">Easily update the stats displayed in the About Us and Hero sections (Quality First, Global Reach, Partnerships, Shipments).</p>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-3 mb-6">
+        {statFields.map(f => (
+          <div key={f.key} className="p-5 bg-white rounded-xl border border-black/5 flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs tracking-wider uppercase text-[#717182] mb-1">{f.label}</div>
+              <div className="text-[#0a1628] text-lg font-bold">
+                {getDisplayValue(f.key, settings[f.key])}
+              </div>
+            </div>
+            <button onClick={() => { setEditField(f.key); setEditValue(getEditInitValue(f.key)); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1">
+              <Edit className="w-3.5 h-3.5" /> Edit
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Certificate Visibility Settings */}
+      <div className="mt-8 mb-2">
+        <h3 className="text-[#0a1628] text-base" style={{ fontWeight: 600 }}>Certificates Visibility Settings</h3>
+        <p className="text-[#717182] text-xs mt-1">Temporarily show or hide the &quot;View Certificate&quot; buttons on the public website.</p>
+      </div>
+      <div className="grid gap-3 mb-6">
+        {certificateFields.map(f => (
+          <div key={f.key} className="p-5 bg-white rounded-xl border border-black/5 flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs tracking-wider uppercase text-[#717182] mb-1">{f.label}</div>
+              <div className="text-[#0a1628] text-sm">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${settings[f.key] === 1 || settings[f.key] === true ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${settings[f.key] === 1 || settings[f.key] === true ? "bg-emerald-500" : "bg-red-400"}`} />
+                  {getDisplayValue(f.key, settings[f.key])}
+                </span>
+              </div>
+            </div>
+            <button onClick={() => { setEditField(f.key); setEditValue(getEditInitValue(f.key)); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1">
+              <Edit className="w-3.5 h-3.5" /> Edit
+            </button>
+          </div>
+        ))}
+      </div>
+
       {/* Floating Contact Settings */}
       <div className="mt-8 mb-2">
         <h3 className="text-[#0a1628] text-base" style={{ fontWeight: 600 }}>Floating Contact Settings</h3>
@@ -153,8 +209,8 @@ export function ContentManagement() {
       {editField && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !savingField && setEditField(null)}>
           <div className="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-            <h3 className="text-[#0a1628] mb-4" style={{ fontWeight: 600 }}>Edit {[...fields, ...floatingFields].find(f => f.key === editField)?.label}</h3>
-            {editField === "floating_contact_enabled" ? (
+            <h3 className="text-[#0a1628] mb-4" style={{ fontWeight: 600 }}>Edit {[...fields, ...floatingFields, ...statFields, ...certificateFields].find(f => f.key === editField)?.label}</h3>
+            {editField === "floating_contact_enabled" || editField === "show_certificates" ? (
               <select value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField}>
                 <option value="true">Enabled</option>
                 <option value="false">Disabled</option>

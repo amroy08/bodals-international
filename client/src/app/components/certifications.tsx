@@ -3,9 +3,10 @@ import { FileText, Eye, ShieldCheck } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 
 export function Certifications() {
-  const { certifications } = useWebsite();
+  const { certifications, settings } = useWebsite();
 
   const certs = certifications.length > 0 ? certifications : [];
+  const showCertificateBtn = settings?.show_certificates === 1 || settings?.show_certificates === true || settings?.show_certificates === "1" || settings?.show_certificates === "true";
 
   const handleView = (cert: any) => {
     if (cert.document) {
@@ -91,17 +92,19 @@ export function Certifications() {
               </div>
               <div className="text-[#0a1628] mb-1" style={{ fontFamily: "Playfair Display, serif", fontSize: "1.5rem", fontWeight: 700 }}>{c.name}</div>
               <div className="text-sm text-[#717182] mb-5">{c.full_name || c.description}</div>
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
-                className="flex justify-center mt-2"
-              >
-                <button onClick={() => handleView(c)} className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#0a1628]/10 bg-white text-[#0a1628] font-medium text-sm hover:bg-[#0a1628] hover:text-white hover:border-[#0a1628] shadow-sm hover:shadow transition-all duration-300">
-                  <Eye className="w-4 h-4" /> View Certificate
-                </button>
-              </motion.div>
+              {showCertificateBtn && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
+                  className="flex justify-center mt-2"
+                >
+                  <button onClick={() => handleView(c)} className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#63091E]/10 bg-white text-[#63091E] font-medium text-sm hover:bg-[#63091E] hover:text-white hover:border-[#63091E] shadow-sm hover:shadow transition-all duration-300">
+                    <Eye className="w-4 h-4" /> View Certificate
+                  </button>
+                </motion.div>
+              )}
             </motion.div>
           ))}
         </div>

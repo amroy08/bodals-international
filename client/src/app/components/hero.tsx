@@ -45,7 +45,7 @@ export function Hero() {
   const heroSubtitle = settings?.hero_subtitle || "Your trusted Indian Exporter connecting global buyers with premium seafood (Shrimp Exporter), Textiles Exporter, Agricultural Products Exporter (Onion Exporter, Indian Fruits Exporter, Rice Exporter, Indian Pulses Exporter, Spices), and Indian Coffee Exporter.";
 
   return (
-    <section id="home" className="relative overflow-hidden bg-[#0a1628] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODALS INTERNATIONAL Premium Indian Exports">
+    <section id="home" className="relative overflow-hidden bg-[#420614] text-white border-b border-[#d4af37]/20" aria-label="Hero section — BODALS INTERNATIONAL Premium Indian Exports">
       {/* Background Slideshow */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
@@ -61,10 +61,10 @@ export function Hero() {
         
         {/* Layered Overlays for Ultimate Readability & Aesthetics */}
         {/* Dark overlay: heavier on the left for text readability, fading to right to reveal the active photo */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/90 via-[#0a1628]/65 to-[#0a1628]/35 md:bg-gradient-to-r md:from-[#0a1628]/95 md:via-[#0a1628]/60 md:to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#420614]/92 via-[#63091E]/75 to-[#420614]/45 md:bg-gradient-to-r md:from-[#420614]/95 md:via-[#63091E]/70 md:to-transparent z-10" />
         
         {/* Bottom vertical gradient to blend smoothly into the dark section footer */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#0a1628] via-[#0a1628]/70 to-transparent z-10" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#420614] via-[#420614]/75 to-transparent z-10" />
       </div>
 
       {/* Decorative grid */}
@@ -91,7 +91,7 @@ export function Hero() {
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-8">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-6 bg-[#0a1628]/45 backdrop-blur-sm">
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 text-[#d4af37] text-xs tracking-[0.2em] uppercase mb-6 bg-[#63091E]/60 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 bg-[#d4af37] rounded-full animate-pulse" />
               Indian Merchant Export House
             </motion.div>
@@ -114,7 +114,7 @@ export function Hero() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.48 }}
               className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-              <button onClick={() => document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" })} className="group px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4af37] text-[#0a1628] rounded-full hover:bg-[#e6c356] transition flex items-center justify-center gap-2 text-sm sm:text-base" style={{ fontFamily: "Inter" }}>
+              <button onClick={() => document.getElementById("businesses")?.scrollIntoView({ behavior: "smooth" })} className="group px-6 sm:px-7 py-3 sm:py-3.5 bg-[#d4af37] text-[#63091E] font-semibold rounded-full hover:bg-[#e6c356] transition flex items-center justify-center gap-2 text-sm sm:text-base shadow-md" style={{ fontFamily: "Inter" }}>
                 Explore Our Businesses <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
               </button>
               <button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} className="px-6 sm:px-7 py-3 sm:py-3.5 border border-white/30 rounded-full hover:bg-white/10 transition flex items-center justify-center gap-2 text-sm sm:text-base" style={{ fontFamily: "Inter" }}>
@@ -126,10 +126,12 @@ export function Hero() {
           <div className="hidden lg:flex lg:col-span-4 flex-col items-start lg:items-end justify-end h-full">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.6 }}
               className="relative">
-              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} className="bg-[#0a1628]/60 backdrop-blur-md text-white p-6 rounded-xl border border-white/10 shadow-2xl max-w-[200px] lg:self-end">
-                <div className="text-xs text-white/50 tracking-wide uppercase">Export Reach</div>
+              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity }} className="bg-[#63091E]/70 backdrop-blur-md text-white p-6 rounded-xl border border-white/15 shadow-2xl max-w-[200px] lg:self-end">
+                <div className="text-xs text-white/60 tracking-wide uppercase">Export Reach</div>
                 <div className="flex items-end gap-1 mt-1">
-                  <span style={{ fontFamily: "Playfair Display, serif", fontSize: "2rem", fontWeight: 700, color: "#d4af37" }}>30+</span>
+                  <span style={{ fontFamily: "Playfair Display, serif", fontSize: "2rem", fontWeight: 700, color: "#d4af37" }}>
+                    {settings?.stat_reach ? `${settings.stat_reach}${settings.stat_reach.endsWith('+') || settings.stat_reach.endsWith('%') ? '' : '+'}` : "5+"}
+                  </span>
                   <span className="text-sm text-white/70 mb-1.5">Countries</span>
                 </div>
               </motion.div>
@@ -141,7 +143,7 @@ export function Hero() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mt-12 sm:mt-16 lg:mt-24">
           {TRUST.map((t, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 30, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.7 + i * 0.1, type: "spring", stiffness: 200, damping: 20 }}
-              className="group p-5 rounded-xl bg-[#0a1628]/45 border border-white/10 backdrop-blur hover:bg-white/10 hover:border-[#d4af37]/40 transition">
+              className="group p-5 rounded-xl bg-[#63091E]/40 border border-white/10 backdrop-blur hover:bg-white/10 hover:border-[#d4af37]/40 transition">
               <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.9 + i * 0.1 }}
                 className="w-10 h-10 rounded-lg bg-[#d4af37]/15 text-[#d4af37] flex items-center justify-center mb-3 group-hover:scale-110 transition">
                 <t.icon className="w-5 h-5" />

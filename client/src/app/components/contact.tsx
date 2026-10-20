@@ -144,7 +144,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, type: "spring", stiffness: 80, damping: 15 }}
-            className="lg:col-span-2 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#0a1628] to-[#1e3a8a] text-white relative overflow-hidden"
+            className="lg:col-span-2 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#420614] via-[#63091E] to-[#420614] text-white relative overflow-hidden shadow-xl"
           >
             <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[#d4af37]/10 blur-3xl" />
             <div className="relative">
@@ -312,7 +312,7 @@ export function Contact() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="w-full px-6 py-3.5 bg-[#0a1628] text-white rounded-full hover:bg-[#1e3a8a] transition flex items-center justify-center gap-2 group disabled:opacity-60"
+                    className="w-full px-6 py-3.5 bg-[#63091E] text-white rounded-full hover:bg-[#800d28] transition flex items-center justify-center gap-2 group disabled:opacity-60 shadow-md"
                     style={{ fontFamily: "Inter" }}
                   >
                     {loading ? "Submitting..." : "Send Enquiry"} {!loading && <Send className="w-4 h-4 group-hover:translate-x-1 transition" />}

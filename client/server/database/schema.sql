@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS website_settings (
   whatsapp_default_message TEXT NULL,
   contact_email VARCHAR(255) DEFAULT 'manishbodal@bodalsint.com',
   floating_contact_enabled BOOLEAN DEFAULT TRUE,
+  show_certificates BOOLEAN DEFAULT FALSE,
+  stat_quality VARCHAR(50) DEFAULT '100%',
+  stat_reach VARCHAR(50) DEFAULT '5',
+  stat_partnerships VARCHAR(50) DEFAULT '10',
+  stat_shipments VARCHAR(50) DEFAULT '0',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
