@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, X } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 import { formatSocialUrl } from "../../utils/url";
+import logoWhiteText from "@/assets/logo_white_text.svg";
 
 export function Footer() {
   const { settings, products, setActiveProductId } = useWebsite();
@@ -38,15 +39,12 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0 }}
           >
-            <div className="flex flex-col items-start gap-4 mb-5">
+            <div className="flex flex-col items-start mb-5">
               <img 
-                src="/favicon.png" 
-                alt="Bodals International Icon" 
-                className="h-14 w-14 object-contain" 
+                src={logoWhiteText} 
+                alt="Bodals International Logo" 
+                className="h-20 sm:h-24 w-auto max-w-[280px] sm:max-w-[320px] object-contain hover:scale-105 transition-transform origin-left" 
               />
-              <div className="text-white text-sm tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
-                BODALS INTERNATIONAL
-              </div>
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: "Inter" }}>{footerText}</p>
             <div className="text-[#d4af37] tracking-[0.2em] text-xs uppercase">{motto.replace(/,/g, ' ·')}</div>

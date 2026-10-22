@@ -210,7 +210,7 @@ export function Contact() {
                 <img 
                   src={logoWhiteText} 
                   alt="Bodals International Logo" 
-                  className="h-20 sm:h-24 w-auto object-contain opacity-95 hover:opacity-100 transition" 
+                  className="h-28 sm:h-36 w-auto max-w-[280px] sm:max-w-[320px] object-contain opacity-100 hover:scale-105 transition-all duration-300 drop-shadow-md" 
                 />
               </motion.div>
 

@@ -277,9 +277,9 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
                 src={logoImg}
                 alt="Bodals International"
                 style={{
-                  width: "min(75vw, 550px)",
+                  width: "min(85vw, 680px)",
                   height: "auto",
-                  maxHeight: "min(42vh, 260px)",
+                  maxHeight: "min(50vh, 340px)",
                   objectFit: "contain",
                 }}
                 draggable={false}
