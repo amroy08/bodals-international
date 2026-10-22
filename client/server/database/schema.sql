@@ -42,6 +42,17 @@ CREATE TABLE IF NOT EXISTS website_settings (
   stat_reach VARCHAR(50) DEFAULT '5',
   stat_partnerships VARCHAR(50) DEFAULT '10',
   stat_shipments VARCHAR(50) DEFAULT '0',
+  brochure_pdf VARCHAR(500) DEFAULT NULL,
+  seo_meta_title VARCHAR(500) DEFAULT 'BODALS INTERNATIONAL — Global Export & Sourcing',
+  seo_meta_description TEXT NULL,
+  seo_meta_keywords TEXT NULL,
+  announcement_enabled BOOLEAN DEFAULT FALSE,
+  announcement_text VARCHAR(500) DEFAULT '',
+  announcement_link VARCHAR(500) DEFAULT '',
+  working_hours VARCHAR(255) DEFAULT 'Mon – Sat: 9:00 AM – 7:00 PM IST',
+  section_brochure_enabled BOOLEAN DEFAULT TRUE,
+  section_specialities_enabled BOOLEAN DEFAULT TRUE,
+  section_intro_animation_enabled BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

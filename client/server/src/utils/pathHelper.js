@@ -10,7 +10,7 @@ const uploadsDir = isHostinger
   : path.resolve(__dirname, '../../uploads');
 
 // Ensure directories exist
-const subdirs = ['products', 'certifications', 'logo', 'section-images'];
+const subdirs = ['products', 'certifications', 'logo', 'section-images', 'brochure'];
 subdirs.forEach(sub => {
   const dirPath = path.join(uploadsDir, sub);
   if (!fs.existsSync(dirPath)) {

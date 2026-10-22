@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Filter, Eye, Trash2, X } from "lucide-react";
+import { Search, Filter, Eye, Trash2, X, Download } from "lucide-react";
 import { PageHeader, StatusBadge, ActionBtn, ConfirmModal } from "./AdminShared";
 import { enquiryApi } from "../../../api/enquiryApi";
 import toast from "react-hot-toast";
@@ -33,9 +33,50 @@ export function EnquiriesManagement() {
     catch { toast.error("Failed"); }
   };
 
+  const exportToCSV = () => {
+    const list = data.enquiries || [];
+    if (list.length === 0) {
+      toast.error("No enquiries to export");
+      return;
+    }
+    const headers = ["ID", "Name", "Position", "Company", "Email", "Mobile", "Location", "Message", "Status", "Date"];
+    const rows = list.map((item: any) => [
+      item.id,
+      `"${(item.name || "").replace(/"/g, '""')}"`,
+      `"${(item.position || "").replace(/"/g, '""')}"`,
+      `"${(item.company || "").replace(/"/g, '""')}"`,
+      `"${(item.email || "").replace(/"/g, '""')}"`,
+      `"${(item.mobile || "").replace(/"/g, '""')}"`,
+      `"${(item.city_country || "").replace(/"/g, '""')}"`,
+      `"${(item.message || "").replace(/"/g, '""')}"`,
+      `"${(item.status || "").replace(/"/g, '""')}"`,
+      `"${new Date(item.created_at).toLocaleString()}"`
+    ]);
+
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `bodals_enquiries_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`Exported ${list.length} enquiries to CSV`);
+  };
+
   return (
     <>
-      <PageHeader title="Enquiries" sub="Track and respond to all customer enquiries." />
+      <div className="flex items-center justify-between mb-5 flex-wrap gap-4">
+        <PageHeader title="Enquiries" sub="Track and respond to all customer enquiries." />
+        <button
+          onClick={exportToCSV}
+          className="px-3.5 py-2 bg-[#0a1628] text-white hover:bg-[#1e3a8a] rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-sm"
+        >
+          <Download className="w-4 h-4 text-[#d4af37]" /> Export to CSV
+        </button>
+      </div>
+
       <div className="flex items-center gap-3 mb-5 flex-wrap">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#717182]" />

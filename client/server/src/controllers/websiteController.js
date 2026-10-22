@@ -33,7 +33,11 @@ const updateSettings = async (req, res) => {
       facebook_url, instagram_url, linkedin_url, whatsapp_url,
       footer_text,
       whatsapp_number, whatsapp_default_message, contact_email, floating_contact_enabled,
-      show_certificates, stat_quality, stat_reach, stat_partnerships, stat_shipments
+      show_certificates, stat_quality, stat_reach, stat_partnerships, stat_shipments,
+      seo_meta_title, seo_meta_description, seo_meta_keywords,
+      announcement_enabled, announcement_text, announcement_link,
+      working_hours,
+      section_brochure_enabled, section_specialities_enabled, section_intro_animation_enabled
     } = req.body;
 
     // Build update fields dynamically
@@ -63,15 +67,38 @@ const updateSettings = async (req, res) => {
     if (stat_partnerships !== undefined) fields.stat_partnerships = stat_partnerships;
     if (stat_shipments !== undefined) fields.stat_shipments = stat_shipments;
 
-    // Handle logo upload
-    if (req.file) {
-      // Delete old logo if exists
+    // New fields
+    if (seo_meta_title !== undefined) fields.seo_meta_title = seo_meta_title;
+    if (seo_meta_description !== undefined) fields.seo_meta_description = seo_meta_description;
+    if (seo_meta_keywords !== undefined) fields.seo_meta_keywords = seo_meta_keywords;
+    if (announcement_enabled !== undefined) fields.announcement_enabled = announcement_enabled === true || announcement_enabled === 'true' || announcement_enabled === 1 || announcement_enabled === '1' ? 1 : 0;
+    if (announcement_text !== undefined) fields.announcement_text = announcement_text;
+    if (announcement_link !== undefined) fields.announcement_link = announcement_link;
+    if (working_hours !== undefined) fields.working_hours = working_hours;
+    if (section_brochure_enabled !== undefined) fields.section_brochure_enabled = section_brochure_enabled === true || section_brochure_enabled === 'true' || section_brochure_enabled === 1 || section_brochure_enabled === '1' ? 1 : 0;
+    if (section_specialities_enabled !== undefined) fields.section_specialities_enabled = section_specialities_enabled === true || section_specialities_enabled === 'true' || section_specialities_enabled === 1 || section_specialities_enabled === '1' ? 1 : 0;
+    if (section_intro_animation_enabled !== undefined) fields.section_intro_animation_enabled = section_intro_animation_enabled === true || section_intro_animation_enabled === 'true' || section_intro_animation_enabled === 1 || section_intro_animation_enabled === '1' ? 1 : 0;
+
+    // Handle uploaded files (req.files when using upload.fields, or req.file fallback)
+    const logoFile = req.files?.logo?.[0] || (req.file?.fieldname === 'logo' ? req.file : null);
+    const brochureFile = req.files?.brochure?.[0] || (req.file?.fieldname === 'brochure' ? req.file : null);
+
+    if (logoFile) {
       const [existing] = await db.query('SELECT logo FROM website_settings LIMIT 1');
       if (existing.length > 0 && existing[0].logo) {
         const oldPath = path.join(uploadsDir, existing[0].logo);
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
-      fields.logo = 'logo/' + req.file.filename;
+      fields.logo = 'logo/' + logoFile.filename;
+    }
+
+    if (brochureFile) {
+      const [existing] = await db.query('SELECT brochure_pdf FROM website_settings LIMIT 1');
+      if (existing.length > 0 && existing[0].brochure_pdf) {
+        const oldPath = path.join(uploadsDir, existing[0].brochure_pdf);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      }
+      fields.brochure_pdf = 'brochure/' + brochureFile.filename;
     }
 
     if (Object.keys(fields).length === 0) {

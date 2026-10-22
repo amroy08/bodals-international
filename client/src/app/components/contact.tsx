@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, Send, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook, MessageCircle, Send, CheckCircle2, Clock } from "lucide-react";
 import { useWebsite } from "../../contexts/WebsiteContext";
 import { enquiryApi } from "../../api/enquiryApi";
 import { formatSocialUrl } from "../../utils/url";
@@ -175,6 +175,7 @@ export function Contact() {
                   { Icon: Phone, label: "Mobile", value: phone, href: `tel:${phone.replace(/\s/g, '')}` },
                   { Icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
                   { Icon: MapPin, label: "Address", value: address, isAddress: true },
+                  ...(settings?.working_hours ? [{ Icon: Clock, label: "Working Hours", value: settings.working_hours, isAddress: true }] : []),
                 ].map(({ Icon, label, value, href, isAddress }, i) => (
                   <motion.div
                     key={label}

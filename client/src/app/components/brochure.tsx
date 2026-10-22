@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Download, Maximize2, X, Eye, FileText } from "lucide-react";
+import { useWebsite } from "../../contexts/WebsiteContext";
 
 export function Brochure() {
+  const { settings } = useWebsite();
   const [currentPage, setCurrentPage] = useState(1);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
@@ -10,7 +12,7 @@ export function Brochure() {
 
   const totalPages = 11;
   const pageImage = (page: number) => `/brochure/page-${page}.jpg`;
-  const pdfUrl = "/brochure/brochure.pdf";
+  const pdfUrl = settings?.brochure_pdf ? `/api/uploads/${settings.brochure_pdf}` : "/brochure/brochure.pdf";
 
   const handleNext = () => {
     if (currentPage < totalPages) {

@@ -72,10 +72,62 @@ const certificationUpload = multer({
   limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 });
 
-const logoUpload = multer({
-  storage: logoStorage,
-  fileFilter: imageFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+// Storage for brochure PDF
+const brochureStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, getUploadPath('brochure'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'brochure-' + uniqueSuffix + path.extname(file.originalname));
+  }
 });
 
-module.exports = { productUpload, certificationUpload, logoUpload };
+const brochureFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (ext === '.pdf' || file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new Error('Only PDF files are allowed for brochure'), false);
+  }
+};
+
+const brochureUpload = multer({
+  storage: brochureStorage,
+  fileFilter: brochureFilter,
+  limits: { fileSize: 50 * 1024 * 1024 } // 50MB
+});
+
+// Multi-storage for settings: logo or brochure
+const settingsStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (file.fieldname === 'brochure') {
+      cb(null, getUploadPath('brochure'));
+    } else {
+      cb(null, getUploadPath('logo'));
+    }
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const prefix = file.fieldname === 'brochure' ? 'brochure-' : 'logo-';
+    cb(null, prefix + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const settingsFilter = (req, file, cb) => {
+  if (file.fieldname === 'brochure') {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (ext === '.pdf' || file.mimetype === 'application/pdf') cb(null, true);
+    else cb(new Error('Only PDF files are allowed for brochure'), false);
+  } else {
+    imageFilter(req, file, cb);
+  }
+};
+
+const settingsUpload = multer({
+  storage: settingsStorage,
+  fileFilter: settingsFilter,
+  limits: { fileSize: 50 * 1024 * 1024 }
+});
+
+module.exports = { productUpload, certificationUpload, logoUpload, brochureUpload, settingsUpload };

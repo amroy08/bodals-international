@@ -24,6 +24,17 @@ async function ensureWebsiteSettingsColumns(conn) {
     { name: 'stat_reach', def: "VARCHAR(50) DEFAULT '5'" },
     { name: 'stat_partnerships', def: "VARCHAR(50) DEFAULT '10'" },
     { name: 'stat_shipments', def: "VARCHAR(50) DEFAULT '0'" },
+    { name: 'brochure_pdf', def: 'VARCHAR(500) DEFAULT NULL' },
+    { name: 'seo_meta_title', def: "VARCHAR(500) DEFAULT 'BODALS INTERNATIONAL — Global Export & Sourcing'" },
+    { name: 'seo_meta_description', def: "TEXT DEFAULT NULL" },
+    { name: 'seo_meta_keywords', def: "TEXT DEFAULT NULL" },
+    { name: 'announcement_enabled', def: 'BOOLEAN DEFAULT FALSE' },
+    { name: 'announcement_text', def: "VARCHAR(500) DEFAULT ''" },
+    { name: 'announcement_link', def: "VARCHAR(500) DEFAULT ''" },
+    { name: 'working_hours', def: "VARCHAR(255) DEFAULT 'Mon – Sat: 9:00 AM – 7:00 PM IST'" },
+    { name: 'section_brochure_enabled', def: 'BOOLEAN DEFAULT TRUE' },
+    { name: 'section_specialities_enabled', def: 'BOOLEAN DEFAULT TRUE' },
+    { name: 'section_intro_animation_enabled', def: 'BOOLEAN DEFAULT TRUE' },
   ];
   for (const col of newCols) {
     try {

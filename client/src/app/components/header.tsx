@@ -50,6 +50,23 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
 
   return (
     <header className="sticky top-0 z-50 w-full" role="banner">
+      {/* Announcement Bar */}
+      {(settings?.announcement_enabled === 1 || settings?.announcement_enabled === true) && settings?.announcement_text && (
+        <div className="bg-[#420614] text-[#d4af37] text-[11px] sm:text-xs py-1.5 px-3 border-b border-[#d4af37]/20 text-center font-medium tracking-wide">
+          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
+            <span>{settings.announcement_text}</span>
+            {settings.announcement_link && (
+              <a 
+                href={settings.announcement_link} 
+                className="underline hover:text-white transition font-semibold"
+              >
+                Learn More →
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Top bar */}
       <div className="bg-[#63091E] text-white/90 text-[10px] sm:text-xs shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-2 sm:gap-4">

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { LayoutDashboard, FileText, Package, Award, MessageSquare, BarChart3, Settings, LogOut, Lock, Mail, Image as ImageLucide } from "lucide-react";
+import { LayoutDashboard, FileText, Package, Award, MessageSquare, BarChart3, Settings, LogOut, Lock, Mail, Image as ImageLucide, Sparkles } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Dashboard } from "./admin/Dashboard";
 import { ContentManagement } from "./admin/ContentManagement";
 import { ProductsManagement } from "./admin/ProductsManagement";
 import { CertificationsManagement } from "./admin/CertificationsManagement";
+import { SpecialitiesManagement } from "./admin/SpecialitiesManagement";
 import { EnquiriesManagement } from "./admin/EnquiriesManagement";
 import { Analytics } from "./admin/Analytics";
 import { ImageManagement } from "./admin/ImageManagement";
@@ -23,6 +24,7 @@ export function AdminPanel({ onExit }: { onExit: () => void }) {
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "content", label: "Website Content", icon: FileText },
     { id: "products", label: "Products", icon: Package },
+    { id: "specialities", label: "Specialities", icon: Sparkles },
     { id: "certifications", label: "Certifications", icon: Award },
     { id: "enquiries", label: "Enquiries", icon: MessageSquare },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
@@ -56,6 +58,7 @@ export function AdminPanel({ onExit }: { onExit: () => void }) {
         {section === "dashboard" && <Dashboard />}
         {section === "content" && <ContentManagement />}
         {section === "products" && <ProductsManagement />}
+        {section === "specialities" && <SpecialitiesManagement />}
         {section === "certifications" && <CertificationsManagement />}
         {section === "enquiries" && <EnquiriesManagement />}
         {section === "analytics" && <Analytics />}
