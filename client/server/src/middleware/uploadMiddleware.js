@@ -72,6 +72,12 @@ const certificationUpload = multer({
   limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 });
 
+const logoUpload = multer({
+  storage: logoStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+});
+
 // Storage for brochure PDF
 const brochureStorage = multer.diskStorage({
   destination: (req, file, cb) => {
