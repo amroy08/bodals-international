@@ -6,10 +6,11 @@ import { enquiryApi } from "../../api/enquiryApi";
 import { formatSocialUrl } from "../../utils/url";
 import toast from "react-hot-toast";
 import defaultLogo from "@/assets/logo_black.png";
+import logoWhiteText from "@/assets/logo_white_text.svg";
 
 export function Contact() {
   const { settings } = useWebsite();
-  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : defaultLogo;
+  const logoUrl = settings?.logo ? `/api/uploads/${settings.logo}` : logoWhiteText;
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -209,8 +210,8 @@ export function Contact() {
                 <img 
                   src={logoUrl} 
                   alt="Bodals International Logo" 
-                  className="h-20 sm:h-24 w-auto object-contain opacity-90 hover:opacity-100 transition" 
-                  onError={(e) => { e.currentTarget.src = defaultLogo; }}
+                  className="h-20 sm:h-24 w-auto object-contain opacity-95 hover:opacity-100 transition" 
+                  onError={(e) => { e.currentTarget.src = logoWhiteText; }}
                 />
               </motion.div>
 
