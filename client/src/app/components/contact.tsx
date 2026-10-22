@@ -208,10 +208,9 @@ export function Contact() {
                 className="mt-8 pt-8 border-t border-white/10"
               >
                 <img 
-                  src={logoUrl} 
+                  src={logoWhiteText} 
                   alt="Bodals International Logo" 
                   className="h-20 sm:h-24 w-auto object-contain opacity-95 hover:opacity-100 transition" 
-                  onError={(e) => { e.currentTarget.src = logoWhiteText; }}
                 />
               </motion.div>
 
