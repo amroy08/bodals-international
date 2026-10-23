@@ -151,9 +151,60 @@ export function ContentManagement() {
     return (val || "—").toString().substring(0, 200) + ((val || "").toString().length > 200 ? "..." : "");
   };
 
+  const DEFAULT_PRIVACY_POLICY = `1. Introduction
+Welcome to BODALS INTERNATIONAL ("we", "us", "our"). We are committed to protecting your personal data and your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website bodalsint.com and use our B2B trade services.
+
+2. Information We Collect
+We may collect information about you in a variety of ways:
+• Enquiry & Form Data: When you submit an enquiry on our site, we collect your Name, Corporate Email Address, Phone/WhatsApp Number, Company Name, and the specific details of your trade requirement.
+• Technical & Geolocation Data: For security and market traffic analysis, our analytics suite automatically tracks your IP address, Country of origin, City, Browser type, and Device type when you navigate our site.
+
+3. How We Use Your Information
+We use your information to operate, maintain, and improve our services, including:
+• Responding directly to your B2B trade enquiries, coordinating pricing, and providing product documentation.
+• Analyzing global visitor geolocation trends to understand which international markets are showing demand for specific Indian exports (e.g. Seafood, Grains, Textiles).
+• Preventing fraudulent activities and ensuring the security of our website and services.
+
+4. Information Sharing & Disclosure
+We do not sell, rent, or trade your personal information. We only share relevant details with:
+• Logistics & Shipping Partners: Verified freight forwarders, shipping lines, and customs clearing agents to coordinate transport and custom clearance for your orders.
+• Financial Institutions: Banking partners for processing Letters of Credit (L/C) and wire transfers.
+• Legal Requirements: When required by applicable Indian or international trade laws to comply with regulatory authorities.
+
+5. Data Security & Retention
+We employ robust electronic and administrative security measures to protect your data from unauthorized access or alteration. We retain your contact information only as long as necessary to facilitate your business relationship with us.
+
+6. Contact Us
+For any questions or data access requests regarding this Privacy Policy, please contact us at:
+Email: info@bodalsint.com / manishbodal@bodalsint.com`;
+
+  const DEFAULT_TERMS_OF_SERVICE = `1. Acceptance of Terms
+By accessing and browsing bodalsint.com, you agree to comply with and be bound by these Terms of Service. If you do not agree, please refrain from using our website.
+
+2. B2B Enquiries & Non-Binding Nature
+Any product inquiry, pricing requests, or specifications sent through this website are strictly for informational and negotiation purposes. Submitting an enquiry does not constitute a binding purchase order or sales contract. All official transactions, shipping terms (FOB, CIF, CFR), and payments must be formally agreed upon via signed Proforma Invoices, Sales Contracts, and verified Letters of Credit (L/C).
+
+3. Product Descriptions & Visual representation
+We strive to display high-quality visual representation of our products (such as Seafood, Grains, Coffee, and Textiles). However, agricultural and ocean-harvested commodities vary in specifications, sizes, counts, and packaging depending on seasonal availability and market fluctuations. Final product specifications must be directly verified during commercial negotiation.
+
+4. Limitation of Liability
+Bodals International Pvt. Ltd. is a registered merchant export house. We work with verified producers and logistics lines. We shall not be held liable for shipment delays arising from third-party shipping lines, port congestion, customs clearance delays, customs inspections, or Force Majeure events (natural disasters, strikes, wars, disruptions).
+
+5. Intellectual Property
+All content on this website, including but not limited to the Bodals International logo, custom text layouts, product images, graphics, and source code, is the property of Bodals International and is protected by copyright and intellectual property laws of India. Any unauthorized reproduction is strictly prohibited.
+
+6. Governing Law & Dispute Resolution
+These Terms of Service and any commercial relationships resulting from website contact shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the competent courts in Mumbai, Maharashtra, India.`;
+
   const getEditInitValue = (key: string) => {
     if (booleanKeys.includes(key)) {
       return settings[key] === 1 || settings[key] === true ? "true" : "false";
+    }
+    if (key === "privacy_policy" && !settings[key]) {
+      return DEFAULT_PRIVACY_POLICY;
+    }
+    if (key === "terms_of_service" && !settings[key]) {
+      return DEFAULT_TERMS_OF_SERVICE;
     }
     return settings[key] || "";
   };
