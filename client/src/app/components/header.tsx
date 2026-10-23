@@ -93,48 +93,47 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
       </div>
 
       {/* Main nav */}
-      <nav className={`transition-all ${scrolled ? "bg-white/95 backdrop-blur-lg shadow-md" : "bg-white"}`} role="navigation" aria-label="Main navigation">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between">
+      <nav className={`transition-all ${scrolled ? "bg-white/95 backdrop-blur-lg shadow-md" : "bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]"}`} role="navigation" aria-label="Main navigation">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 sm:py-2.5 flex items-center justify-between">
           <button id="header-logo-target" onClick={() => goTo("home")} className="flex items-center gap-3 group" style={{ opacity: introComplete ? 1 : 0, transition: 'opacity 0.3s ease' }}>
             <img 
               src={logoUrl} 
               alt="Bodals International Logo - Premium Indian Merchant Export House" 
-              className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[280px] sm:max-w-[340px] md:max-w-[400px] object-contain transition-all" 
+              className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[270px] object-contain transition-all" 
               onError={(e) => { e.currentTarget.src = defaultLogo; }}
             />
-            
           </button>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {NAV.map((n) => (
               <button
                 key={n.id}
                 onClick={() => goTo(n.id)}
-                className={`relative px-4 py-2 text-sm transition ${
-                  active === n.id ? "text-[#63091E] font-semibold" : "text-[#717182] hover:text-[#63091E]"
+                className={`relative px-4 py-2 text-[15px] lg:text-base transition font-medium ${
+                  active === n.id ? "text-[#63091E] font-semibold" : "text-[#4a4a58] hover:text-[#63091E]"
                 }`}
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {n.label}
                 {active === n.id && (
                   <motion.div
                     layoutId="nav-underline"
-                    className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#d4af37]"
+                    className="absolute bottom-0 left-3 right-3 h-[2.5px] bg-[#d4af37] rounded-full"
                   />
                 )}
               </button>
             ))}
             <button
               onClick={() => goTo("contact")}
-              className="ml-3 px-5 py-2.5 bg-[#63091E] text-white text-sm rounded-full hover:bg-[#800d28] transition flex items-center gap-2 shadow-sm"
-              style={{ fontFamily: "Inter" }}
+              className="ml-4 px-6 py-2.5 bg-[#63091E] text-white text-[15px] font-semibold rounded-full hover:bg-[#800d28] transition flex items-center gap-2 shadow-sm hover:shadow"
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               Send Enquiry
             </button>
           </nav>
 
-          <button className="md:hidden text-[#63091E]" onClick={() => setOpen((o) => !o)}>
-            {open ? <X /> : <Menu />}
+          <button className="md:hidden text-[#63091E] p-1.5 focus:outline-none" onClick={() => setOpen((o) => !o)}>
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
