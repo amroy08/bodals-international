@@ -37,7 +37,8 @@ const updateSettings = async (req, res) => {
       seo_meta_title, seo_meta_description, seo_meta_keywords,
       announcement_enabled, announcement_text, announcement_link,
       working_hours,
-      section_brochure_enabled, section_specialities_enabled, section_intro_animation_enabled
+      section_brochure_enabled, section_specialities_enabled, section_intro_animation_enabled,
+      terms_of_service, privacy_policy
     } = req.body;
 
     // Build update fields dynamically
@@ -78,6 +79,8 @@ const updateSettings = async (req, res) => {
     if (section_brochure_enabled !== undefined) fields.section_brochure_enabled = section_brochure_enabled === true || section_brochure_enabled === 'true' || section_brochure_enabled === 1 || section_brochure_enabled === '1' ? 1 : 0;
     if (section_specialities_enabled !== undefined) fields.section_specialities_enabled = section_specialities_enabled === true || section_specialities_enabled === 'true' || section_specialities_enabled === 1 || section_specialities_enabled === '1' ? 1 : 0;
     if (section_intro_animation_enabled !== undefined) fields.section_intro_animation_enabled = section_intro_animation_enabled === true || section_intro_animation_enabled === 'true' || section_intro_animation_enabled === 1 || section_intro_animation_enabled === '1' ? 1 : 0;
+    if (terms_of_service !== undefined) fields.terms_of_service = terms_of_service;
+    if (privacy_policy !== undefined) fields.privacy_policy = privacy_policy;
 
     // Handle uploaded files (req.files when using upload.fields, or req.file fallback)
     const logoFile = req.files?.logo?.[0] || (req.file?.fieldname === 'logo' ? req.file : null);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Edit, Upload, FileText, Globe, Bell, Clock, Eye, Download, Check, Sparkles } from "lucide-react";
+import { Edit, Upload, FileText, Globe, Bell, Clock, Eye, Download, Check, Sparkles, ShieldAlert } from "lucide-react";
 import { PageHeader } from "./AdminShared";
 import { websiteApi } from "../../../api/websiteApi";
 import { useWebsite } from "../../../contexts/WebsiteContext";
@@ -68,6 +68,11 @@ export function ContentManagement() {
     { key: "seo_meta_keywords", label: "Meta Keywords (comma separated)" },
   ];
 
+  const legalFields = [
+    { key: "privacy_policy", label: "Privacy Policy Document Content" },
+    { key: "terms_of_service", label: "Terms of Service Document Content" },
+  ];
+
   const booleanKeys = [
     "floating_contact_enabled",
     "show_certificates",
@@ -79,7 +84,8 @@ export function ContentManagement() {
 
   const textareaFields = [
     "about_us", "vision", "purpose", "hero_subtitle", "footer_text", 
-    "whatsapp_default_message", "seo_meta_description", "seo_meta_keywords"
+    "whatsapp_default_message", "seo_meta_description", "seo_meta_keywords",
+    "privacy_policy", "terms_of_service"
   ];
 
   const saveField = async () => {
@@ -418,12 +424,34 @@ export function ContentManagement() {
         ))}
       </div>
 
+      {/* 9. Legal & Policies (Privacy Policy & Terms of Service) */}
+      <div className="mt-8 mb-2 flex items-center gap-2">
+        <ShieldAlert className="w-4 h-4 text-[#d4af37]" />
+        <h3 className="text-[#0a1628] text-base font-semibold">Terms & Privacy Policies</h3>
+      </div>
+      <p className="text-[#717182] text-xs mb-3">Update the legal Terms of Service and Privacy Policy displayed in the website footer modals.</p>
+      <div className="grid gap-3 mb-6">
+        {legalFields.map(f => (
+          <div key={f.key} className="p-4 bg-white rounded-xl border border-black/5 flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="text-xs tracking-wider uppercase text-[#717182] mb-1">{f.label}</div>
+              <div className="text-[#0a1628] text-sm whitespace-pre-wrap max-h-24 overflow-hidden text-ellipsis">
+                {settings[f.key] ? getDisplayValue(f.key, settings[f.key]) : <span className="text-[#717182] italic">Using standard default legal policy</span>}
+              </div>
+            </div>
+            <button onClick={() => { setEditField(f.key); setEditValue(getEditInitValue(f.key)); }} className="px-3 py-1.5 rounded-lg bg-[#0a1628] text-white text-sm hover:bg-[#1e3a8a] transition flex items-center gap-1 flex-shrink-0">
+              <Edit className="w-3.5 h-3.5" /> Edit
+            </button>
+          </div>
+        ))}
+      </div>
+
       {/* Universal Edit Modal */}
       {editField && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => !savingField && setEditField(null)}>
-          <div className="bg-white rounded-xl p-6 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className={`bg-white rounded-xl p-6 w-full shadow-2xl ${textareaFields.includes(editField) ? "max-w-2xl" : "max-w-lg"}`} onClick={e => e.stopPropagation()}>
             <h3 className="text-[#0a1628] mb-4 font-semibold">
-              Edit {[...fields, ...floatingFields, ...statFields, ...sectionToggles, ...announcementFields, ...officeFields, ...seoFields].find(f => f.key === editField)?.label}
+              Edit {[...fields, ...floatingFields, ...statFields, ...sectionToggles, ...announcementFields, ...officeFields, ...seoFields, ...legalFields].find(f => f.key === editField)?.label}
             </h3>
             {booleanKeys.includes(editField) ? (
               <select value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField}>
@@ -431,7 +459,14 @@ export function ContentManagement() {
                 <option value="false">Disabled</option>
               </select>
             ) : textareaFields.includes(editField) ? (
-              <textarea value={editValue} onChange={e => setEditValue(e.target.value)} rows={6} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField} />
+              <textarea 
+                value={editValue} 
+                onChange={e => setEditValue(e.target.value)} 
+                rows={editField === "privacy_policy" || editField === "terms_of_service" ? 14 : 6} 
+                className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm font-mono leading-relaxed" 
+                placeholder="Enter document text or formatted sections..."
+                disabled={savingField} 
+              />
             ) : (
               <input value={editValue} onChange={e => setEditValue(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-[#fafaf7] border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/40 text-sm" disabled={savingField} />
             )}

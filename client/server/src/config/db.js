@@ -35,6 +35,8 @@ async function ensureWebsiteSettingsColumns(conn) {
     { name: 'section_brochure_enabled', def: 'BOOLEAN DEFAULT TRUE' },
     { name: 'section_specialities_enabled', def: 'BOOLEAN DEFAULT TRUE' },
     { name: 'section_intro_animation_enabled', def: 'BOOLEAN DEFAULT TRUE' },
+    { name: 'terms_of_service', def: 'LONGTEXT DEFAULT NULL' },
+    { name: 'privacy_policy', def: 'LONGTEXT DEFAULT NULL' },
   ];
   for (const col of newCols) {
     try {
