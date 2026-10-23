@@ -99,7 +99,7 @@ export function Header({ onAdminClick, introComplete = true }: { onAdminClick: (
             <img 
               src={logoUrl} 
               alt="Bodals International Logo - Premium Indian Merchant Export House" 
-              className="h-12 sm:h-14 md:h-16 w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[270px] object-contain transition-all" 
+              className="h-16 sm:h-20 md:h-22 w-auto max-w-[240px] sm:max-w-[290px] md:max-w-[330px] object-contain transition-all" 
               onError={(e) => { e.currentTarget.src = defaultLogo; }}
             />
           </button>
