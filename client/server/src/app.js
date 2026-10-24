@@ -69,6 +69,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Explicit route for Google Search Console HTML verification file
+app.get('/google114639ad1525053a.html', (req, res) => {
+  res.type('text/html').send('google-site-verification: google114639ad1525053a.html');
+});
+
 // Serve static frontend files in production with cache headers
 app.use(express.static(path.join(__dirname, '../../dist'), {
   maxAge: '1d',
