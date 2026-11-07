@@ -10,7 +10,7 @@ export function Brochure() {
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
 
-  const totalPages = 11;
+  const totalPages = 13;
   const pageImage = (page: number) => `/brochure/page-${page}.jpg`;
   const pdfUrl = settings?.brochure_pdf ? `/api/uploads/${settings.brochure_pdf}` : "/brochure/brochure.pdf";
 
