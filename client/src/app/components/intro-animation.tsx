@@ -178,12 +178,11 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
           <div className="absolute inset-0 bg-[#0a1628]/65" />
         </div>
 
-        {/* ── LAYER 1 (ACT 3): Full-screen gold world map image
-              Appears at progress 0.65, filling the entire screen on top of the video ── */}
+        {/* ── LAYER 1 (ACT 3): Full-screen gold world map image with clean white background ── */}
         <motion.div
           style={{ opacity: fullBgOpacity }}
           initial={{ opacity: 0 }}
-          className="absolute inset-0 z-[5]"
+          className="absolute inset-0 z-[5] bg-white"
         >
           <div
             className="absolute inset-0"
@@ -193,8 +192,6 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
               backgroundPosition: "center",
             }}
           />
-          {/* Elegant dark overlay so the white logo pops beautifully against the gold map */}
-          <div className="absolute inset-0 bg-[#0a1628]/75" />
         </motion.div>
 
         {/* ── LAYER 2 (ACT 1 & 2): Slogan text — zooms toward O ── */}
