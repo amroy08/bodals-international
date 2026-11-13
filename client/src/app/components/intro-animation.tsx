@@ -184,17 +184,17 @@ export function IntroAnimation({ progress, onDone }: { progress: MotionValue<num
           initial={{ opacity: 0 }}
           className="absolute inset-0 z-[5] bg-white"
         >
-          {/* Subtle gold world map watermark */}
+          {/* Gold world map watermark — increased visibility to 45% */}
           <div
-            className="absolute inset-0 opacity-25"
+            className="absolute inset-0 opacity-45"
             style={{
               backgroundImage: `url(${introBg})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
           />
-          {/* Soft radial white glow behind the logo center to ensure 100% legibility */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.3)_60%,transparent_100%)] pointer-events-none" />
+          {/* Subtle soft vignette behind the center so the logo text stays legible over map landmass */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.7)_0%,rgba(255,255,255,0.1)_55%,transparent_100%)] pointer-events-none" />
         </motion.div>
 
         {/* ── LAYER 2 (ACT 1 & 2): Slogan text — zooms toward O ── */}
